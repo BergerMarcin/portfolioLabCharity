@@ -1,6 +1,7 @@
 CREATE DATABASE charity_donation CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE charity_donation;
 
+
 INSERT INTO `charity_donation`.`categories` (`name`) VALUES ('ubrania');
 INSERT INTO `charity_donation`.`categories` (`name`) VALUES ('ubrania dziecięce');
 INSERT INTO `charity_donation`.`categories` (`name`) VALUES ('ubrania kobiece');
@@ -8,9 +9,39 @@ INSERT INTO `charity_donation`.`categories` (`name`) VALUES ('ubrania męskie');
 INSERT INTO `charity_donation`.`categories` (`name`) VALUES ('zabawki');
 INSERT INTO `charity_donation`.`categories` (`name`) VALUES ('AGD');
 
+
 INSERT INTO `charity_donation`.`institutions` (`name`, `description`) VALUES ('Fundacja "Dbam o Zdrowie"', 'Cel i misja: Pomoc dzieciom z ubogich rodzin.');
-INSERT INTO `charity_donation`.`institutions` (`name`, `description`) VALUES ('Fundacja "A kogo"', 'Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.');
+INSERT INTO `charity_donation`.`institutions` (`name`, `description`) VALUES ('Fundacja "A kogo?"', 'Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.');
 INSERT INTO `charity_donation`.`institutions` (`name`, `description`) VALUES ('Fundacja “Dla dzieci"', 'Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.');
 INSERT INTO `charity_donation`.`institutions` (`name`, `description`) VALUES ('Fundacja “Bez domu”', 'Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania');
 INSERT INTO `charity_donation`.`institutions` (`name`, `description`) VALUES ('Fundacja “Moja kasa”', 'Cel i misja: Pomoc dla mnie w postaci dużej kasy');
 
+
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (2, 2, 'Warszawa', 'ul.Modzelewskiego 2', '02-045', '2019-12-20', '13:13:00', 'Na podwórku przy śmietniku');
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (1, 1, 'Puławy', 'ul.Chemiczna 2', '21-450', '2019-12-16', '13:00', 'Będę w turkusowej koszuli');
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (4, 4, 'Skierniewice', 'ul. Polna 3', '23-100', '2019-12-12', '9:00', 'Spytaj Ryśka o drogę');
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (5, 5, 'Poznań', 'ul. Komuny Paryskiej 7', '64-853', '2019-12-14', '16:30', 'CB 21');
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (3, 3, 'Łódź', 'ul.Misia Uszatka 24', '40-875', '2019-12-15', '10:45', 'Dzwoń na 789 123 456');
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (6, 1, 'Węgrów', 'ul.Grenadierów 12', '05-903', '2019-12-23', '14:00', 'I am waiting for you, baby!');
+INSERT INTO `charity_donation`.`donations` (`quantity`, `institution_id`, `city`, `street`, `zip_code`, `pick_up_date`, `pick_up_time`, `pick_up_comment`) VALUES (7, 2, 'Kraków', 'ul.Planty 2', '56-676', '2019-12-13', '15:15', 'Przy hotelu na godziny dla zmęczonych turystów');
+
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (1, 1);
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (1, 5);
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (2, 2);
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (3, 5);
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (3, 6);
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (4, 3);
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (4, 4);
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (5, 1);
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (5, 5);
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (5, 6);
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (6, 1);
+
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (7, 1);
+INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categories_id`) VALUES (7, 5);

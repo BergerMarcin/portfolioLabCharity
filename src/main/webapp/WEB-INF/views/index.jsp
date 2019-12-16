@@ -10,7 +10,8 @@
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
-            <em>13</em>
+            <em>${bagsCount}</em>
+<%--            <em>13</em>--%>
 
             <h3>Oddanych worków</h3>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum
@@ -18,7 +19,8 @@
         </div>
 
         <div class="stats--item">
-            <em>5</em>
+            <em>${supportedOrganizationsCount}</em>
+<%--            <em>5</em>--%>
             <h3>Wspartych organizacji</h3>
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas
                 quam.</p>
@@ -76,6 +78,21 @@
             Możesz sprawdzić czym się zajmują.</p>
 
         <ul class="help--slides-items">
+            <c:forEach items="${institutions}" var="institution" varStatus="stat">
+                <c:if test="${stat.count % 2 == 1}">
+                    <li>
+                </c:if>
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
+                <c:if test="${stat.count % 2 == 0 || stat.count == institutions.size()}">
+                    </li>
+                </c:if>
+
+            </c:forEach>
+
+<%--
             <li>
                 <div class="col">
                     <div class="title">Fundacja "Dbam o Zdrowie"</div>
@@ -99,6 +116,8 @@
                 </div>
 
             </li>
+
+--%>
 
         </ul>
     </div>

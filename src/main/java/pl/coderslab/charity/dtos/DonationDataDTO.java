@@ -3,13 +3,13 @@ package pl.coderslab.charity.dtos;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,7 +20,7 @@ public class DonationDataDTO {
     private Integer quantity;               // liczba worków
     @Size(min = 1)
     @UniqueElements
-    private List<Category> categories = new ArrayList();   // categories - lista obiektów typu Category
+    private List<Category> categories;   // categories - lista obiektów typu Category
     @NotNull
     private Institution institution;        // institution - obiekt typu Institution
     @NotBlank
@@ -30,10 +30,10 @@ public class DonationDataDTO {
     @Length(min = 3)
     private String city;
     private String zipCode;
-    @NotEmpty
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @FutureOrPresent
     private LocalDate pickUpDate;
-    @NotEmpty
+    //@DateTimeFormat(pattern = "hh:mm")
     private LocalTime pickUpTime;
     private String pickUpComment;
 

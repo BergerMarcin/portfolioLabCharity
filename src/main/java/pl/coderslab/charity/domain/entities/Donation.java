@@ -1,6 +1,6 @@
 package pl.coderslab.charity.domain.entities;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "donations")
-@Data
+@Getter @Setter @ToString(exclude = "categories") @EqualsAndHashCode
 public class Donation {
 
     @Id

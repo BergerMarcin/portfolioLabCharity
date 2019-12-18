@@ -22,10 +22,10 @@ public class DonationServiceImpl implements DonationService {
 
     @Override
     public void saveDonation(DonationDataDTO donationDataDTO) {
-        log.debug("DonationDataDTO: {}", donationDataDTO);
+        log.debug("DonationServiceImpl. DonationDataDTO: {}", donationDataDTO);
         ModelMapper modelMapper = new ModelMapper();
         Donation donation = modelMapper.map(donationDataDTO, Donation.class);
-        log.debug("Donation (from DonationDataDTO): {}", donation);
+        log.debug("DonationServiceImpl. Donation (from DonationDataDTO): {}", donation);
         donationRepository.save(donation);
     }
 

@@ -1,6 +1,7 @@
 package pl.coderslab.charity.controllers;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +21,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/donation")
+@Slf4j
 public class DonationController {
+
+    private DonationDataDTO donationDataDTO = new DonationDataDTO();
 
     private DonationService donationService;
     private CategoryRepository categoryRepository;
@@ -49,19 +53,48 @@ public class DonationController {
 
     @GetMapping("/form")
     public String getDonationPage (Model model) {
-        model.addAttribute("donationDataDTO", new DonationDataDTO());
+        System.out.println("DonationController. START");
+        model.addAttribute("donationDataDTO", this.donationDataDTO);
 //        return "form-test-DTO";
         return "form";
     }
 
     @PostMapping("/form")
-    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
+    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTOTemp, BindingResult result, Model model) {
+        System.out.println("DonationController. result: " + result);
+        log.debug("DonationController. result: {}", result);
         if (result.hasErrors()) {
+            model.addAttribute("errorsMessage", result.getAllErrors().toArray());
 //            return "form-test-DTO";
-            return "form";
+            return "redirect:/donation/form/#data-step-1";
         }
+        System.out.println("DonationController. . DonationDataDTO: " + this.donationDataDTO);
+        model.addAttribute("errorsMessage", "");
+        this.donationDataDTO = donationDataDTOTemp;
+        log.debug("DonationController. DonationDataDTO: {}", this.donationDataDTO);
+        donationService.saveDonation(this.donationDataDTO);
+        return "redirect:/donation/form-confirmation";
+    }
 
-        donationService.saveDonation(donationDataDTO);
+
+    @GetMapping("/form-confirmation")
+    public String getDonationSummaryPage (Model model) {
+        model.addAttribute("donationDataDTO", this.donationDataDTO);
+        return "form-confirmation";
+    }
+
+    @PostMapping("/form-confirmation")
+    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTOTemp, BindingResult result, Model model) {
+        log.debug("DonationController. result: {}", result);
+        if (result.hasErrors()) {
+            return "form-confirmation";
+        }
+        this.donationDataDTO = donationDataDTOTemp;
+        log.debug("DonationController. DonationDataDTO: {}", this.donationDataDTO);
+        donationService.saveDonation(this.donationDataDTO);
+
+        // After positive fill-in data, confirmation & saving reset general object donationDataDTO
+        this.donationDataDTO = new DonationDataDTO();
         return "redirect:/";
     }
 }

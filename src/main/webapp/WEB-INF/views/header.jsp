@@ -34,6 +34,7 @@
         </ul>
 
         <ul>
+<%--            <li><a href="/donation/form/#data-step-1" class="btn btn--without-border active">Start</a></li>--%>
             <li><a href="/donation/form" class="btn btn--without-border active">Start</a></li>
             <li><a href="/index/#steps" class="btn btn--without-border">O co chodzi?</a></li>
             <li><a href="/index/#about-us" class="btn btn--without-border">O nas</a></li>

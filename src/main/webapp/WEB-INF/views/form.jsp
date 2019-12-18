@@ -58,9 +58,9 @@
       <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-        <form action="form-confirmation.jsp" method="post">
+        <form action="/donation/form" method="post">
           <!-- STEP 1: class .active is switching steps -->
-          <div data-step="1" class="active">
+          <div id="data-step-1" data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
 
             <div class="form-group form-group--checkbox">
@@ -116,10 +116,16 @@
             <div class="form-group form-group--buttons">
               <button type="button" class="btn next-step">Dalej</button>
             </div>
+
+            <%-- Errors --%>
+            <div>
+              <p>${errorsMessage}</p>
+            </div>
+
           </div>
 
           <!-- STEP 2 -->
-          <div data-step="2">
+          <div id="data-step-2" data-step="2">
             <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
             <div class="form-group form-group--inline">
@@ -137,8 +143,8 @@
 
 
 
-          <!-- STEP 4 -->
-          <div data-step="3">
+          <!-- STEP 3 -->
+          <div id="data-step-3" data-step="3">
             <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
             <div class="form-group form-group--checkbox">
@@ -175,8 +181,8 @@
             </div>
           </div>
 
-          <!-- STEP 5 -->
-          <div data-step="4">
+          <!-- STEP 4 -->
+          <div id="data-step-4" data-step="4">
             <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
 
             <div class="form-section form-section--columns">
@@ -227,8 +233,8 @@
             </div>
           </div>
 
-          <!-- STEP 6 -->
-          <div data-step="5">
+          <!-- STEP 5 -->
+          <div id="data-step-5" data-step="5">
             <h3>Podsumowanie Twojej darowizny</h3>
 
             <div class="summary">
@@ -276,6 +282,7 @@
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>
               <button type="submit" class="btn">Potwierdzam</button>
+<%--                <input type="submit" class="btn">Potwierdzam</input>--%>
             </div>
           </div>
         </form>

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+// app.js part 1. JavaScript for select tag in classes "form-group--dropdown" at html/jsp
   /**
    * Form Select
    */
@@ -65,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   }
+
   document.querySelectorAll(".form-group--dropdown select").forEach(el => {
     new FormSelect(el);
   });
@@ -91,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
+
+
+// app.js part 2. JavaScript for class "form--steps" at html/jsp
   /**
    * Switching between form steps
    */
@@ -106,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const $stepForms = form.querySelectorAll("form > div");
       this.slides = [...this.$stepInstructions, ...$stepForms];
 
+      console.log("start");
       this.init();
     }
 
@@ -123,9 +129,11 @@ document.addEventListener("DOMContentLoaded", function() {
     events() {
       // Next step
       this.$next.forEach(btn => {
+        console.log(this.currentStep);
         btn.addEventListener("click", e => {
           e.preventDefault();
           this.currentStep++;
+          console.log(this.currentStep);
           this.updateForm();
         });
       });
@@ -167,6 +175,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
   }
+
+  /**
+   * Start of FormSteps
+   *
+   */
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);

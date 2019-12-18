@@ -6,7 +6,7 @@
 
 
 <footer>
-    <div class="contact">
+    <div id="contact" class="contact">
         <h2>Skontaktuj się z nami</h2>
         <h3>Formularz kontaktowy</h3>
         <form class="form--contact">

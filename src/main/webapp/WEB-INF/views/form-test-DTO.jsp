@@ -16,7 +16,7 @@
 </head>
 <body>
 <form:form method="post" modelAttribute="donationDataDTO">
-    <p>Categories: <form:checkboxes path="categories" items="${categories}" itemLabel="name" itemValue="id" multiple="true"/>
+    <p>Categories: <form:select path="categories" items="${categories}" itemLabel="name" itemValue="id" multiple="true"/>
         <form:errors path="categories"></form:errors></p>
     <p>Institutions: <form:select path="institution" items="${institutions}" itemLabel="name" itemValue="id" required="true"/>
         <form:errors path="institution"></form:errors></p>
@@ -28,7 +28,7 @@
         <form:errors path="city"></form:errors></p>
     <p>Street: <form:input path="street" required="true"/>
         <form:errors path="street" required="true"></form:errors></p>
-    <p>Pick-up date: <form:input type="date" path="pickUpDate"/>
+    <p>Pick-up date: <form:input type="datetime-local" path="pickUpDate"/>
         <form:errors path="pickUpDate"></form:errors></p>
     <p>Pick-up time: <form:input type="time" path="pickUpTime" required="true"/>
         <form:errors path="pickUpTime"></form:errors></p>

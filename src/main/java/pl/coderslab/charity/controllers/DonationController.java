@@ -50,15 +50,15 @@ public class DonationController {
     @GetMapping("/form")
     public String getDonationPage (Model model) {
         model.addAttribute("donationDataDTO", new DonationDataDTO());
-        return "form-test-DTO";
-        //return "form";
+//        return "form-test-DTO";
+        return "form";
     }
 
     @PostMapping("/form")
     public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "form-test-DTO";
-            //return "form";
+//            return "form-test-DTO";
+            return "form";
         }
 
         donationService.saveDonation(donationDataDTO);

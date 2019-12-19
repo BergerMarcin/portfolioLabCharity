@@ -118,9 +118,15 @@
             </div>
 
             <%-- Errors --%>
-            <div>
-              <p>${errorsMessage}</p>
-            </div>
+<%--            <p>${errorsMessage}</p>--%>
+            <c:if test="${not empty errorsMessage && errorsMessage != null}">
+              <div class="errors">
+                <h3>Proszę popraw:</h3>
+                <c:forEach items="${errorsMessage}" var="errorMessage" varStatus="stat">
+                  <p>${stat.count}. ${errorMessage}</p>
+                </c:forEach>
+              </div>
+            </c:if>
 
           </div>
 

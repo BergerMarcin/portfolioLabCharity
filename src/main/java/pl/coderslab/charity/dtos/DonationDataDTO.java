@@ -15,24 +15,28 @@ import java.util.List;
 @Data
 public class DonationDataDTO {
 
+    @NotNull
     @Positive
     @Digits(integer = 4, fraction = 0)
     private Integer quantity;               // liczba worków
-    @Size(min = 1)
+    @NotNull
+    @Size(min = 1, max = 10)
     @UniqueElements
     private List<Category> categories;   // categories - lista obiektów typu Category
     @NotNull
     private Institution institution;        // institution - obiekt typu Institution
     @NotBlank
-    @Length(min = 3)
+    @Length(min = 3, max = 40)
     private String street;
     @NotBlank
-    @Length(min = 3)
+    @Length(min = 3, max = 30)
     private String city;
     private String zipCode;
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @FutureOrPresent
+    @Future
     private LocalDate pickUpDate;
+    @NotNull
     //@DateTimeFormat(pattern = "hh:mm")
     private LocalTime pickUpTime;
     private String pickUpComment;

@@ -431,6 +431,47 @@ h2:after {
   margin-left: calc(50% - 128px);
 }
 
+
+
+
+
+
+
+/*TODO: verification by front-end*/
+.errors{
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  width: 100%;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  background-color: #f9c910;
+  padding: 20px 0px;
+}
+
+/*TODO: verification by front-end*/
+.errors h3{
+  font-style: normal;
+  font-size: 4rem;
+  padding: 0 20px;
+}
+
+/*TODO: verification by front-end*/
+.errors p{
+  font-style: normal;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: red;
+  padding: 0 10px;
+}
+
+
+
+
+
+
+
+
+
 /* line 25, scss/modules/_base.scss */
 .container {
   margin: 0 auto;

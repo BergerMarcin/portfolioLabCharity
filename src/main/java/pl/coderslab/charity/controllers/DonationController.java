@@ -19,7 +19,9 @@ import pl.coderslab.charity.services.DonationService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/donation")
@@ -27,6 +29,7 @@ import java.util.List;
 public class DonationController {
 
     private DonationDataDTO donationDataDTO = new DonationDataDTO();
+    private Map<String, String> errorsMessageMap = new HashMap<>();
 
     private DonationService donationService;
     private CategoryRepository categoryRepository;
@@ -56,7 +59,10 @@ public class DonationController {
     @GetMapping("/form")
     public String getDonationPage (Model model) {
         System.out.println("DonationController. START");
-        model.addAttribute("errorsMessage", "Errors view TEST");
+        if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
+            this.errorsMessageMap.put("test", "Errors view TEST");
+        }
+        model.addAttribute("errorsMessageMap", this.errorsMessageMap);
         model.addAttribute("donationDataDTO", this.donationDataDTO);
 //        return "form-test-DTO";
         return "form";
@@ -65,27 +71,38 @@ public class DonationController {
     @PostMapping("/form")
     public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTOTemp, BindingResult result, Model model) {
         System.out.println("DonationController. POST procedure");
-        System.out.println("DonationController. result: " + result.getFieldErrors());
-        System.out.println("DonationController. result TYPE: " + result.getFieldErrors().get(0).getClass());
-        System.out.println("DonationController. result ARRAY: " + result.getFieldErrors().toArray());
-        System.out.println("DonationController. result ARRAY [0]: " + result.getFieldErrors().toArray()[0]);
-        System.out.println("DonationController. result ARRAY [0] TYPE: " + result.getFieldErrors().toArray()[0].getClass());
-        result.getFieldErrors().stream().forEach(System.out::println);
-        List<FieldError> fieldErrorList = result.getFieldErrors();
-        System.out.println();
-        System.out.println();
-        System.out.println("Error list:");
-        for (FieldError fieldError: fieldErrorList) {
-            System.out.println(fieldError.getField() + ":   " + fieldError.getCode() + "   " + fieldError.getDefaultMessage());
-        }
-        log.debug("DonationController. result: {}", result.getFieldErrors());
         if (result.hasErrors()) {
-            model.addAttribute("errorsMessage", result.getFieldErrors());
+            log.debug("DonationController. result: {}", result.getFieldErrors());
+            System.out.println("DonationController. result: " + result.getFieldErrors());
+            System.out.println("DonationController. result TYPE: " + result.getFieldErrors().get(0).getClass());
+            System.out.println("DonationController. result ARRAY: " + result.getFieldErrors().toArray());
+            System.out.println("DonationController. result ARRAY [0]: " + result.getFieldErrors().toArray()[0]);
+            System.out.println("DonationController. result ARRAY [0] TYPE: " + result.getFieldErrors().toArray()[0].getClass());
+            result.getFieldErrors().stream().forEach(System.out::println);
+
+            System.out.println();
+            System.out.println();
+            System.out.println("Error list:");
+            List<FieldError> fieldErrorList = result.getFieldErrors();
+            this.errorsMessageMap = new HashMap<>();
+            for (FieldError fieldError: fieldErrorList) {
+                this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+                System.out.println(fieldError.getField() + ":   " + fieldError.getCode() + "   " + fieldError.getDefaultMessage());
+            }
+
+            System.out.println();
+            System.out.println();
+            System.out.println("Error list - map:");
+            for (Map.Entry<String, String> map: this.errorsMessageMap.entrySet()) {
+                System.out.println(map.getKey() + ":   " + map.getValue());
+            }
+
+            model.addAttribute("errorsMessageMap", this.errorsMessageMap);
 //            return "form-test-DTO";
             return "redirect:/donation/form/#data-step-1";
         }
         System.out.println("DonationController. . DonationDataDTO: " + this.donationDataDTO);
-        model.addAttribute("errorsMessage", "");
+        model.addAttribute("errorsMessageMap", new HashMap<>());
         this.donationDataDTO = donationDataDTOTemp;
         log.debug("DonationController. DonationDataDTO: {}", this.donationDataDTO);
         return "redirect:/donation/form-confirmation";

@@ -119,11 +119,12 @@
 
             <%-- Errors --%>
 <%--            <p>${errorsMessage}</p>--%>
-            <c:if test="${not empty errorsMessage && errorsMessage != null}">
+            <c:if test="${not empty errorsMessageMap && errorsMessageMap != null}">
               <div class="errors">
                 <h3>Proszę popraw:</h3>
-                <c:forEach items="${errorsMessage}" var="errorMessage" varStatus="stat">
-                  <p>${stat.count}. ${errorMessage}</p>
+                <c:set var="errorsMessageMapKeys" value="${errorsMessageMap.keySet()}" scope="page"></c:set>
+                <c:forEach items="${errorsMessageMapKeys}" var="errorsMessageMapKey" varStatus="stat">
+                  <p>${stat.count}. W polu ${errorsMessageMapKey} należy: ${errorsMessageMap.get(errorsMessageMapKey)}</p>
                 </c:forEach>
               </div>
             </c:if>

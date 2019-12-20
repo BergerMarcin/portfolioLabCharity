@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Category findFirstById(Long id);
+    Category findAllById(Long id);
 
-    Category findFirstByName(String name);
+    Category findAllByName(String name);
 
-    @Query("SELECT c FROM Category c ORDER BY c.name")
-    List<Category> findAllOrderByName();
-//    List<Category> findAllOrderedByName();
+    List<Category> findAllByOrderByName();
+//    @Query("SELECT c FROM Category c ORDER BY c.name")
+//    List<Category> findAllByOrderByName();
 
-    @Query("SELECT c FROM Category c WHERE c.name LIKE '_%' ORDER BY c.name")
-    List<Category> findAllNameNotEmptyOrderByName();
-//    List<Category> findAllNameNotNullOrderByName();
+    List<Category> findAllByNameIsNotNullOrderByName();
+//    @Query("SELECT c FROM Category c WHERE c.name LIKE '_%' ORDER BY c.name")
+//    List<Category> findAllByNameIsNotEmptyOrderByName();
 }

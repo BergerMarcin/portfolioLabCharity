@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "donations")
-@Getter @Setter @ToString(exclude = "categories") @EqualsAndHashCode
+@Getter @Setter @ToString(exclude = "categories") @EqualsAndHashCode(of = "id")
 public class Donation {
 
     @Id

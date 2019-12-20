@@ -1,12 +1,12 @@
 package pl.coderslab.charity.domain.entities;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "institutions")
-@Data
+@Getter @Setter @ToString @EqualsAndHashCode(of = "id")
 public class Institution {
 
     @Id

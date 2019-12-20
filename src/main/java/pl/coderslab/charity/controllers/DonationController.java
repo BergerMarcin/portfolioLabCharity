@@ -2,6 +2,7 @@ package pl.coderslab.charity.controllers;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,13 +12,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.domain.entities.Category;
+import pl.coderslab.charity.domain.entities.Donation;
 import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
 import pl.coderslab.charity.domain.repositories.InstitutionRepository;
+import pl.coderslab.charity.dtos.CategoryDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
+import pl.coderslab.charity.dtos.InstitutionDTO;
 import pl.coderslab.charity.services.DonationService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,22 +47,36 @@ public class DonationController {
         this.institutionRepository = institutionRepository;
     }
 
-    // Library categories (available non-stop in model as "categories" at @RequestMapping("/donation")
+    // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
     @ModelAttribute("categories")
-    public List<Category> categories() {
-        return categoryRepository.findAllNameNotEmptyOrderByName();
+    public List<CategoryDTO> categories() {
+        List<Category> categoryList = categoryRepository.findAllByNameIsNotNullOrderByName();
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        for (Category category: categoryList) {
+            ModelMapper modelMapper = new ModelMapper();
+            CategoryDTO categoryDTO = modelMapper.map(category, CategoryDTO.class);
+            categoryDTOList.add(categoryDTO);
+        }
+        return categoryDTOList;
     }
 
-    // Library categories (available non-stop in model as "categories" at @RequestMapping("/donation")
+    // Library institutions based on InstitutionDTO (available non-stop in model as "institutions" at @RequestMapping("/donation")
     @ModelAttribute("institutions")
-    public List<Institution> institutions() {
-        return institutionRepository.findAllNameNotEmptyOrderByName();
+    public List<InstitutionDTO> institutions() {
+        List<Institution> institutionList = institutionRepository.findAllByNameIsNotNullOrderByName();
+        List<InstitutionDTO> institutionDTOList = new ArrayList<>();
+        for (Institution institution: institutionList) {
+            ModelMapper modelMapper = new ModelMapper();
+            InstitutionDTO institutionDTO = modelMapper.map(institution, InstitutionDTO.class);
+            institutionDTOList.add(institutionDTO);
+        }
+        return institutionDTOList;
     }
 
 
     @GetMapping("/form")
     public String getDonationPage (Model model) {
-        System.out.println("DonationController. START");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
             this.errorsMessageMap.put("test", "Errors view TEST");
         }
@@ -69,36 +88,8 @@ public class DonationController {
 
     @PostMapping("/form")
     public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
-        System.out.println("DonationController. POST procedure");
-//        System.out.println(donationDataDTO.getCategories().get(0));
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         if (result.hasErrors()) {
-/*          // Initial test of object result of BindingResult class
-            log.debug("DonationController. result: {}", result.getFieldErrors());
-            System.out.println("DonationController. result: " + result.getFieldErrors());
-            System.out.println("DonationController. result TYPE: " + result.getFieldErrors().get(0).getClass()); // return FieldError class
-            System.out.println("DonationController. result ARRAY: " + result.getFieldErrors().toArray());
-            System.out.println("DonationController. result ARRAY [0]: " + result.getFieldErrors().toArray()[0]);
-            System.out.println("DonationController. result ARRAY [0] TYPE: " + result.getFieldErrors().toArray()[0].getClass());
-            result.getFieldErrors().stream().forEach(System.out::println);
-
-            System.out.println();
-            System.out.println();
-            System.out.println("Error list:");
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            this.errorsMessageMap = new HashMap<>();
-            for (FieldError fieldError: fieldErrorList) {
-                this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-                System.out.println(fieldError.getField() + ":   " + fieldError.getCode() + "   " + fieldError.getDefaultMessage());
-            }
-
-            System.out.println();
-            System.out.println();
-            System.out.println("Error list - map:");
-            for (Map.Entry<String, String> map: this.errorsMessageMap.entrySet()) {
-                System.out.println(map.getKey() + ":   " + map.getValue());
-            }
-*/
-
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
             List<FieldError> fieldErrorList = result.getFieldErrors();
@@ -110,11 +101,10 @@ public class DonationController {
 //            return "form-test-DTO";
             return "redirect:/donation/form/#data-step-1";
         }
-        System.out.println("DonationController. donationDataDTOMain before write-in data from viewer form.jsp: " + this.donationDataDTOMain);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain before taking data from the form: {}", this.donationDataDTOMain);
         model.addAttribute("errorsMessageMap", new HashMap<>());
         this.donationDataDTOMain = donationDataDTO;
-        System.out.println("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: " + this.donationDataDTOMain);
-        log.debug("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: {}", this.donationDataDTOMain);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain before taking data from the form {}", this.donationDataDTOMain);
         return "redirect:/donation/form-confirmation";
     }
 
@@ -132,8 +122,7 @@ public class DonationController {
             return "redirect:/donation/form-confirmation";
         }
         this.donationDataDTOMain = donationDataDTO;
-        System.out.println("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: " + this.donationDataDTOMain);
-        log.debug("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: {}", this.donationDataDTOMain);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);
         donationService.saveDonation(this.donationDataDTOMain);
 
         // After positive fill-in data, confirmation & saving reset general object donationDataDTO

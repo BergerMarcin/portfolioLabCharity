@@ -4,6 +4,19 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta name="author" content="Marcin Berger, https://github.com/BergerMarcin"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Charity</title>
+
+    <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
+</head>
+
+<body>
 
 <%@ include file="header.jsp" %>
 <div class="slogan container container--90">
@@ -14,7 +27,7 @@
         </h1>
     </div>
 </div>
-</header>
+</body>
 
 
 <section class="stats">
@@ -135,3 +148,8 @@
 
 
 <%@ include file="footer.jsp" %>
+
+<script src="<c:url value="/resources/js/app.js"/>"></script>
+
+</body>
+</html>

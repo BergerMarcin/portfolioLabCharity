@@ -1,30 +1,28 @@
 package pl.coderslab.charity.dtos;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
-import pl.coderslab.charity.domain.entities.Category;
-import pl.coderslab.charity.domain.entities.Institution;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@Data
+@Getter @Setter @ToString
 public class DonationDataDTO {
 
     @NotNull
     @Positive
     @Digits(integer = 4, fraction = 0)
-    private Integer quantity;               // liczba worków
+    private Integer quantity;          // bags number
     @NotNull
     @Size(min = 1, max = 10)
     @UniqueElements
-    private List<Category> categories;   // categories - lista obiektów typu Category
+    private List<Long> categoriesId;   // chosen list of category id's
     @NotNull
-    private Institution institution;        // institution - obiekt typu Institution
+    private Long institutionId;        // chosen institution id
     @NotBlank
     @Length(min = 3, max = 40)
     private String street;

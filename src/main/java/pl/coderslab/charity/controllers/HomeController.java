@@ -26,7 +26,7 @@ public class HomeController {
     @GetMapping({"/", "/home", "/index", ""})
     public String homeAction(Model model){
         //institutions list @ index.jsp
-        List<Institution> institutions = institutionRepository.findAllNameNotEmptyOrderByName();
+        List<Institution> institutions = institutionRepository.findAllByNameIsNotNullOrderByName();
         model.addAttribute("institutions", institutions);
 
         //bagsCount @ index.jsp

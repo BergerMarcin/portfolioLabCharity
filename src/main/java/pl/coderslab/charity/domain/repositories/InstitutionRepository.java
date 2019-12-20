@@ -8,17 +8,19 @@ import java.util.List;
 
 public interface InstitutionRepository extends JpaRepository<Institution, Long> {
 
-    Institution findFirstById(Long id);
+    Institution findAllById(Long id);
 
-    Institution findFirstByName(String name);
+    Institution findAllByName(String name);
 
-    @Query("SELECT i FROM Institution i ORDER BY i.name")
-    List<Institution> findAllOrderByName();
-//    List<Institution> findAllOrderedByName();
+    List<Institution> findAllByOrderByName();
+//    @Query("SELECT i FROM Institution i ORDER BY i.name")
+//    List<Institution> findAllByOrderByName();
 
-    @Query("SELECT i FROM Institution i WHERE i.name LIKE '_%' ORDER BY i.name")
-    List<Institution> findAllNameNotEmptyOrderByName();
-//    List<Institution> findAllNameNotNullOrderByName();
+
+    List<Institution> findAllByNameIsNotNullOrderByName();
+//    @Query("SELECT i FROM Institution i WHERE i.name LIKE '_%' ORDER BY i.name")
+//    List<Institution> findAllByNameIsNotEmptyOrderByName();
+
 
 
 }

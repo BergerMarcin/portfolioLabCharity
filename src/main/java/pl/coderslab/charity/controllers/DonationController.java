@@ -18,7 +18,6 @@ import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.services.DonationService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.Map;
 @Slf4j
 public class DonationController {
 
-    private DonationDataDTO donationDataDTO = new DonationDataDTO();
+    private DonationDataDTO donationDataDTOMain = new DonationDataDTO();
     private Map<String, String> errorsMessageMap = new HashMap<>();
 
     private DonationService donationService;
@@ -63,18 +62,20 @@ public class DonationController {
             this.errorsMessageMap.put("test", "Errors view TEST");
         }
         model.addAttribute("errorsMessageMap", this.errorsMessageMap);
-        model.addAttribute("donationDataDTO", this.donationDataDTO);
+        model.addAttribute("donationDataDTO", this.donationDataDTOMain);
 //        return "form-test-DTO";
         return "form";
     }
 
     @PostMapping("/form")
-    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTOTemp, BindingResult result, Model model) {
+    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
         System.out.println("DonationController. POST procedure");
+//        System.out.println(donationDataDTO.getCategories().get(0));
         if (result.hasErrors()) {
+/*          // Initial test of object result of BindingResult class
             log.debug("DonationController. result: {}", result.getFieldErrors());
             System.out.println("DonationController. result: " + result.getFieldErrors());
-            System.out.println("DonationController. result TYPE: " + result.getFieldErrors().get(0).getClass());
+            System.out.println("DonationController. result TYPE: " + result.getFieldErrors().get(0).getClass()); // return FieldError class
             System.out.println("DonationController. result ARRAY: " + result.getFieldErrors().toArray());
             System.out.println("DonationController. result ARRAY [0]: " + result.getFieldErrors().toArray()[0]);
             System.out.println("DonationController. result ARRAY [0] TYPE: " + result.getFieldErrors().toArray()[0].getClass());
@@ -96,37 +97,47 @@ public class DonationController {
             for (Map.Entry<String, String> map: this.errorsMessageMap.entrySet()) {
                 System.out.println(map.getKey() + ":   " + map.getValue());
             }
+*/
 
+            // Taking field errors from result and creating errorsMessageMap
+            //    errorsMessageMap - a map of errors (key - field name, value - error message)
+            List<FieldError> fieldErrorList = result.getFieldErrors();
+            this.errorsMessageMap = new HashMap<>();
+            for (FieldError fieldError: fieldErrorList) {
+                this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
             model.addAttribute("errorsMessageMap", this.errorsMessageMap);
 //            return "form-test-DTO";
             return "redirect:/donation/form/#data-step-1";
         }
-        System.out.println("DonationController. . DonationDataDTO: " + this.donationDataDTO);
+        System.out.println("DonationController. donationDataDTOMain before write-in data from viewer form.jsp: " + this.donationDataDTOMain);
         model.addAttribute("errorsMessageMap", new HashMap<>());
-        this.donationDataDTO = donationDataDTOTemp;
-        log.debug("DonationController. DonationDataDTO: {}", this.donationDataDTO);
+        this.donationDataDTOMain = donationDataDTO;
+        System.out.println("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: " + this.donationDataDTOMain);
+        log.debug("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: {}", this.donationDataDTOMain);
         return "redirect:/donation/form-confirmation";
     }
 
 
     @GetMapping("/form-confirmation")
     public String getDonationSummaryPage (Model model) {
-        model.addAttribute("donationDataDTO", this.donationDataDTO);
+        model.addAttribute("donationDataDTO", this.donationDataDTOMain);
         return "form-confirmation";
     }
 
     @PostMapping("/form-confirmation")
-    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTOTemp, BindingResult result, Model model) {
+    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
         log.debug("DonationController. result: {}", result.getFieldErrors());
         if (result.hasErrors()) {
             return "redirect:/donation/form-confirmation";
         }
-        this.donationDataDTO = donationDataDTOTemp;
-        log.debug("DonationController. DonationDataDTO: {}", this.donationDataDTO);
-        donationService.saveDonation(this.donationDataDTO);
+        this.donationDataDTOMain = donationDataDTO;
+        System.out.println("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: " + this.donationDataDTOMain);
+        log.debug("DonationController. donationDataDTOMain after write-in data from viewer form.jsp: {}", this.donationDataDTOMain);
+        donationService.saveDonation(this.donationDataDTOMain);
 
         // After positive fill-in data, confirmation & saving reset general object donationDataDTO
-        this.donationDataDTO = new DonationDataDTO();
+        this.donationDataDTOMain = new DonationDataDTO();
         return "redirect:/";
     }
 }

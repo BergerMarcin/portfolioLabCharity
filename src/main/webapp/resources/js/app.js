@@ -159,6 +159,16 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.innerText = this.currentStep;
 
       // TODO: Validation
+/*
+      alert(model.categories);
+      console.log("${model.categories}");
+      console.log(${donationDataDTO.categories.get(0).name});
+      console.log(${donationDataDTO.categories.get(0)});
+      console.log(${donationDataDTO.categories});
+      console.log(${categories});
+      console.log(${categories.get(0)});
+      console.log(categories);
+*/
 
       this.slides.forEach(slide => {
         slide.classList.remove("active");

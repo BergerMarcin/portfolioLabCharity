@@ -3,6 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="set" uri="http://www.springframework.org/security/tags" %>
 
 
 <%@ include file="header.jsp" %>
@@ -36,43 +38,89 @@
 
 
     <section class="form--steps">
-      <div class="form--steps-instructions">
-        <div class="form--steps-container">
-          <h3>Ważne!</h3>
-          <p data-step="1" class="active">
-            Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
-            wiedzieć komu najlepiej je przekazać.
-          </p>
-          <p data-step="2">
-            Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
-            wiedzieć komu najlepiej je przekazać.
-          </p>
-          <p data-step="3">
-           Wybierz jedną, do
-            której trafi Twoja przesyłka.
-          </p>
-          <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
+<%--      <form:form action="/donation/form" method="post" modelAttribute="donationDataDTO">--%>
+        <div class="form--steps-instructions">
+          <div class="form--steps-container">
+            <h3>Ważne!</h3>
+            <p data-step="1" class="active">
+              Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+              wiedzieć komu najlepiej je przekazać.
+            </p>
+            <p data-step="2">
+              Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy
+              wiedzieć komu najlepiej je przekazać.
+            </p>
+            <p data-step="3">
+              Wybierz jedną, do
+              której trafi Twoja przesyłka.
+            </p>
+            <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
+          </div>
         </div>
-      </div>
 
-      <div class="form--steps-container">
-        <div class="form--steps-counter">Krok <span>1</span>/4</div>
+        <div class="form--steps-container">
+          <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-        <form action="/donation/form" method="post">
+          <form action="/donation/form" method="post">
           <!-- STEP 1: class .active is switching steps -->
           <div id="data-step-1" data-step="1" class="active">
             <h3>Zaznacz co chcesz oddać:</h3>
 
+<%--            <c:forEach items="${categories}" var="category">
+              <div class="form-group form-group--checkbox">
+                <label>
+                  <input
+                          type="checkbox"
+                          name="categories"
+                          value="clothes-useless"
+                  />
+                  <span class="checkbox"></span>
+                  <span class="description">${category.name}</span>
+                </label>
+              </div>
+            </c:forEach>--%>
+
+<%--            <form:form action="/donation/form" method="post" modelAttribute="donationDataDTO">
+              <form:input path="city">DUPA</form:input>
+              <c:forEach items="${categories}" var="category">
+                <form:checkbox path="categories" itemValue="${category.id}">
+                  <label>
+                    <span class="checkbox"></span>
+                    <span class="description">${category.name}</span>
+                  </label>
+                </form:checkbox>
+              </c:forEach>
+              <set:csrfInput/>
+            </form:form>--%>
+
+            <c:forEach items="${categories}" var="category" varStatus="stat">
+              <div class="form-group form-group--checkbox">
+                <label>
+                  <input
+                          type="checkbox"
+                          name="donationDataDTO.categories"
+                          value="${category}"
+<%--                          name="${categories.get(stat.count)}"--%>
+<%--                          name="${donationDataDTO.categories.add(category)}"--%>
+<%--                          value="clothes-to-use"--%>
+                  />
+                  <span class="checkbox"></span>
+                  <span class="description">${category.name}</span>
+                </label>
+              </div>
+            </c:forEach>
+
+<%--
             <div class="form-group form-group--checkbox">
               <label>
                 <input
-                  type="checkbox"
-                  name="categories"
-                  value="clothes-to-use"
+                        type="checkbox"
+                        name="categories"
+                        value="clothes-to-use"
                 />
                 <span class="checkbox"></span>
                 <span class="description"
-                  >ubrania, które nadają się do ponownego użycia</span
+                >ubrania, które nadają się do ponownego użycia</span
                 >
               </label>
             </div>
@@ -80,9 +128,9 @@
             <div class="form-group form-group--checkbox">
               <label>
                 <input
-                  type="checkbox"
-                  name="categories"
-                  value="clothes-useless"
+                        type="checkbox"
+                        name="categories"
+                        value="clothes-useless"
                 />
                 <span class="checkbox"></span>
                 <span class="description">ubrania, do wyrzucenia</span>
@@ -112,13 +160,13 @@
                 <span class="description">inne</span>
               </label>
             </div>
+--%>
 
             <div class="form-group form-group--buttons">
               <button type="button" class="btn next-step">Dalej</button>
             </div>
 
-            <%-- Errors --%>
-<%--            <p>${errorsMessage}</p>--%>
+              <%-- Errors view --%>
             <c:if test="${not empty errorsMessageMap && errorsMessageMap != null}">
               <div class="errors">
                 <h3>Proszę popraw:</h3>
@@ -128,7 +176,6 @@
                 </c:forEach>
               </div>
             </c:if>
-
           </div>
 
           <!-- STEP 2 -->
@@ -139,6 +186,11 @@
               <label>
                 Liczba 60l worków:
                 <input type="number" name="bags" step="1" min="1" />
+                <form:input path="donationDataDTO.quantity"
+                            cssClass="form-group form-group--inline"
+                            type="number" min="1" max="500" step="1">
+
+                </form:input>
               </label>
             </div>
 
@@ -251,14 +303,14 @@
                   <li>
                     <span class="icon icon-bag"></span>
                     <span class="summary--text"
-                      >4 worki ubrań w dobrym stanie dla dzieci</span
+                    >${model.donationDataDTO.quantity} 4 worki ${model.donationDataDTO.categories.get(0).name} ubrań w dobrym stanie dla dzieci</span
                     >
                   </li>
 
                   <li>
                     <span class="icon icon-hand"></span>
                     <span class="summary--text"
-                      >Dla fundacji "Mam marzenie" w Warszawie</span
+                    >Dla fundacji "Mam marzenie" w Warszawie</span
                     >
                   </li>
                 </ul>
@@ -289,11 +341,11 @@
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>
               <button type="submit" class="btn">Potwierdzam</button>
-<%--                <input type="submit" class="btn">Potwierdzam</input>--%>
+                <%--                <input type="submit" class="btn">Potwierdzam</input>--%>
             </div>
           </div>
-        </form>
-      </div>
+          </form>
+<%--      </form:form>--%>
     </section>
 
 

@@ -107,11 +107,12 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step = form.querySelector(".form--steps-counter span");
       this.currentStep = 1;
 
+      this.$checkbox = form.querySelectorAll(".checkbox");
+
       this.$stepInstructions = form.querySelectorAll(".form--steps-instructions p");
       const $stepForms = form.querySelectorAll("form > div");
       this.slides = [...this.$stepInstructions, ...$stepForms];
 
-      console.log("start");
       this.init();
     }
 
@@ -127,13 +128,24 @@ document.addEventListener("DOMContentLoaded", function() {
      * All events that are happening in form
      */
     events() {
+      // checkbox
+      this.$checkbox.forEach(function($element) {
+        $element.addEventListener("click", function (event) {
+          if ($element.dataset.checked == "on") {
+            $element.dataset.checked = "off";
+            $element.style.backgroundColor = "transparent";
+          } else {
+            $element.dataset.checked = "on";
+            $element.style.backgroundColor = "#f9c910";
+          }
+        });
+      });
+
       // Next step
       this.$next.forEach(btn => {
-        console.log(this.currentStep);
         btn.addEventListener("click", e => {
           e.preventDefault();
           this.currentStep++;
-          console.log(this.currentStep);
           this.updateForm();
         });
       });

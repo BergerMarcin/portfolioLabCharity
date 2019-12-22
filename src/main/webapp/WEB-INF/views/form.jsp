@@ -77,15 +77,15 @@
       <!-- STEP 1: class .active is switching steps -->
       <div id="data-step-1" data-step="1" class="active">
         <h3>Zaznacz co chcesz oddać:</h3>
-        <c:forEach items="${categories}" var="category" varStatus="stat">
+        <c:forEach items="${categories}" var="category">
           <div class="form-group form-group--checkbox">
-            <input type="checkbox">
-            <form:label path="categoriesId" >
+            <form:label path="categoriesId">
               <form:checkbox path="categoriesId" title="${category.name}" value="${category.id}"/>
               <span class="checkbox" data-checked="off"></span>
               <span class="description">${category.name}</span>
+<%-- TODO: check errors--%>
+              <span><form:errors path="categoriesId"></form:errors></span>
             </form:label>
-            </input>
           </div>
         </c:forEach>
 
@@ -108,14 +108,23 @@
 
       <!-- STEP 2 -->
       <div id="data-step-2" data-step="2">
-        <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
 
+        <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
         <div class="form-group form-group--inline">
+          <form:label path="categoriesId">
+            Liczba 60l worków:
+            <form:input type="number" path="quantity" min="1" step="1"/>
+<%-- TODO: check errors--%>
+            <span><form:errors path="quantity"></form:errors></span>
+          </form:label>
+        </div>
+
+        <%--<div class="form-group form-group--inline">
           <label>
             Liczba 60l worków:
             <input type="number" name="bags" step="1" min="1" />
           </label>
-        </div>
+        </div>--%>
 
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
@@ -129,7 +138,22 @@
       <div id="data-step-3" data-step="3">
         <h3>Wybierz organizacje, której chcesz pomóc:</h3>
 
-        <div class="form-group form-group--checkbox">
+          <c:forEach items="${institutions}" var="institution">
+            <div class="form-group form-group--checkbox">
+              <form:label path="institutionId">
+                <form:radiobutton path="institutionId" title="${institution.name}" value="${institution.id}"/>
+                <span class="checkbox radio" data-checked="off"></span>
+                <span class="description">
+                  <div class="title">${institution.name}</div>
+                  <div class="subtitle">${institution.description}</div>
+                </span>
+<%-- TODO: check errors--%>
+                <span><form:errors path="institutionId"></form:errors></span>
+              </form:label>
+            </div>
+          </c:forEach>
+
+      <%--        <div class="form-group form-group--checkbox">
           <label>
             <input type="radio" name="organization" value="old" />
             <span class="checkbox radio"></span>
@@ -155,7 +179,7 @@
                   </div>
                 </span>
           </label>
-        </div>
+        </div>--%>
 
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
@@ -267,6 +291,7 @@
           <%--                <input type="submit" class="btn">Potwierdzam</input>--%>
         </div>
       </div>
+      <sec:csrfInput/>
     </form:form>
   </div>
 </section>

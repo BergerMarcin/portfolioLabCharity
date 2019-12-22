@@ -107,7 +107,10 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step = form.querySelector(".form--steps-counter span");
       this.currentStep = 1;
 
-      this.$checkbox = form.querySelectorAll(".checkbox");
+      this.$checkbox = form.querySelectorAll(".checkbox:not(.radio)");
+      this.$radio = form.querySelectorAll(".radio");
+      console.log("Quantity of checkbox: " + this.$checkbox.length)
+      console.log("Quantity of radio: " + this.$radio.length)
 
       this.$stepInstructions = form.querySelectorAll(".form--steps-instructions p");
       const $stepForms = form.querySelectorAll("form > div");
@@ -138,6 +141,18 @@ document.addEventListener("DOMContentLoaded", function() {
             $element.dataset.checked = "on";
             $element.style.backgroundColor = "#f9c910";
           }
+        });
+      });
+
+      // radio
+      this.$radio.forEach(function($element) {
+        $element.addEventListener("click", function (event) {
+          form.querySelectorAll(".radio").forEach(function($el) {
+            $el.dataset.checked = "off";
+            $el.style.backgroundColor = "transparent";
+          });
+          $element.dataset.checked = "on";
+          $element.style.backgroundColor = "#f9c910";
         });
       });
 

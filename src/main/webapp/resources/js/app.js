@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
     events() {
       // checkbox
       this.$checkbox.forEach(function($element) {
+        console.log("Clicked: .checked");
         $element.addEventListener("click", function (event) {
           if ($element.dataset.checked == "on") {
             $element.dataset.checked = "off";
@@ -146,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // radio
       this.$radio.forEach(function($element) {
+        console.log("Clicked: .checked .radio");
         $element.addEventListener("click", function (event) {
           form.querySelectorAll(".radio").forEach(function($el) {
             $el.dataset.checked = "off";

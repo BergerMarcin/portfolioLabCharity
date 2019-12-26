@@ -25,7 +25,7 @@ public class DonationServiceImpl implements DonationService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donationDataDTO to be mapped to donation: {}", donationDataDTO);
         ModelMapper modelMapper = new ModelMapper();
         Donation donation = modelMapper.map(donationDataDTO, Donation.class);
-        //TODO: check if categories.name & institution.name was mapped (not only their id's)
+//TODO: check if categories.name & institution.name was mapped (not only their id's)
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) to be saved: {}", donation);
         donationRepository.save(donation);
     }

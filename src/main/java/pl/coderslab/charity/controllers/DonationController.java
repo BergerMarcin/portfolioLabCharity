@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.domain.entities.Category;
-import pl.coderslab.charity.domain.entities.Donation;
 import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
 import pl.coderslab.charity.domain.repositories.InstitutionRepository;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/donation")
+//@RequestMapping("/donation")
 @Slf4j
 public class DonationController {
 
@@ -74,9 +73,10 @@ public class DonationController {
     }
 
 
-    @GetMapping("/form")
+    // form GET & POST
+    @GetMapping("/donation/form")
     public String getDonationPage (Model model) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
             this.errorsMessageMap.put("test", "Errors view TEST");
         }
@@ -86,9 +86,11 @@ public class DonationController {
         return "form";
     }
 
-    @PostMapping("/form")
+    @PostMapping("/donation/form")
     public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST FORM proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("DonationController. result from FORM: {}", result.getFieldErrors());
+        log.debug("DonationController. donationDataDTO from FORM: {}", donationDataDTO.toString());
         if (result.hasErrors()) {
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
@@ -98,28 +100,33 @@ public class DonationController {
                 this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
             model.addAttribute("errorsMessageMap", this.errorsMessageMap);
+            log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain errors detected: {}", this.donationDataDTOMain.toString());
 //            return "form-test-DTO";
             return "redirect:/donation/form/#data-step-1";
         }
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain before taking data from the form: {}", this.donationDataDTOMain);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain before taking data from the FORM: {}", this.donationDataDTOMain.toString());
         model.addAttribute("errorsMessageMap", new HashMap<>());
         this.donationDataDTOMain = donationDataDTO;
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain before taking data from the form {}", this.donationDataDTOMain);
-        return "redirect:/donation/form-confirmation";
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain after taking data from the FORM: {}", this.donationDataDTOMain.toString());
+        return "redirect:/donation/form-summary";
     }
 
 
-    @GetMapping("/form-confirmation")
+    // form-summary GET & POST
+    @GetMapping("/donation/form-summary")
     public String getDonationSummaryPage (Model model) {
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         model.addAttribute("donationDataDTO", this.donationDataDTOMain);
-        return "form-confirmation";
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain to SUMMARY {}", this.donationDataDTOMain.toString());
+        return "form-summary";
     }
 
-    @PostMapping("/form-confirmation")
+    @PostMapping("/donation/form-summary")
     public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
-        log.debug("DonationController. result: {}", result.getFieldErrors());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("DonationController. result from SUMMARY: {}", result.getFieldErrors());
         if (result.hasErrors()) {
-            return "redirect:/donation/form-confirmation";
+            return "redirect:/donation/#data-step-1";
         }
         this.donationDataDTOMain = donationDataDTO;
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);

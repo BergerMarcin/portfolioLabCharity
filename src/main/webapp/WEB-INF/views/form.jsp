@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
@@ -74,26 +75,27 @@
     <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
     <form:form action="/donation/form" method="post" modelAttribute="donationDataDTO">
+      <sec:csrfInput/>
+
       <!-- STEP 1: class .active is switching steps -->
       <div id="data-step-1" data-step="1" class="active">
         <h3>Zaznacz co chcesz oddać:</h3>
-        <c:forEach items="${categories}" var="category">
+        <c:forEach items="${categories}" var="category" varStatus="stat">
           <div class="form-group form-group--checkbox">
-            <form:label path="categoriesId">
-              <form:checkbox path="categoriesId" title="${category.name}" value="${category.id}"/>
+            <form:label path="categoriesId" for="${'categ'.concat(stat.count)}">
               <span class="checkbox" data-checked="off"></span>
               <span class="description">${category.name}</span>
-<%-- TODO: check errors--%>
+<%--               TODO: check errors--%>
               <span><form:errors path="categoriesId"></form:errors></span>
+            <form:checkbox path="categoriesId" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
             </form:label>
           </div>
         </c:forEach>
-
         <div class="form-group form-group--buttons">
           <button type="button" class="btn next-step">Dalej</button>
         </div>
 
-        <%-- Errors --%>
+        <%-- All Errors --%>
         <c:if test="${not empty errorsMessageMap && errorsMessageMap != null}">
           <div class="errors">
             <h3>Proszę popraw:</h3>
@@ -103,84 +105,42 @@
             </c:forEach>
           </div>
         </c:if>
-
       </div>
 
       <!-- STEP 2 -->
       <div id="data-step-2" data-step="2">
-
         <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
         <div class="form-group form-group--inline">
           <form:label path="categoriesId">
             Liczba 60l worków:
             <form:input type="number" path="quantity" min="1" step="1"/>
 <%-- TODO: check errors--%>
-            <span><form:errors path="quantity"></form:errors></span>
+<%--            <span><form:errors path="quantity"></form:errors></span>--%>
           </form:label>
         </div>
-
-        <%--<div class="form-group form-group--inline">
-          <label>
-            Liczba 60l worków:
-            <input type="number" name="bags" step="1" min="1" />
-          </label>
-        </div>--%>
-
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
           <button type="button" class="btn next-step">Dalej</button>
         </div>
       </div>
 
-
-
       <!-- STEP 3 -->
       <div id="data-step-3" data-step="3">
         <h3>Wybierz organizacje, której chcesz pomóc:</h3>
-
-          <c:forEach items="${institutions}" var="institution">
+          <c:forEach items="${institutions}" var="institution" varStatus="stat">
             <div class="form-group form-group--checkbox">
-              <form:label path="institutionId">
-                <form:radiobutton path="institutionId" title="${institution.name}" value="${institution.id}"/>
+              <form:label path="institutionId" for="${'instit'.concat(stat.count)}">
                 <span class="checkbox radio" data-checked="off"></span>
                 <span class="description">
                   <div class="title">${institution.name}</div>
                   <div class="subtitle">${institution.description}</div>
                 </span>
 <%-- TODO: check errors--%>
-                <span><form:errors path="institutionId"></form:errors></span>
+<%--                <span><form:errors path="institutionId"></form:errors></span>--%>
               </form:label>
+              <form:radiobutton path="institutionId" value="${institution.id}" id="${'instit'.concat(stat.count)}"/>
             </div>
           </c:forEach>
-
-      <%--        <div class="form-group form-group--checkbox">
-          <label>
-            <input type="radio" name="organization" value="old" />
-            <span class="checkbox radio"></span>
-            <span class="description">
-                  <div class="title">Fundacja “Bez domu”</div>
-                  <div class="subtitle">
-                    Cel i misja: Pomoc dla osób nie posiadających miejsca
-                    zamieszkania
-                  </div>
-                </span>
-          </label>
-        </div>
-
-        <div class="form-group form-group--checkbox">
-          <label>
-            <input type="radio" name="organization" value="old" />
-            <span class="checkbox radio"></span>
-            <span class="description">
-                  <div class="title">Fundacja “Dla dzieci"</div>
-                  <div class="subtitle">
-                    Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji
-                    życiowej.
-                  </div>
-                </span>
-          </label>
-        </div>--%>
-
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
           <button type="button" class="btn next-step">Dalej</button>
@@ -190,57 +150,84 @@
       <!-- STEP 4 -->
       <div id="data-step-4" data-step="4">
         <h3>Podaj adres oraz termin odbioru rzecz przez kuriera:</h3>
-
         <div class="form-section form-section--columns">
           <div class="form-section--column">
             <h4>Adres odbioru</h4>
             <div class="form-group form-group--inline">
-              <label> Ulica <input type="text" name="address" /> </label>
+              <form:label path="street">
+                Ulica
+                <form:input path="street"/>
+                <%-- TODO: check errors--%>
+<%--                <span><form:errors path="street"></form:errors></span>--%>
+              </form:label>
             </div>
 
             <div class="form-group form-group--inline">
-              <label> Miasto <input type="text" name="city" /> </label>
+              <form:label path="city">
+                Miasto
+                <form:input path="city"/>
+<%-- TODO: check errors--%>
+                <span><form:errors path="city"></form:errors></span>
+              </form:label>
             </div>
 
             <div class="form-group form-group--inline">
-              <label>
-                Kod pocztowy <input type="text" name="postcode" />
-              </label>
+             <form:label path="zipCode">
+               Kod pocztowy
+               <form:input path="zipCode"/>
+<%-- TODO: check errors--%>
+                <span><form:errors path="zipCode"></form:errors></span>
+             </form:label>
             </div>
 
             <div class="form-group form-group--inline">
-              <label>
-                Numer telefonu <input type="phone" name="phone" />
-              </label>
+              <form:label path="phone">
+                Numer telefonu
+                <form:input path="phone"/>
+<%-- TODO: check errors--%>
+                <span><form:errors path="phone"></form:errors></span>
+              </form:label>
             </div>
           </div>
 
           <div class="form-section--column">
             <h4>Termin odbioru</h4>
             <div class="form-group form-group--inline">
-              <label> Data <input type="date" name="data" /> </label>
+              <form:label path="pickUpDate">
+                Data
+                <form:input type="datetime-local" path="pickUpDate"/>
+<%-- TODO: check errors--%>
+                <span><form:errors path="pickUpDate"></form:errors></span>
+              </form:label>
             </div>
 
             <div class="form-group form-group--inline">
-              <label> Godzina <input type="time" name="time" /> </label>
+              <form:label path="pickUpTime">
+                Godzina
+                <form:input type="time" path="pickUpTime"/>
+<%-- TODO: check errors--%>
+                <span><form:errors path="pickUpTime"></form:errors></span>
+              </form:label>
             </div>
 
             <div class="form-group form-group--inline">
-              <label>
+              <form:label path="pickUpComment">
                 Uwagi dla kuriera
-                <textarea name="more_info" rows="5"></textarea>
-              </label>
+                <form:textarea path="pickUpComment" rows="5" cols="80"/>
+                <%-- TODO: check errors--%>
+                <span><form:errors path="pickUpComment"></form:errors></span>
+              </form:label>
             </div>
           </div>
         </div>
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
-          <button type="button" class="btn next-step">Dalej</button>
+          <button type="submit" class="btn">Podsumowanie</button>
         </div>
       </div>
 
       <!-- STEP 5 -->
-      <div id="data-step-5" data-step="5">
+<%--      <div id="data-step-5" data-step="5">
         <h3>Podsumowanie Twojej darowizny</h3>
 
         <div class="summary">
@@ -249,16 +236,16 @@
             <ul>
               <li>
                 <span class="icon icon-bag"></span>
-                <span class="summary--text"
-                >4 worki ubrań w dobrym stanie dla dzieci</span
-                >
+                <span class="summary--text">
+                  ${donationDataDTO.quantity} worki ${donationDataDTO.categoriesId.toArray()}
+                </span>
               </li>
 
               <li>
                 <span class="icon icon-hand"></span>
-                <span class="summary--text"
-                >Dla fundacji "Mam marzenie" w Warszawie</span
-                >
+                <span class="summary--text">
+                  Dla fundacji ${donationDataDTO.institutionId}
+                </span>
               </li>
             </ul>
           </div>
@@ -267,19 +254,26 @@
             <div class="form-section--column">
               <h4>Adres odbioru:</h4>
               <ul>
-                <li>Prosta 51</li>
-                <li>Warszawa</li>
-                <li>99-098</li>
-                <li>123 456 789</li>
+                <li><c:out value="ulica ${donationDataDTO.street}"/></li>
+                <li>${donationDataDTO.city}</li>
+                <li>${donationDataDTO.zipCode}</li>
+                <li>${donationDataDTO.phone}</li>
               </ul>
             </div>
 
             <div class="form-section--column">
               <h4>Termin odbioru:</h4>
               <ul>
-                <li>13/12/2018</li>
-                <li>15:40</li>
-                <li>Brak uwag</li>
+                <li>${donationDataDTO.pickUpDate}</li>
+                <li>${donationDataDTO.pickUpTime}</li>
+                <li>
+                  <c:if test="${not empty donationDataDTO.pickUpComment}">
+                      ${donationDataDTO.pickUpComment}
+                  </c:if>
+                  <c:if test="${empty donationDataDTO.pickUpComment}">
+                    Brak uwag
+                  </c:if>
+                </li>
               </ul>
             </div>
           </div>
@@ -288,9 +282,10 @@
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
           <button type="submit" class="btn">Potwierdzam</button>
-          <%--                <input type="submit" class="btn">Potwierdzam</input>--%>
         </div>
-      </div>
+      </div>--%>
+
+
       <sec:csrfInput/>
     </form:form>
   </div>

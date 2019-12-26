@@ -29,7 +29,11 @@ public class DonationDataDTO {
     @NotBlank
     @Length(min = 3, max = 30)
     private String city;
+    @Pattern(regexp = "[0-9][0-9]-[0-9][0-9][0-9]")
     private String zipCode;
+    @NotBlank
+    @Length(min = 9, max = 15)
+    private String phone;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Future

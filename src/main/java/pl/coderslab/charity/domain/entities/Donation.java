@@ -29,6 +29,8 @@ public class Donation {
     private String city;
     @Column
     private String zipCode;
+    @Column
+    private String phone;
     @Column(nullable = false)
     private LocalDate pickUpDate;
     @Column(nullable = false)

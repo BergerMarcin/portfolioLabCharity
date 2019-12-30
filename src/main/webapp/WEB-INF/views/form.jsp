@@ -82,12 +82,12 @@
         <h3>Zaznacz co chcesz oddać:</h3>
         <c:forEach items="${categories}" var="category" varStatus="stat">
           <div class="form-group form-group--checkbox">
-            <form:label path="categoriesId" for="${'categ'.concat(stat.count)}">
+            <form:label path="categoryIds" for="${'categ'.concat(stat.count)}">
               <span class="checkbox" data-checked="off"></span>
               <span class="description">${category.name}</span>
 <%-- TODO: check errors--%>
 <%--              <span><form:errors path="categoriesId"></form:errors></span>--%>
-            <form:checkbox path="categoriesId" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
+            <form:checkbox path="categoryIds" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
             </form:label>
           </div>
         </c:forEach>
@@ -111,7 +111,7 @@
       <div id="data-step-2" data-step="2">
         <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
         <div class="form-group form-group--inline">
-          <form:label path="categoriesId">
+          <form:label path="quantity">
             Liczba 60l worków:
             <form:input type="number" path="quantity" min="1" step="1"/>
 <%-- TODO: check errors--%>

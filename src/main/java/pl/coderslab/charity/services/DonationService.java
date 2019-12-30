@@ -5,6 +5,6 @@ import pl.coderslab.charity.dtos.DonationDataDTO;
 
 public interface DonationService {
 
-    void saveDonation (DonationDataDTO donationDataDTO);
+    void saveDonation (DonationDataDTO donationDataDTO) throws SavingDataException;
 
 }

@@ -16,13 +16,13 @@ public class DonationDataDTO {
     @NotNull
     @Positive
     @Digits(integer = 4, fraction = 0)
-    private Integer quantity;          // bags number
+    private Integer quantity;           // bags quantity/number
     @NotNull
     @Size(min = 1, max = 10)
     @UniqueElements
-    private List<Long> categoriesId;   // chosen list of category id's
+    private List<Long> categoryIds;     // chosen list of category id's
     @NotNull
-    private Long institutionId;        // chosen institution id
+    private Long institutionId;         // chosen institution id
     @NotBlank
     @Length(min = 3, max = 40)
     private String street;

@@ -77,7 +77,7 @@
 
         <form:form action="/donation/form-summary" method="post" modelAttribute="donationDataDTO">
             <sec:csrfInput/>
-            <form:hidden path="categoriesId"/>
+            <form:hidden path="categoryIds"/>
             <form:hidden path="institutionId"/>
             <form:hidden path="quantity"/>
             <form:hidden path="street"/>
@@ -101,7 +101,7 @@
                                 <span class="summary--text">
                                     ${donationDataDTO.quantity} worków zawierających
                                     <c:forEach items="${categories}" var="category">
-                                        <c:if test="${donationDataDTO.categoriesId.contains(category.id)}">
+                                        <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
                                             ${category.name},
                                         </c:if>
                                     </c:forEach>

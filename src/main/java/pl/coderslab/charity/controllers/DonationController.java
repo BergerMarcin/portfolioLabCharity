@@ -18,6 +18,7 @@ import pl.coderslab.charity.dtos.CategoryDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDTO;
 import pl.coderslab.charity.services.DonationService;
+import pl.coderslab.charity.services.SavingDataException;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -31,6 +32,7 @@ public class DonationController {
     private Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 
     private DonationService donationService;
+//TODO: change from repositories into Services ??????????
     private CategoryRepository categoryRepository;
     private InstitutionRepository institutionRepository;
 
@@ -74,9 +76,9 @@ public class DonationController {
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. donationDataDTOMain @ GET FORM: {}",  this.donationDataDTOMain.toString());
-        if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
-            this.errorsMessageMap.put("test", "Errors view TEST");
-        }
+//        if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
+//            this.errorsMessageMap.put("test", "Errors view TEST");
+//        }
         model.addAttribute("errorsMessageMap", this.errorsMessageMap);
         model.addAttribute("donationDataDTO", this.donationDataDTOMain);
 //        return "form-test-DTO";
@@ -135,10 +137,17 @@ public class DonationController {
         }
         this.donationDataDTOMain = donationDataDTO;
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);
-        donationService.saveDonation(this.donationDataDTOMain);
 
-        // After positive fill-in data, confirmation & saving reset general object donationDataDTO
-        this.donationDataDTOMain = new DonationDataDTO();
+        // Mapping & saving data at method saveDonation (+ exception catch of both operation)
+        try {
+            donationService.saveDonation(this.donationDataDTOMain);
+        } catch (SavingDataException e) {
+            this.errorsMessageMap = new LinkedHashMap<>();
+            this.errorsMessageMap.put("Błąd ogólny", e.getMessage());
+            model.addAttribute("errorsMessageMap", this.errorsMessageMap);
+            return "redirect:/donation/form/#data-step-1";
+        }
+
         return "redirect:/";
     }
 }

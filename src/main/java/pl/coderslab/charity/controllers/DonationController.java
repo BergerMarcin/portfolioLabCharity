@@ -28,8 +28,8 @@ import java.util.*;
 @Slf4j
 public class DonationController {
 
-    private DonationDataDTO donationDataDTOMain = new DonationDataDTO();
-    private Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+//    private DonationDataDTO donationDataDTOMain = new DonationDataDTO();
+//    private Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 
     private DonationService donationService;
 //TODO: change from repositories into Services ??????????
@@ -75,12 +75,9 @@ public class DonationController {
     @GetMapping("/donation/form")
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("DonationController. donationDataDTOMain @ GET FORM: {}",  this.donationDataDTOMain.toString());
-//        if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
-//            this.errorsMessageMap.put("test", "Errors view TEST");
-//        }
-        model.addAttribute("errorsMessageMap", this.errorsMessageMap);
-        model.addAttribute("donationDataDTO", this.donationDataDTOMain);
+//        log.debug("DonationController. donationDataDTOMain @ GET FORM: {}",  this.donationDataDTOMain.toString());
+        model.addAttribute("errorsMessageMap", null);
+        model.addAttribute("donationDataDTO", new DonationDataDTO());
 //        return "form-test-DTO";
         return "form";
     }
@@ -91,63 +88,53 @@ public class DonationController {
         log.debug("DonationController. donationDataDTO from FORM: {}", donationDataDTO.toString());
         if (result.hasErrors()) {
             // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
+            // (errorsMessageMap - a map of errors (key - field name, value - error message)
             List<FieldError> fieldErrorList = result.getFieldErrors();
-            this.errorsMessageMap = new LinkedHashMap<>();
+            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
             for (FieldError fieldError: fieldErrorList) {
-                this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
-            model.addAttribute("errorsMessageMap", this.errorsMessageMap);
-            log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain errors detected: {}", this.donationDataDTOMain.toString());
+            model.addAttribute("errorsMessageMap", errorsMessageMap);
 //            return "form-test-DTO";
-            return "redirect:/donation/form/#data-step-1";
+            return "form";
         }
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain before taking data from the FORM: {}", this.donationDataDTOMain.toString());
-        model.addAttribute("errorsMessageMap", new HashMap<>());
-        this.donationDataDTOMain = donationDataDTO;
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain after taking data from the FORM: {}", this.donationDataDTOMain.toString());
-        return "redirect:/donation/form-summary";
-    }
-
-
-    // form-summary GET & POST
-    @GetMapping("/donation/form-summary")
-    public String getDonationSummaryPage (Model model) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        model.addAttribute("donationDataDTO", this.donationDataDTOMain);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain to SUMMARY {}", this.donationDataDTOMain.toString());
+//        return "redirect:/donation/form-summary";
         return "form-summary";
     }
+
+
+    // form-summary POST
+    // (no GET as applied instead direct "jump" into form-summary.jsp from postDonationPage i.e. from POST of form.jsp)
     @PostMapping("/donation/form-summary")
     public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. result from SUMMARY: {}", result.getFieldErrors());
         log.debug("DonationController. donationDataDTO from SUMMARY: {}", donationDataDTO.toString());
-        log.debug("DonationController. donationDataDTOMain @ POST SUMMARY before change: {}",  this.donationDataDTOMain.toString());
+//        log.debug("DonationController. donationDataDTOMain @ POST SUMMARY before change: {}",  this.donationDataDTOMain.toString());
         if (result.hasErrors()) {
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
             List<FieldError> fieldErrorList = result.getFieldErrors();
-            this.errorsMessageMap = new LinkedHashMap<>();
+            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
             for (FieldError fieldError: fieldErrorList) {
-                this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
-            model.addAttribute("errorsMessageMap", this.errorsMessageMap);
-            return "redirect:/donation/form/#data-step-1";
+            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            return "form";
         }
-        this.donationDataDTOMain = donationDataDTO;
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);
+//        this.donationDataDTOMain = donationDataDTO;
+//        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);
 
         // Mapping & saving data at method saveDonation (+ exception catch of both operation)
         try {
-            donationService.saveDonation(this.donationDataDTOMain);
+//            donationService.saveDonation(this.donationDataDTOMain);
+            donationService.saveDonation(donationDataDTO);
         } catch (SavingDataException e) {
-            this.errorsMessageMap = new LinkedHashMap<>();
-            this.errorsMessageMap.put("Błąd ogólny", e.getMessage());
-            model.addAttribute("errorsMessageMap", this.errorsMessageMap);
-            return "redirect:/donation/form/#data-step-1";
+            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+            errorsMessageMap.put("Błąd ogólny", e.getMessage());
+            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            return "form";
         }
-
-        return "redirect:/";
+        return "index";
     }
 }

@@ -60,11 +60,11 @@ public class DonationServiceImpl implements DonationService {
         }
 
         //Mapping institution
-        try {
-            donation.setInstitution(institutionRepository.findAllById(donationDataDTO.getInstitutionId()));
-        } catch (Throwable e) {
-            throw new SavingDataException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
-        }
+//        try {
+//            donation.setInstitution(institutionRepository.findAllById(donationDataDTO.getInstitutionId()));
+//        } catch (Throwable e) {
+//            throw new SavingDataException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
+//        }
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after institution set: {}", donation);
         if (donation.getInstitution().getName() == null) {
             throw new SavingDataException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");

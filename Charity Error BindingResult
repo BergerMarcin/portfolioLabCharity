@@ -1,0 +1,26 @@
+DonationController. result: [
+
+Field error in object 'donationDataDTO' on field 'institution': rejected value [null]; codes [NotNull.donationDataDTO.institution,NotNull.institution,NotNull.pl.coderslab.charity.domain.entities.Institution,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.institution,institution]; arguments []; default message [institution]]; default message [must not be null], 
+
+Field error in object 'donationDataDTO' on field 'city': rejected value []; codes [NotBlank.donationDataDTO.city,NotBlank.city,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.city,city]; arguments []; default message [city]]; default message [must not be blank], 
+
+Field error in object 'donationDataDTO' on field 'city': rejected value []; codes [Length.donationDataDTO.city,Length.city,Length.java.lang.String,Length]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.city,city]; arguments []; default message [city],2147483647,3]; default message [length must be between 3 and 2147483647], 
+
+Field error in object 'donationDataDTO' on field 'street': rejected value [null]; codes [NotBlank.donationDataDTO.street,NotBlank.street,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.street,street]; arguments []; default message [street]]; default message [must not be blank]]
+
+
+[Field error in object 'donationDataDTO' on field 'city': rejected value []; codes [NotBlank.donationDataDTO.city,NotBlank.city,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.city,city]; arguments []; default message [city]]; default message [must not be blank], 
+
+Field error in object 'donationDataDTO' on field 'quantity': rejected value [null]; codes [NotNull.donationDataDTO.quantity,NotNull.quantity,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.quantity,quantity]; arguments []; default message [quantity]]; default message [must not be null], 
+
+Field error in object 'donationDataDTO' on field 'city': rejected value []; codes [Length.donationDataDTO.city,Length.city,Length.java.lang.String,Length]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.city,city]; arguments []; default message [city],30,3]; default message [length must be between 3 and 30], 
+
+Field error in object 'donationDataDTO' on field 'pickUpTime': rejected value [null]; codes [NotNull.donationDataDTO.pickUpTime,NotNull.pickUpTime,NotNull.java.time.LocalTime,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.pickUpTime,pickUpTime]; arguments []; default message [pickUpTime]]; default message [must not be null], 
+
+Field error in object 'donationDataDTO' on field 'categories': rejected value [null]; codes [NotNull.donationDataDTO.categories,NotNull.categories,NotNull.java.util.List,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.categories,categories]; arguments []; default message [categories]]; default message [must not be null], 
+
+Field error in object 'donationDataDTO' on field 'institution': rejected value [null]; codes [NotNull.donationDataDTO.institution,NotNull.institution,NotNull.pl.coderslab.charity.domain.entities.Institution,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.institution,institution]; arguments []; default message [institution]]; default message [must not be null], 
+
+Field error in object 'donationDataDTO' on field 'street': rejected value [null]; codes [NotBlank.donationDataDTO.street,NotBlank.street,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.street,street]; arguments []; default message [street]]; default message [must not be blank], 
+
+Field error in object 'donationDataDTO' on field 'pickUpDate': rejected value [null]; codes [NotNull.donationDataDTO.pickUpDate,NotNull.pickUpDate,NotNull.java.time.LocalDate,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [donationDataDTO.pickUpDate,pickUpDate]; arguments []; default message [pickUpDate]]; default message [must not be null]]

@@ -19,6 +19,7 @@ public class Donation {
     @Column
     private Integer quantity;               // liczba worków
     @ManyToMany
+    @JoinColumn (name = "categories_id")
     private List<Category> categories = new ArrayList();   // categories - lista obiektów typu Category
     @ManyToOne
     @JoinColumn (name = "institution_id")

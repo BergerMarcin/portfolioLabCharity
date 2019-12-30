@@ -72,10 +72,21 @@
     </div>
 
     <div class="form--steps-container">
-        <div class="form--steps-counter">Krok <span>1</span>/4</div>
+        <div class="form--steps-counter"><span></span></div>
+<%--        <div class="form--steps-counter">Krok <span>1</span>/4--%>
 
         <form:form action="/donation/form-summary" method="post" modelAttribute="donationDataDTO">
             <sec:csrfInput/>
+            <form:hidden path="categoriesId"/>
+            <form:hidden path="institutionId"/>
+            <form:hidden path="quantity"/>
+            <form:hidden path="street"/>
+            <form:hidden path="city"/>
+            <form:hidden path="zipCode"/>
+            <form:hidden path="phone"/>
+            <form:hidden path="pickUpDate"/>
+            <form:hidden path="pickUpTime"/>
+            <form:hidden path="pickUpComment"/>
 
             <!-- STEP 5 -->
             <div id="data-step-1" data-step="1">
@@ -88,14 +99,24 @@
                             <li>
                                 <span class="icon icon-bag"></span>
                                 <span class="summary--text">
-                                    ${donationDataDTO.quantity} worki ${donationDataDTO.categoriesId.toArray()}
+                                    ${donationDataDTO.quantity} worków zawierających
+                                    <c:forEach items="${categories}" var="category">
+                                        <c:if test="${donationDataDTO.categoriesId.contains(category.id)}">
+                                            ${category.name},
+                                        </c:if>
+                                    </c:forEach>
                                 </span>
                             </li>
 
                             <li>
                                 <span class="icon icon-hand"></span>
                                 <span class="summary--text">
-                                    Dla fundacji ${donationDataDTO.institutionId}
+                                    Dla fundacji
+                                     <c:forEach items="${institutions}" var="institution">
+                                         <c:if test="${donationDataDTO.institutionId == institution.id}">
+                                             ${institution.name}
+                                         </c:if>
+                                     </c:forEach>
                                 </span>
                             </li>
                         </ul>
@@ -105,7 +126,7 @@
                         <div class="form-section--column">
                             <h4>Adres odbioru:</h4>
                             <ul>
-                                <li><c:out value="ulica ${donationDataDTO.street}"/></li>
+                                <li><c:out value="ul. ${donationDataDTO.street}"/></li>
                                 <li>${donationDataDTO.city}</li>
                                 <li>${donationDataDTO.zipCode}</li>
                                 <li>${donationDataDTO.phone}</li>
@@ -135,7 +156,6 @@
                     <button type="submit" class="btn">Potwierdzam</button>
                 </div>
             </div>
-
 
             <sec:csrfInput/>
         </form:form>

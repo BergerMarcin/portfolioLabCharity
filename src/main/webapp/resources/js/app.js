@@ -185,7 +185,9 @@ document.addEventListener("DOMContentLoaded", function() {
      * Show next or previous section etc.
      */
     updateForm() {
-      this.$step.innerText = this.currentStep;
+      if (this.$step.innerText.length > 0) {
+        this.$step.innerText = this.currentStep;
+      }
 
       // TODO: Validation
 /*

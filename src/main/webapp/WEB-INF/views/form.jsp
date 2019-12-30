@@ -85,8 +85,8 @@
             <form:label path="categoriesId" for="${'categ'.concat(stat.count)}">
               <span class="checkbox" data-checked="off"></span>
               <span class="description">${category.name}</span>
-<%--               TODO: check errors--%>
-              <span><form:errors path="categoriesId"></form:errors></span>
+<%-- TODO: check errors--%>
+<%--              <span><form:errors path="categoriesId"></form:errors></span>--%>
             <form:checkbox path="categoriesId" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
             </form:label>
           </div>
@@ -157,7 +157,7 @@
               <form:label path="street">
                 Ulica
                 <form:input path="street"/>
-                <%-- TODO: check errors--%>
+<%-- TODO: check errors--%>
 <%--                <span><form:errors path="street"></form:errors></span>--%>
               </form:label>
             </div>
@@ -167,7 +167,7 @@
                 Miasto
                 <form:input path="city"/>
 <%-- TODO: check errors--%>
-                <span><form:errors path="city"></form:errors></span>
+<%--                <span><form:errors path="city"></form:errors></span>--%>
               </form:label>
             </div>
 
@@ -176,7 +176,7 @@
                Kod pocztowy
                <form:input path="zipCode"/>
 <%-- TODO: check errors--%>
-                <span><form:errors path="zipCode"></form:errors></span>
+<%--                <span><form:errors path="zipCode"></form:errors></span>--%>
              </form:label>
             </div>
 
@@ -185,7 +185,7 @@
                 Numer telefonu
                 <form:input path="phone"/>
 <%-- TODO: check errors--%>
-                <span><form:errors path="phone"></form:errors></span>
+<%--                <span><form:errors path="phone"></form:errors></span>--%>
               </form:label>
             </div>
           </div>
@@ -197,7 +197,7 @@
                 Data
                 <form:input type="datetime-local" path="pickUpDate"/>
 <%-- TODO: check errors--%>
-                <span><form:errors path="pickUpDate"></form:errors></span>
+<%--                <span><form:errors path="pickUpDate"></form:errors></span>--%>
               </form:label>
             </div>
 
@@ -206,7 +206,7 @@
                 Godzina
                 <form:input type="time" path="pickUpTime"/>
 <%-- TODO: check errors--%>
-                <span><form:errors path="pickUpTime"></form:errors></span>
+<%--                <span><form:errors path="pickUpTime"></form:errors></span>--%>
               </form:label>
             </div>
 
@@ -214,8 +214,8 @@
               <form:label path="pickUpComment">
                 Uwagi dla kuriera
                 <form:textarea path="pickUpComment" rows="5" cols="80"/>
-                <%-- TODO: check errors--%>
-                <span><form:errors path="pickUpComment"></form:errors></span>
+<%-- TODO: check errors--%>
+<%--                <span><form:errors path="pickUpComment"></form:errors></span>--%>
               </form:label>
             </div>
           </div>

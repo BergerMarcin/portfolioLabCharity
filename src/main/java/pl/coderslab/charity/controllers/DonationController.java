@@ -10,7 +10,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
@@ -21,10 +20,7 @@ import pl.coderslab.charity.dtos.InstitutionDTO;
 import pl.coderslab.charity.services.DonationService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 //@RequestMapping("/donation")
@@ -32,7 +28,7 @@ import java.util.Map;
 public class DonationController {
 
     private DonationDataDTO donationDataDTOMain = new DonationDataDTO();
-    private Map<String, String> errorsMessageMap = new HashMap<>();
+    private Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 
     private DonationService donationService;
     private CategoryRepository categoryRepository;
@@ -77,6 +73,7 @@ public class DonationController {
     @GetMapping("/donation/form")
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("DonationController. donationDataDTOMain @ GET FORM: {}",  this.donationDataDTOMain.toString());
         if (this.errorsMessageMap.size() < 1 || this.errorsMessageMap == null) {
             this.errorsMessageMap.put("test", "Errors view TEST");
         }
@@ -85,7 +82,6 @@ public class DonationController {
 //        return "form-test-DTO";
         return "form";
     }
-
     @PostMapping("/donation/form")
     public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST FORM proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
@@ -95,7 +91,7 @@ public class DonationController {
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
             List<FieldError> fieldErrorList = result.getFieldErrors();
-            this.errorsMessageMap = new HashMap<>();
+            this.errorsMessageMap = new LinkedHashMap<>();
             for (FieldError fieldError: fieldErrorList) {
                 this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
@@ -120,13 +116,22 @@ public class DonationController {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain to SUMMARY {}", this.donationDataDTOMain.toString());
         return "form-summary";
     }
-
     @PostMapping("/donation/form-summary")
     public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. result from SUMMARY: {}", result.getFieldErrors());
+        log.debug("DonationController. donationDataDTO from SUMMARY: {}", donationDataDTO.toString());
+        log.debug("DonationController. donationDataDTOMain @ POST SUMMARY before change: {}",  this.donationDataDTOMain.toString());
         if (result.hasErrors()) {
-            return "redirect:/donation/#data-step-1";
+            // Taking field errors from result and creating errorsMessageMap
+            //    errorsMessageMap - a map of errors (key - field name, value - error message)
+            List<FieldError> fieldErrorList = result.getFieldErrors();
+            this.errorsMessageMap = new LinkedHashMap<>();
+            for (FieldError fieldError: fieldErrorList) {
+                this.errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            model.addAttribute("errorsMessageMap", this.errorsMessageMap);
+            return "redirect:/donation/form/#data-step-1";
         }
         this.donationDataDTOMain = donationDataDTO;
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);

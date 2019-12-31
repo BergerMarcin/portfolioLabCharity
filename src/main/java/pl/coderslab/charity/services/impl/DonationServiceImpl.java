@@ -37,13 +37,12 @@ public class DonationServiceImpl implements DonationService {
 
     @Override
     public void saveDonation(DonationDataDTO donationDataDTO) throws SavingDataException {
-
-        //TODO: check if categories.name & institution.name was mapped (not only their id's)
-
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveDonation !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donationDataDTO to be mapped to donation: {}", donationDataDTO.toString());
 
-        // Mapping donation (categories & institution is not mapped here, id is wrongly mapped from institutionId)
+        // STRICT mapping donation
+        // (categories & institution is not mapped here;
+        //  in case STANDARD mapping id is wrongly mapped from institutionId)
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         Donation donation = modelMapper.map(donationDataDTO, Donation.class);
@@ -54,11 +53,8 @@ public class DonationServiceImpl implements DonationService {
         donation.setInstitution(institution);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after simple mapping + add institution: {}", donation.toString());
 
-        List<Category> categories = donationDataDTO.getCategoryIds()
-                .stream()
-                .sorted()
-                .map(id -> categoryRepository.findAllById(id))
-                .collect(Collectors.toList());
+        // Fill-in category detail-data of donation
+        List<Category> categories = categoryRepository.findAllByIdIn(donationDataDTO.getCategoryIds());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. categories: {}", categories.toString());
         donation.setCategories(categories);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after categories set: {}", donation.toString());
@@ -66,7 +62,7 @@ public class DonationServiceImpl implements DonationService {
             throw new SavingDataException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
         }
 
-        //Mapping institution
+        //Fill-in institution detail-data of donation
         try {
             donation.setInstitution(institutionRepository.findAllById(donationDataDTO.getInstitutionId()));
         } catch (Throwable e) {
@@ -77,11 +73,7 @@ public class DonationServiceImpl implements DonationService {
             throw new SavingDataException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
         }
 
-        //Reset id
-        donation.setId(null);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after id reset, to be saved: {}", donation.toString());
-
-        // Final saving
+        // Final saving donation
         Donation donationSaved = donationRepository.save(donation);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donationSaved saved: {}", donationSaved.toString());
         if (donationSaved == null) {

@@ -28,9 +28,6 @@ import java.util.*;
 @Slf4j
 public class DonationController {
 
-//    private DonationDataDTO donationDataDTOMain = new DonationDataDTO();
-//    private Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-
     private DonationService donationService;
 //TODO: change from repositories into Services ??????????
     private CategoryRepository categoryRepository;
@@ -75,7 +72,6 @@ public class DonationController {
     @GetMapping("/donation/form")
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-//        log.debug("DonationController. donationDataDTOMain @ GET FORM: {}",  this.donationDataDTOMain.toString());
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("donationDataDTO", new DonationDataDTO());
 //        return "form-test-DTO";
@@ -110,7 +106,6 @@ public class DonationController {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. result from SUMMARY: {}", result.getFieldErrors());
         log.debug("DonationController. donationDataDTO from SUMMARY: {}", donationDataDTO.toString());
-//        log.debug("DonationController. donationDataDTOMain @ POST SUMMARY before change: {}",  this.donationDataDTOMain.toString());
         if (result.hasErrors()) {
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
@@ -122,12 +117,14 @@ public class DonationController {
             model.addAttribute("errorsMessageMap", errorsMessageMap);
             return "form";
         }
-//        this.donationDataDTOMain = donationDataDTO;
-//        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!!  donationDataDTOMain FINAL: {}", this.donationDataDTOMain);
+        // In case user ASK TO REWRITE DATA
+//TODO:        if (...) {
+//            return "form";
+//        }
 
+        // In case user CONFIRM DATA
         // Mapping & saving data at method saveDonation (+ exception catch of both operation)
         try {
-//            donationService.saveDonation(this.donationDataDTOMain);
             donationService.saveDonation(donationDataDTO);
         } catch (SavingDataException e) {
             Map<String, String> errorsMessageMap = new LinkedHashMap<>();

@@ -26,11 +26,11 @@ public class HomeController {
     @GetMapping({"/", "/home", "/index", ""})
     public String homeAction(Model model){
         //institutions list @ index.jsp
-//TODO
+//TODO change to Service
         List<Institution> institutions = institutionRepository.findAllByNameIsNotNullOrderByName();
         model.addAttribute("institutions", institutions);
 
-        //TODO zliczanie do repo
+//TODO change to Service, move counting into Service
         //bagsCount @ index.jsp
         List<Donation> donations = donationRepository.findAllByPickUpDateIsBefore(LocalDate.now());
         Long bagsCount = donations.stream().mapToLong(d -> d.getQuantity()).sum();

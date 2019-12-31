@@ -80,27 +80,21 @@
       <!-- STEP 1: class .active is switching steps -->
       <div id="data-step-1" data-step="1" class="active">
         <h3>Zaznacz co chcesz oddać:</h3>
+        <p class="error"><form:errors path="categoryIds"></form:errors></p>
         <c:forEach items="${categories}" var="category" varStatus="stat">
           <div class="form-group form-group--checkbox">
             <form:label path="categoryIds" for="${'categ'.concat(stat.count)}">
-<%--              <c:if test="${donationDataDTO.categoryIds != null}">--%>
-                <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
-                  <span class="checkbox" data-checked="on" style="background-color: #f9c910;"></span>
-                </c:if>
-                <c:if test="${!donationDataDTO.categoryIds.contains(category.id)}">
-                  <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
-                </c:if>
-<%--              </c:if>--%>
-<%--              <c:if test="${donationDataDTO.categoryIds != null}">--%>
-<%--                <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>--%>
-<%--              </c:if>--%>
+              <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
+                <span class="checkbox" data-checked="on" style="background-color: #f9c910;"></span>
+              </c:if>
+              <c:if test="${!donationDataDTO.categoryIds.contains(category.id)}">
+                <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
+              </c:if>
               <span class="description">${category.name}</span>
-            <form:checkbox path="categoryIds" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
+              <form:checkbox path="categoryIds" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
             </form:label>
           </div>
         </c:forEach>
-<%-- TODO: check errors--%>
-          <%--              <span><form:errors path="categoriesIds"></form:errors></span>--%>
         <div class="form-group form-group--buttons">
           <button type="button" class="btn next-step">Dalej</button>
         </div>
@@ -120,12 +114,11 @@
       <!-- STEP 2 -->
       <div id="data-step-2" data-step="2">
         <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+        <p class="error"><form:errors path="quantity"></form:errors></p>
         <div class="form-group form-group--inline">
           <form:label path="quantity">
             Liczba 60l worków:
             <form:input type="number" path="quantity" min="1" step="1"/>
-<%-- TODO: check errors--%>
-<%--            <span><form:errors path="quantity"></form:errors></span>--%>
           </form:label>
         </div>
         <div class="form-group form-group--buttons">
@@ -137,30 +130,24 @@
       <!-- STEP 3 -->
       <div id="data-step-3" data-step="3">
         <h3>Wybierz organizacje, której chcesz pomóc:</h3>
-          <c:forEach items="${institutions}" var="institution" varStatus="stat">
-            <div class="form-group form-group--checkbox">
-              <form:label path="institutionId" for="${'instit'.concat(stat.count)}">
-<%--                <c:if test="${donationDataDTO.institutionId != null}">--%>
-                  <c:if test="${donationDataDTO.institutionId == institution.id}">
-                    <span class="checkbox radio" data-checked="on" style="background-color: #f9c910;"></span>
-                  </c:if>
-                  <c:if test="${donationDataDTO.institutionId != institution.id}">
-                    <span class="checkbox radio" data-checked="off" style="background-color: transparent;"></span>
-                  </c:if>
-<%--                </c:if>--%>
-<%--                <c:if test="${donationDataDTO.institutionId == null}">--%>
-<%--                  <span class="checkbox radio" data-checked="off" style="background-color: transparent;"></span>--%>
-<%--                </c:if>--%>
-                <span class="description">
-                  <div class="title">${institution.name}</div>
-                  <div class="subtitle">${institution.description}</div>
-                </span>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="institutionId"></form:errors></span>--%>
-              </form:label>
+        <p class="error"><form:errors path="institutionId"></form:errors></p>
+        <c:forEach items="${institutions}" var="institution" varStatus="stat">
+          <div class="form-group form-group--checkbox">
+            <form:label path="institutionId" for="${'instit'.concat(stat.count)}">
+              <c:if test="${donationDataDTO.institutionId == institution.id}">
+                <span class="checkbox radio" data-checked="on" style="background-color: #f9c910;"></span>
+              </c:if>
+              <c:if test="${donationDataDTO.institutionId != institution.id}">
+                <span class="checkbox radio" data-checked="off" style="background-color: transparent;"></span>
+              </c:if>
+              <span class="description">
+                <div class="title">${institution.name}</div>
+                <div class="subtitle">${institution.description}</div>
+              </span>
               <form:radiobutton path="institutionId" value="${institution.id}" id="${'instit'.concat(stat.count)}"/>
-            </div>
-          </c:forEach>
+            </form:label>
+          </div>
+        </c:forEach>
         <div class="form-group form-group--buttons">
           <button type="button" class="btn prev-step">Wstecz</button>
           <button type="button" class="btn next-step">Dalej</button>
@@ -173,69 +160,62 @@
         <div class="form-section form-section--columns">
           <div class="form-section--column">
             <h4>Adres odbioru</h4>
+            <p class="error"><form:errors path="street"></form:errors></p>
             <div class="form-group form-group--inline">
               <form:label path="street">
                 Ulica
                 <form:input path="street"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="street"></form:errors></span>--%>
               </form:label>
             </div>
 
+            <p class="error"><form:errors path="city"></form:errors></p>
             <div class="form-group form-group--inline">
               <form:label path="city">
                 Miasto
                 <form:input path="city"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="city"></form:errors></span>--%>
               </form:label>
             </div>
 
+            <p class="error"><form:errors path="zipCode"></form:errors></p>
             <div class="form-group form-group--inline">
-             <form:label path="zipCode">
-               Kod pocztowy
-               <form:input path="zipCode"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="zipCode"></form:errors></span>--%>
+              <form:label path="zipCode">
+                Kod pocztowy
+                <form:input path="zipCode"/>
              </form:label>
             </div>
 
+            <p class="error"><form:errors path="phone"></form:errors></p>
             <div class="form-group form-group--inline">
               <form:label path="phone">
                 Numer telefonu
                 <form:input path="phone"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="phone"></form:errors></span>--%>
               </form:label>
             </div>
           </div>
 
           <div class="form-section--column">
             <h4>Termin odbioru</h4>
+            <p class="error"><form:errors path="pickUpDate"></form:errors></p>
             <div class="form-group form-group--inline">
               <form:label path="pickUpDate">
                 Data
                 <form:input type="datetime-local" path="pickUpDate"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="pickUpDate"></form:errors></span>--%>
               </form:label>
             </div>
 
+            <p class="error"><form:errors path="pickUpTime"></form:errors></p>
             <div class="form-group form-group--inline">
               <form:label path="pickUpTime">
                 Godzina
                 <form:input type="time" path="pickUpTime"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="pickUpTime"></form:errors></span>--%>
               </form:label>
             </div>
 
+            <p class="error"><form:errors path="pickUpComment"></form:errors></p>
             <div class="form-group form-group--inline">
               <form:label path="pickUpComment">
                 Uwagi dla kuriera
                 <form:textarea path="pickUpComment" rows="5" cols="80"/>
-<%-- TODO: check errors--%>
-<%--                <span><form:errors path="pickUpComment"></form:errors></span>--%>
               </form:label>
             </div>
           </div>
@@ -244,16 +224,6 @@
           <button type="button" class="btn prev-step">Wstecz</button>
           <button type="submit" class="btn">Podsumowanie</button>
         </div>
-        <h4><c:out value="${donationDataDTO.categoryIds}"/></h4>
-        <h4><c:out value="${donationDataDTO.institutionId}"/></h4>
-        <h4><c:out value="${donationDataDTO.quantity}"/></h4>
-        <h4><c:out value="${donationDataDTO.street}"/></h4>
-        <h4><c:out value="${donationDataDTO.city}"/></h4>
-        <h4><c:out value="${donationDataDTO.zipCode}"/></h4>
-        <h4><c:out value="${donationDataDTO.phone}"/></h4>
-        <h4><c:out value="${donationDataDTO.pickUpDate}"/></h4>
-        <h4><c:out value="${donationDataDTO.pickUpTime}"/></h4>
-        <h4><c:out value="${donationDataDTO.pickUpComment}"/></h4>
       </div>
 
       <!-- STEP 5 -->

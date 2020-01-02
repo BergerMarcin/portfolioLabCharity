@@ -45,6 +45,8 @@
                     <div><em>4</em><span>Zamów kuriera</span></div>
                 </li>
             </ul>
+<%--            <p></p><p></p><p></p>--%>
+            <div class="slogan--steps-title"><h3>Podsumowanie poniżej</h3></div>
         </div>
     </div>
 </div>
@@ -52,7 +54,7 @@
 
 
 <section class="form--steps">
-    <div class="form--steps-instructions">
+    <%--<div class="form--steps-instructions">
         <div class="form--steps-container">
             <h3>Ważne!</h3>
             <p data-step="1" class="active">
@@ -69,7 +71,7 @@
             </p>
             <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
         </div>
-    </div>
+    </div>--%>
 
     <div class="form--steps-container">
         <div class="form--steps-counter"><span></span></div>
@@ -152,8 +154,17 @@
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="submit" class="btn">Potwierdzam</button>
+                    <button type="submit" class="btn" name="ifBackToForm" value="1">Wstecz</button>
+                    <button type="submit" class="btn" name="ifBackToForm" value="0">Potwierdzam</button>
+
+<%--                    Original from front-end--%>
+<%--                    <button type="button" class="btn prev-step">Wstecz</button>--%>
+<%--                    <button type="submit" class="btn">Potwierdzam</button>--%>
+
+<%--                    The simplest way to come back to front-page but loosing filled-in data--%>
+<%--                    <button type="button" class="btn prev-step">Wstecz</button>--%>
+<%--                    <button type="submit" class="btn"><a href="/donation/form">Wstecz</a></button>--%>
+
                 </div>
             </div>
 

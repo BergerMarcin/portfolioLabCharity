@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
@@ -72,8 +73,11 @@ public class DonationController {
     @GetMapping("/donation/form")
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        DonationDataDTO donationDataDTO = new DonationDataDTO();
+//        donationDataDTO.setIfSaveForm(0);
+//        donationDataDTO.setIfBackToForm(0);
+        model.addAttribute("donationDataDTO", donationDataDTO);
         model.addAttribute("errorsMessageMap", null);
-        model.addAttribute("donationDataDTO", new DonationDataDTO());
 //        return "form-test-DTO";
         return "form";
     }
@@ -94,6 +98,9 @@ public class DonationController {
 //            return "form-test-DTO";
             return "form";
         }
+
+        // before summary-form reset parameters if back-to-form or save
+        model.addAttribute("donationDataDTO", donationDataDTO);
 //        return "redirect:/donation/form-summary";
         return "form-summary";
     }
@@ -102,10 +109,13 @@ public class DonationController {
     // form-summary POST
     // (no GET as applied instead direct "jump" into form-summary.jsp from postDonationPage i.e. from POST of form.jsp)
     @PostMapping("/donation/form-summary")
-    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
+    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO,
+                                           BindingResult result, Model model,
+                                           @RequestParam Integer ifBackToForm) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. result from SUMMARY: {}", result.getFieldErrors());
         log.debug("DonationController. donationDataDTO from SUMMARY: {}", donationDataDTO.toString());
+        log.debug("DonationController. ifBackToForm from SUMMARY: {}", ifBackToForm);
         if (result.hasErrors()) {
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
@@ -118,11 +128,11 @@ public class DonationController {
             return "form";
         }
         // In case user ASK TO REWRITE DATA
-//TODO:        if (...) {
-//            return "form";
-//        }
+        if (ifBackToForm != null && ifBackToForm == 1) {
+            return "form";
+        }
 
-        // In case user CONFIRM DATA
+        // In case user CONFIRMATION DATA
         // Mapping & saving data at method saveDonation (+ exception catch of both operation)
         try {
             donationService.saveDonation(donationDataDTO);

@@ -226,66 +226,6 @@
         </div>
       </div>
 
-      <!-- STEP 5 -->
-<%--      <div id="data-step-5" data-step="5">
-        <h3>Podsumowanie Twojej darowizny</h3>
-
-        <div class="summary">
-          <div class="form-section">
-            <h4>Oddajesz:</h4>
-            <ul>
-              <li>
-                <span class="icon icon-bag"></span>
-                <span class="summary--text">
-                  ${donationDataDTO.quantity} worki ${donationDataDTO.categoriesId.toArray()}
-                </span>
-              </li>
-
-              <li>
-                <span class="icon icon-hand"></span>
-                <span class="summary--text">
-                  Dla fundacji ${donationDataDTO.institutionId}
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="form-section form-section--columns">
-            <div class="form-section--column">
-              <h4>Adres odbioru:</h4>
-              <ul>
-                <li><c:out value="ulica ${donationDataDTO.street}"/></li>
-                <li>${donationDataDTO.city}</li>
-                <li>${donationDataDTO.zipCode}</li>
-                <li>${donationDataDTO.phone}</li>
-              </ul>
-            </div>
-
-            <div class="form-section--column">
-              <h4>Termin odbioru:</h4>
-              <ul>
-                <li>${donationDataDTO.pickUpDate}</li>
-                <li>${donationDataDTO.pickUpTime}</li>
-                <li>
-                  <c:if test="${not empty donationDataDTO.pickUpComment}">
-                      ${donationDataDTO.pickUpComment}
-                  </c:if>
-                  <c:if test="${empty donationDataDTO.pickUpComment}">
-                    Brak uwag
-                  </c:if>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group form-group--buttons">
-          <button type="button" class="btn prev-step">Wstecz</button>
-          <button type="submit" class="btn">Potwierdzam</button>
-        </div>
-      </div>--%>
-
-
       <sec:csrfInput/>
     </form:form>
   </div>

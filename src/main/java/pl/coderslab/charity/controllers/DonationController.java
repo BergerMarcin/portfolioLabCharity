@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.dtos.CategoryDataDTO;
@@ -25,7 +22,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @Controller
-//@RequestMapping("/donation")
+@RequestMapping("/donation")
 @Slf4j
 public class DonationController {
 
@@ -69,7 +66,7 @@ public class DonationController {
 
 
     // form GET & POST
-    @GetMapping("/donation/form")
+    @GetMapping("/form")
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         DonationDataDTO donationDataDTO = new DonationDataDTO();
@@ -78,8 +75,9 @@ public class DonationController {
 //        return "form-test-DTO";
         return "form";
     }
-    @PostMapping("/donation/form")
-    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO, BindingResult result, Model model) {
+    @PostMapping("/form")
+    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO,
+                                    BindingResult result, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST FORM proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. result from FORM: {}", result.getFieldErrors());
         log.debug("DonationController. donationDataDTO from FORM: {}", donationDataDTO.toString());
@@ -105,7 +103,7 @@ public class DonationController {
 
     // form-summary POST
     // (no GET as applied instead direct "jump" into form-summary.jsp from postDonationPage i.e. from POST of form.jsp)
-    @PostMapping("/donation/form-summary")
+    @PostMapping("/form-summary")
     public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO,
                                            BindingResult result, Model model,
                                            @RequestParam Integer ifBackToForm) {

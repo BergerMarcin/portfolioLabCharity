@@ -45,7 +45,6 @@
                     <div><em>4</em><span>Zamów kuriera</span></div>
                 </li>
             </ul>
-<%--            <p></p><p></p><p></p>--%>
             <div class="slogan--steps-title"><h3>Podsumowanie poniżej</h3></div>
         </div>
     </div>

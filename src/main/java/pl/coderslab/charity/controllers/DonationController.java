@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
-import pl.coderslab.charity.domain.repositories.CategoryRepository;
-import pl.coderslab.charity.domain.repositories.InstitutionRepository;
 import pl.coderslab.charity.dtos.CategoryDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDTO;
+import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.DonationService;
+import pl.coderslab.charity.services.InstitutionService;
 import pl.coderslab.charity.services.SavingDataException;
 
 import javax.validation.Valid;
@@ -30,22 +30,21 @@ import java.util.*;
 public class DonationController {
 
     private DonationService donationService;
-//TODO: change from repositories into Services ??????????
-    private CategoryRepository categoryRepository;
-    private InstitutionRepository institutionRepository;
+    private CategoryService categoryService;
+    private InstitutionService institutionService;
 
     public DonationController(DonationService donationService,
-                              CategoryRepository categoryRepository,
-                              InstitutionRepository institutionRepository) {
+                              CategoryService categoryService,
+                              InstitutionService institutionService) {
         this.donationService = donationService;
-        this.categoryRepository = categoryRepository;
-        this.institutionRepository = institutionRepository;
+        this.categoryService = categoryService;
+        this.institutionService = institutionService;
     }
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
     @ModelAttribute("categories")
     public List<CategoryDTO> categories() {
-        List<Category> categoryList = categoryRepository.findAllByNameIsNotNullOrderByName();
+        List<Category> categoryList = categoryService.allCategoryList();
         List<CategoryDTO> categoryDTOList = new ArrayList<>();
         for (Category category: categoryList) {
             ModelMapper modelMapper = new ModelMapper();
@@ -58,7 +57,7 @@ public class DonationController {
     // Library institutions based on InstitutionDTO (available non-stop in model as "institutions" at @RequestMapping("/donation")
     @ModelAttribute("institutions")
     public List<InstitutionDTO> institutions() {
-        List<Institution> institutionList = institutionRepository.findAllByNameIsNotNullOrderByName();
+        List<Institution> institutionList = institutionService.allInstitutionList();
         List<InstitutionDTO> institutionDTOList = new ArrayList<>();
         for (Institution institution: institutionList) {
             ModelMapper modelMapper = new ModelMapper();
@@ -74,8 +73,6 @@ public class DonationController {
     public String getDonationPage (Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         DonationDataDTO donationDataDTO = new DonationDataDTO();
-//        donationDataDTO.setIfSaveForm(0);
-//        donationDataDTO.setIfBackToForm(0);
         model.addAttribute("donationDataDTO", donationDataDTO);
         model.addAttribute("errorsMessageMap", null);
 //        return "form-test-DTO";

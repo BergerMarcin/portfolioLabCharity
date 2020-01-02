@@ -15,6 +15,7 @@ import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.services.DonationService;
 import pl.coderslab.charity.services.SavingDataException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,19 @@ public class DonationServiceImpl implements DonationService {
         this.donationRepository = donationRepository;
         this.categoryRepository = categoryRepository;
         this.institutionRepository = institutionRepository;
+    }
+
+
+    @Override
+    public Long bagsCountBeforeDate(LocalDate localDate) {
+        List<Donation> donations = donationRepository.findAllByPickUpDateIsBefore(localDate);
+        Long bagsCount = donations.stream().mapToLong(d -> d.getQuantity()).sum();
+        return bagsCount;
+    }
+
+    @Override
+    public Long supportedOrganizationsCountBeforeDate(LocalDate localDate) {
+        return donationRepository.supportedOrganizationsCountBeforeDate(localDate);
     }
 
     @Override

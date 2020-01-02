@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
-import pl.coderslab.charity.dtos.CategoryDTO;
+import pl.coderslab.charity.dtos.CategoryDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
-import pl.coderslab.charity.dtos.InstitutionDTO;
+import pl.coderslab.charity.dtos.InstitutionDataDTO;
 import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.DonationService;
 import pl.coderslab.charity.services.InstitutionService;
@@ -43,28 +43,28 @@ public class DonationController {
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
     @ModelAttribute("categories")
-    public List<CategoryDTO> categories() {
+    public List<CategoryDataDTO> categories() {
         List<Category> categoryList = categoryService.allCategoryList();
-        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        List<CategoryDataDTO> categoryDataDTOList = new ArrayList<>();
         for (Category category: categoryList) {
             ModelMapper modelMapper = new ModelMapper();
-            CategoryDTO categoryDTO = modelMapper.map(category, CategoryDTO.class);
-            categoryDTOList.add(categoryDTO);
+            CategoryDataDTO categoryDataDTO = modelMapper.map(category, CategoryDataDTO.class);
+            categoryDataDTOList.add(categoryDataDTO);
         }
-        return categoryDTOList;
+        return categoryDataDTOList;
     }
 
     // Library institutions based on InstitutionDTO (available non-stop in model as "institutions" at @RequestMapping("/donation")
     @ModelAttribute("institutions")
-    public List<InstitutionDTO> institutions() {
+    public List<InstitutionDataDTO> institutions() {
         List<Institution> institutionList = institutionService.allInstitutionList();
-        List<InstitutionDTO> institutionDTOList = new ArrayList<>();
+        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
         for (Institution institution: institutionList) {
             ModelMapper modelMapper = new ModelMapper();
-            InstitutionDTO institutionDTO = modelMapper.map(institution, InstitutionDTO.class);
-            institutionDTOList.add(institutionDTO);
+            InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
+            institutionDataDTOList.add(institutionDataDTO);
         }
-        return institutionDTOList;
+        return institutionDataDTOList;
     }
 
 

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter @Setter @ToString
-public class CategoryDTO {
+public class InstitutionDataDTO {
 
     @NotNull
     @Positive
@@ -20,7 +20,8 @@ public class CategoryDTO {
     @UniqueElements
     private Long id;
     @NotBlank
-    @Length(min = 3, max = 40)
+    @Length(min = 3, max = 100)
     private String name;
+    private String description;
 
 }

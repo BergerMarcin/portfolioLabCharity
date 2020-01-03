@@ -30,48 +30,49 @@
 
 <section class="login-page">
     <h2>Załóż konto</h2>
+
     <form:form action="/registration/form" method="POST" modelAttribute="registrationDataDTO">
     <div class="form-section form-section--columns">
         <div class="form-section--column">
-        <p class="error"><form:errors path="firstName"></form:errors></p>
-        <div class="form-group form-group--inline">
-            <form:label path="firstName">
-                Imię
-                <form:input path="firstName" type="text"/>
-            </form:label>
-        </div>
+            <p class="error"><form:errors path="firstName"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="firstName">
+                    Imię
+                    <form:input path="firstName" type="text"/>
+                </form:label>
+            </div>
 
-        <p class="error"><form:errors path="lastName"></form:errors></p>
-        <div class="form-group form-group--inline">
-            <form:label path="lastName">
-                Nazwisko
-                <form:input path="lastName" type="text"/>
-            </form:label>
-        </div>
+            <p class="error"><form:errors path="lastName"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="lastName">
+                    Nazwisko
+                    <form:input path="lastName" type="text"/>
+                </form:label>
+            </div>
 
-        <p class="error"><form:errors path="email"></form:errors></p>
-        <div class="form-group form-group--inline">
-            <form:label path="email">
-                E-mail
-                <form:input path="email" type="email"/>
-            </form:label>
-        </div>
+            <p class="error"><form:errors path="email"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="email">
+                    E-mail
+                    <form:input path="email" type="email"/>
+                </form:label>
+            </div>
 
-        <p class="error"><form:errors path="password"></form:errors></p>
-        <div class="form-group form-group--inline">
-            <form:label path="password">
-                Hasło
-                <form:input path="password" type="password"/>
-            </form:label>
-        </div>
+            <p class="error"><form:errors path="password"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="password">
+                    Hasło
+                    <form:input path="password" type="password"/>
+                </form:label>
+            </div>
 
-        <p class="error"><form:errors path="rePassword"></form:errors></p>
-        <div class="form-group form-group--inline">
-            <form:label path="rePassword">
-                Powtórz hasło
-                <form:input path="rePassword" type="password"/>
-            </form:label>
-        </div>
+            <p class="error"><form:errors path="rePassword"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="rePassword">
+                    Powtórz hasło
+                    <form:input path="rePassword" type="password"/>
+                </form:label>
+            </div>
 
         </div>
     </div>
@@ -89,9 +90,8 @@ TODO: uncomment that checkbox style and add to app.js action on changing box col
 <%--        </div>--%>
 
         <div class="form-group form-group--buttons">
-<%--            TODO: add link to login --%>
-            <a href="#" class="btn btn--without-border">Zaloguj się (dokończyć)</a>
             <button class="btn" type="submit">Załóż konto</button>
+            <a href="/login" class="btn btn--without-border">Zaloguj się (dokończyć)</a>
         </div>
 
         <sec:csrfInput/>

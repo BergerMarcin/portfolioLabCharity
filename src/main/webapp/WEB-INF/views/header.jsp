@@ -9,17 +9,29 @@
 <header class="header--main-page">
     <nav class="container container--70">
         <ul class="nav--actions">
-            <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
+            <li><a href="/login" class="btn btn--small btn--without-border">Zaloguj</a></li>
             <li><a href="/registration/form" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-<%--            <li class="logged-user">--%>
-<%--                Witaj Agata--%>
-<%--                <ul class="dropdown">--%>
-<%--                    <li><a href="#">Profil</a></li>--%>
-<%--                    <li><a href="#">Ustawienia</a></li>--%>
-<%--                    <li><a href="#">Moje zbiórki</a></li>--%>
-<%--                    <li><a href="#">Wyloguj</a></li>--%>
-<%--                </ul>--%>
-<%--            </li>--%>
+            <%--  Wyświetla przyciski i dane jeżeli zweryfikowany (zalogowany) jest użytkownik
+                                  Jest to weryfikacja ścieżki --%>
+            <sec:authorize access="isAuthenticated()">
+                <li class="logged-user">
+                    Witaj ... ${SecurityContextHolder.getContext().getAuthentication().getName()}
+                    <ul class="dropdown">
+                        <li><a href="#">Profil</a></li>
+                        <li><a href="#">Ustawienia</a></li>
+                        <li><a href="#">Moje zbiórki</a></li>
+                        <li><a href="/logout">Wyloguj</a></li>
+                    </ul>
+                </li>
+<%-- from Promises:
+                <li><a class="button is-primary" href="/user"><strong>Twoje konto</strong>
+                </a>
+                <form method="post" action="/logout">
+                    <button class="button is-link" type="submit">Wyloguj</button>
+                    <set:csrfInput/>
+                </form>
+--%>
+            </sec:authorize>
         </ul>
 
         <ul>

@@ -12,6 +12,10 @@ import javax.sql.DataSource;
 
 // TODO: required revision for/to the project
 
+/**
+ * Authentication via email + password
+ *
+ */
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -35,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)                  // z bazy danych MySQL (klasa z application.properties)
                 .passwordEncoder(passwordEncoder())      // konfiguracja hasła -> wystawiamy Beana powyżej i mamy passwordEncoder
-                .usersByUsernameQuery("SELECT first_name, last_name, password, role, active FROM users WHERE email = ?")  // pobierz imię, nazwisko, hasło, rolę, active poprzez email użytkownika
+                .usersByUsernameQuery("SELECT email, password, active FROM users WHERE email = ?")  // pobierz imię, nazwisko, hasło, rolę, active poprzez email użytkownika
                 .authoritiesByUsernameQuery("SELECT u.email, r.name FROM users u JOIN users_roles ur ON u.id = ur.user_id JOIN roles r ON ur.roles_id = r.id WHERE u.email = ?");
     }
 

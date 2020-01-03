@@ -1,6 +1,4 @@
 package pl.coderslab.charity.config;
-/*
-TODO
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,16 +9,11 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
-*/
 
 // TODO: required revision for/to the project
 
-
-//TODO @Configuration
-public class SecurityConfiguration {
-/*
-TODO
-        extends WebSecurityConfigurerAdapter {
+@Configuration
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     // DataSource z konfiguracji application.properties. DataSource możemy sobie wstrzykiwać
     private final DataSource dataSource;
@@ -48,13 +41,11 @@ TODO
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // Security nie sprawdza żadnego elementu z katalogu css, images, js (gdzie trzymane są css, zdjęcia, JavaScript)
+        // Security nie sprawdza żadnego elementu z katalogu images (gdzie trzymane są zdjęcia).
+        // Nie podano tutaj katalogów do css i JavaScript, bo te elementy sę wywoływane u użytkownika z URL (URL zabezpieczono poniżej)
         web.ignoring()
-                .antMatchers("/webapp/resources/css/")
-                .antMatchers("/webapp/resources/images/")
-                .antMatchers("/webapp/resources/js/")
-                .antMatchers("/webjars/**");
-
+                .antMatchers("/resources/images/**")    // pictures
+                .antMatchers("/webjars/**");            // residual from other project with webjar - BULMA
     }
 
     @Override
@@ -63,6 +54,9 @@ TODO
                 // opcje ścieżek: .antMatchers("/user", "user/*", "user/**"); - tylko ścieżka user,
                 //                                  tylko user i pierwsza podścieżka, user i wszystkie zagłębione podścieżki
                 // .antMatchers("/").permitAll() - zezwala wszystkim
+                // .antMatchers("/resources/css/**").permitAll()  - zezwala wszystkim - css
+                // .antMatchers("/resources/js/**").permitAll()  - zezwala wszystkim - JavaScript
+                // .antMatchers("/index/**").permitAll()  - zezwala wszystkim - odwołania URL z nagłówka do poszczególnych części /index
                 // .antMatchers("/login").anonymous() - zezwala niezweryfikowanym
                 // .antMatchers("/logout").authenticated() - zezwala zweryfikowanym
                 // .antMatchers("/user", "/user/**").hasRole("USER") - zezwala zweryfikowanym/zalogowanym użytkownikom
@@ -71,6 +65,10 @@ TODO
                 //                                                          hasRole dodaje "ROLE_" do "ADMIN"
                 // .anyRequest().authenticated() - zezwala dla wszystkich nie zdefiniowanych powyżej ścieżek zalogowanych
                 .antMatchers("/").permitAll()
+                .antMatchers("/resources/css/**").permitAll()
+                .antMatchers("/resources/js/**").permitAll()
+                .antMatchers("/index").permitAll()
+                .antMatchers("/index/**").permitAll()
                 .antMatchers("/donation/*").permitAll()
                 .antMatchers("/registration/*").permitAll()
                 .antMatchers("/login").anonymous()
@@ -106,5 +104,4 @@ TODO
         // Ponad powyższe globalne zabezpieczenia (typu ".antMatchers("/").permitAll()") można też indywidualnie/osobno
         // zabezpieczać metody dodając nad nimi adnotację @Security i parametryzując tą adnotację
     }
-*/
 }

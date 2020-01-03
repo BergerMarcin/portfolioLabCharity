@@ -26,7 +26,6 @@
 </header>
 
 <%--TODO:
-        - form
         - add summary&confirmation page --%>
 
 <section class="login-page">
@@ -87,7 +86,7 @@ TODO: uncomment that checkbox style and add to app.js action on changing box col
                 <span class="description">Zaznacz zgodę na przetwarzanie danych osobowych</span>
                 <form:checkbox path="termsAcceptance" value="true" id="terms"/>
             </form:label>
-        </div>
+<%--        </div>--%>
 
         <div class="form-group form-group--buttons">
 <%--            TODO: add link to login --%>

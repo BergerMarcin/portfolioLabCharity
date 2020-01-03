@@ -3,11 +3,13 @@ package pl.coderslab.charity.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.UniqueElements;
-import pl.coderslab.charity.validation.constraints.RepeatedPassword;
+import org.hibernate.validator.constraints.ScriptAssert;
+import pl.coderslab.charity.validation.constraints.UniqueEmail;
 
 import javax.validation.constraints.*;
 
+// _this means the class/method that the annotation refer to (is above)
+@ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.rePassword)", reportOn = "rePassword")
 @Getter @Setter @ToString
 public class RegistrationDataDTO {
 
@@ -17,16 +19,13 @@ public class RegistrationDataDTO {
     @NotBlank
     @Size(min = 2, max = 40)
     private String lastName;
-    @NotBlank @Email
-    //TODO: setup it later with emails from MySQL table users: @UniqueElements
+    @NotBlank @Email @UniqueEmail
     private String email;
     @NotBlank @Size(min = 4, max = 12)
     private String password;
-    @NotBlank @Size(min = 4, max = 12) @RepeatedPassword
-    //TODO: setup it later with password: @RepeatedPassword
+    @NotBlank @Size(min = 4, max = 12)
     private String rePassword;
-    @NotNull
-    @AssertTrue
+    @NotNull @AssertTrue
     private Boolean termsAcceptance;
 
 }

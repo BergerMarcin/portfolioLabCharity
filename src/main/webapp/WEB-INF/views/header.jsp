@@ -20,10 +20,11 @@
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Ustawienia</a></li>
                         <li><a href="#">Moje zbiórki</a></li>
+<%--TODO: logout via post method (see below copy from promises project)--%>
                         <li><a href="/logout">Wyloguj</a></li>
                     </ul>
                 </li>
-<%-- from Promises:
+<%-- from Promises (requirred post method to logout:
                 <li><a class="button is-primary" href="/user"><strong>Twoje konto</strong>
                 </a>
                 <form method="post" action="/logout">

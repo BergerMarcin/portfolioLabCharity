@@ -78,6 +78,8 @@
     </div>
 
         <p class="error"><form:errors path="termsAcceptance"></form:errors></p>
+    <div class="form-group form-group--inline">
+    </div>
 <%--        <div class="form-group form-group--checkbox">--%>
             <form:label path="termsAcceptance" for="terms">
 <%--
@@ -109,30 +111,6 @@ TODO: uncomment that checkbox style and add to app.js action on changing box col
         </div>
     </c:if>
 </section>
-
-
-<%--
-<section class="login-page">
-    <h2>Załóż konto</h2>
-    <form>
-        <div class="form-group">
-            <input type="email" name="email" placeholder="Email" />
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło" />
-        </div>
-        <div class="form-group">
-            <input type="password" name="password2" placeholder="Powtórz hasło" />
-        </div>
-
-        <div class="form-group form-group--buttons">
-            <a href="login.html" class="btn btn--without-border">Zaloguj się</a>
-            <button class="btn" type="submit">Załóż konto</button>
-        </div>
-    </form>
-</section>
---%>
-
 
 <%@ include file="footer.jsp" %>
 

@@ -10,10 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
-// TODO: required revision for/to the project
-
 /**
- * Authentication via email + password
+ * Authentication via email (as username) + password
  *
  */
 @Configuration
@@ -35,20 +33,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-// TODO: to check below identification on email (instead of previous identification on username)
+// TODO: read Spring Security presentation on adding data to user (like firstName, lastName) via UserDetailsDataDTO
         auth.jdbcAuthentication()
                 .dataSource(dataSource)                  // z bazy danych MySQL (klasa z application.properties)
                 .passwordEncoder(passwordEncoder())      // konfiguracja hasła -> wystawiamy Beana powyżej i mamy passwordEncoder
-                .usersByUsernameQuery("SELECT email, password, active FROM users WHERE email = ?")  // pobierz imię, nazwisko, hasło, rolę, active poprzez email użytkownika
+                .usersByUsernameQuery("SELECT email, password, active FROM users WHERE email = ?")    // email as username
                 .authoritiesByUsernameQuery("SELECT u.email, r.name FROM users u JOIN users_roles ur ON u.id = ur.user_id JOIN roles r ON ur.roles_id = r.id WHERE u.email = ?");
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // Security nie sprawdza żadnego elementu z katalogu images (gdzie trzymane są zdjęcia).
+        // Security nie sprawdza żadnego elementu z katalogu images, css, js (gdzie trzymane są zdjęcia, css, JavaScript).
         // Nie podano tutaj katalogów do css i JavaScript, bo te elementy sę wywoływane u użytkownika z URL (URL zabezpieczono poniżej)
         web.ignoring()
                 .antMatchers("/resources/images/**")    // pictures
+                .antMatchers("/resources/css/**")       // css
+                .antMatchers("/resources/js/**")        // JavaScript
                 .antMatchers("/webjars/**");            // residual from other project with webjar - BULMA
     }
 
@@ -58,8 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // opcje ścieżek: .antMatchers("/user", "user/*", "user/**"); - tylko ścieżka user,
                 //                                  tylko user i pierwsza podścieżka, user i wszystkie zagłębione podścieżki
                 // .antMatchers("/").permitAll() - zezwala wszystkim
-                // .antMatchers("/resources/css/**").permitAll()  - zezwala wszystkim - css
-                // .antMatchers("/resources/js/**").permitAll()  - zezwala wszystkim - JavaScript
                 // .antMatchers("/index/**").permitAll()  - zezwala wszystkim - odwołania URL z nagłówka do poszczególnych części /index
                 // .antMatchers("/login").anonymous() - zezwala niezweryfikowanym
                 // .antMatchers("/logout").authenticated() - zezwala zweryfikowanym
@@ -69,8 +67,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //                                                          hasRole dodaje "ROLE_" do "ADMIN"
                 // .anyRequest().authenticated() - zezwala dla wszystkich nie zdefiniowanych powyżej ścieżek zalogowanych
                 .antMatchers("/").permitAll()
-                .antMatchers("/resources/css/**").permitAll()
-                .antMatchers("/resources/js/**").permitAll()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/index/**").permitAll()
                 .antMatchers("/donation/*").permitAll()

@@ -15,7 +15,6 @@ import pl.coderslab.charity.services.RegistrationService;
 import pl.coderslab.charity.services.SavingDataException;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

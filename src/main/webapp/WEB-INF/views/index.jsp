@@ -20,16 +20,16 @@
 <body>
 
 <%@ include file="header.jsp" %>
-<div class="slogan container container--90">
-    <div class="slogan--item">
-        <h1>
-            Zacznij pomagać!<br/>
-            Oddaj niechciane rzeczy w zaufane ręce
-        </h1>
+    <div class="slogan container container--90">
+        <div class="slogan--item">
+            <h1>
+                Zacznij pomagać!<br/>
+                Oddaj niechciane rzeczy w zaufane ręce
+            </h1>
+        </div>
     </div>
-</div>
-</body>
-
+<%--Closing header here (instead at header.jsp) because there are diffrent slogans at each jsp--%>
+</header>
 
 <section class="stats">
     <div class="container container--85">

@@ -7,7 +7,7 @@
 <%@ taglib prefix="set" uri="http://www.springframework.org/security/tags" %>
 
 
-<%@ include file="header.jsp" %>
+<%@ include file="../header.jsp" %>
 <div class="slogan container container--90">
     <div class="slogan--item">
         <h1>
@@ -342,4 +342,4 @@
 </section>
 
 
-<%@ include file="footer.jsp" %>
+<%@ include file="../footer.jsp" %>

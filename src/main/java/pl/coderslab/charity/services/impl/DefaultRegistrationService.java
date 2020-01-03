@@ -3,7 +3,7 @@ package pl.coderslab.charity.services.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//TODO import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.domain.entities.*;
@@ -18,12 +18,13 @@ import pl.coderslab.charity.services.SavingDataException;
 @Slf4j
 public class DefaultRegistrationService implements RegistrationService {
 
-    private final PasswordEncoder passwordEncoder;
+//TODO    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    public DefaultRegistrationService(PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
-        this.passwordEncoder = passwordEncoder;
+//PasswordEncoder passwordEncoder,
+    public DefaultRegistrationService(UserRepository userRepository, RoleRepository roleRepository) {
+//TODO        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
@@ -49,8 +50,8 @@ public class DefaultRegistrationService implements RegistrationService {
         Role roleUser = roleRepository.findAllByName("ROLE_USER");
         user.getRoles().add(roleUser);
         user.setActive(Boolean.TRUE);
-        String encodedPassword = passwordEncoder.encode(registrationDataDTO.getPassword());
-        user.setPassword(encodedPassword);
+// TODO        String encodedPassword = passwordEncoder.encode(registrationDataDTO.getPassword());
+//        user.setPassword(encodedPassword);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user (from registrationDataDTO) after add dafault parameters + encrypt password: {}", user.toString());
 
         // Final saving donation

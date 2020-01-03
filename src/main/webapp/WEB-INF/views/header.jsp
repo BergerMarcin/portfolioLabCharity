@@ -10,7 +10,7 @@
     <nav class="container container--70">
         <ul class="nav--actions">
             <li><a href="" class="btn btn--small btn--without-border">Zaloguj</a></li>
-            <li><a href="/registration" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+            <li><a href="/registration/form" class="btn btn--small btn--highlighted">Załóż konto</a></li>
 <%--            <li class="logged-user">--%>
 <%--                Witaj Agata--%>
 <%--                <ul class="dropdown">--%>
@@ -31,4 +31,8 @@
             <li><a href="/index/#contact" class="btn btn--without-border">Kontakt</a></li>
         </ul>
     </nav>
+
+<%--
+Closing header at target jsp, not here
 </header>
+--%>

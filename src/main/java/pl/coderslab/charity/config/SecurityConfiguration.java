@@ -55,6 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                // Access conditions to get to following URL
                 // opcje ścieżek: .antMatchers("/user", "user/*", "user/**"); - tylko ścieżka user,
                 //                                  tylko user i pierwsza podścieżka, user i wszystkie zagłębione podścieżki
                 // .antMatchers("/").permitAll() - zezwala wszystkim
@@ -78,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 // Login page settings.
-                .formLogin()
+                .formLogin()                        // Redirect to login with below settings
                 .loginPage("/login")                // Security obsługuje działanie logowania na ścieżce "/login" (w tym wypadku
                                                     // LoginController.java + login.jsp; LoginController.java przekierowuje
                                                     // przez Get na login.jsp)

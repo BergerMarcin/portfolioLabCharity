@@ -40,6 +40,7 @@ public class DonationDataDTO {
     private LocalDate pickUpDate;
     @NotNull
     //@DateTimeFormat(pattern = "hh:mm")
+    // TODO: time validation 10:00-15:00 via @ScriptAssert
     private LocalTime pickUpTime;
     private String pickUpComment;
 

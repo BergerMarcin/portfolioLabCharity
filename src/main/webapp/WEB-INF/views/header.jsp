@@ -15,10 +15,10 @@
                                   Jest to weryfikacja ścieżki --%>
             <sec:authorize access="isAuthenticated()">
                 <li class="logged-user">
-                    Witaj ... ${SecurityContextHolder.getContext().getAuthentication().getName()}
-<%--                    Witaj ${currentUser.user.firstName} ${currentUser.user.lastName}--%>
-                    Witaj ${currentUser.username}
-<%--                    Witaj <sec:authentication property="username"/>--%>
+                    Witaj ${pageContext.request.userPrincipal.name}, ${pageContext.request.userPrincipal.authenticated}, ${pageContext.request.userPrincipal.authorities.get(0)}
+<%--For extended currentUser                    Witaj ${currentUser.user.firstName} ${currentUser.user.lastName}--%>
+                    Witaj ${currentUser.username}, ${currentUser.authorities.toArray()[0]}
+<%--Not working at all                    Witaj <sec:authentication property="username"/>--%>
                     <ul class="dropdown">
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Ustawienia</a></li>

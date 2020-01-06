@@ -42,12 +42,13 @@ public class HomeController {
                 donationService.supportedOrganizationsCountBeforeDate(LocalDate.now()));
         if (currentUser != null) {
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + currentUser.toString());
+            log.debug("Username: {}", currentUser.getUsername());
+            log.debug("Password: {}", currentUser.getPassword());
+            log.debug("Authorities: {}", currentUser.getAuthorities());
+            log.debug("Class: {}", currentUser.getClass());
+            log.debug("currentUser FULL: {}", currentUser.toString());
             model.addAttribute("currentUser", currentUser);
-            System.out.println(currentUser.getUsername());
-            System.out.println(currentUser.getPassword());
-            System.out.println(currentUser.getAuthorities());
-            System.out.println(currentUser.getClass());
-            System.out.println(currentUser.toString());
+
         }
 
         return "index";

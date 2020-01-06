@@ -16,6 +16,9 @@
             <sec:authorize access="isAuthenticated()">
                 <li class="logged-user">
                     Witaj ... ${SecurityContextHolder.getContext().getAuthentication().getName()}
+<%--                    Witaj ${currentUser.user.firstName} ${currentUser.user.lastName}--%>
+                    Witaj ${currentUser.username}
+<%--                    Witaj <sec:authentication property="username"/>--%>
                     <ul class="dropdown">
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Ustawienia</a></li>

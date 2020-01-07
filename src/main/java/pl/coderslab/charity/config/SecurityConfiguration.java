@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,10 +42,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    }
 
     // ziarno podmiany customUserDetailsService na zwracanie naszego obiektu SpringDataUserDetailsService
-//    @Bean
-//    public SpringDataUserDetailsService customUserDetailsService() {
-//        return new SpringDataUserDetailsService();
-//    }
+//!!!!!!!!!!!!! Ta pała wogóle tutaj nie włazi (nawet pobierając UserDetail a nie CurrentUser przez @AuthenticationPrincipal) !!!!!!!!!!!!!
+    @Bean
+    public SpringDataUserDetailsService customUserDetailsService() {
+        return new SpringDataUserDetailsService();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

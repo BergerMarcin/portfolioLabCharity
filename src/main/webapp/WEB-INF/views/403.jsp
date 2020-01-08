@@ -21,16 +21,18 @@
 
 <body>
 
-<%@ include file="header.jsp" %>
-<div class="slogan container container--90">
-    <div class="slogan--item">
-        <h1>
-            Dostęp zabroniony!<br><br>
-            <a href="/index" class="btn btn--without-border active">Strona główna</a>
-        </h1>
+<header>
+    <%--Start & closing header here (instead at header.jsp)--%>
+    <%@ include file="header.jsp" %>
+
+    <div class="slogan container container--90">
+        <div class="slogan--item">
+            <h1>
+                Dostęp zabroniony. Proszę zaloguj się<br><br>
+                <a href="/index" class="btn btn--without-border active">Strona główna</a>
+            </h1>
+        </div>
     </div>
-</div>
-<%--Closing header here (instead at header.jsp) because there are diffrent slogans at each jsp--%>
 </header>
 
 <%--<section class="login-page">--%>

@@ -19,7 +19,9 @@
 
 <body>
 
-<%@ include file="header.jsp" %>
+<header class="header--main-page">
+    <%--Start & closing header here (instead at header.jsp)--%>
+    <%@ include file="header.jsp" %>
     <div class="slogan container container--90">
         <div class="slogan--item">
             <h1>
@@ -28,7 +30,6 @@
             </h1>
         </div>
     </div>
-<%--Closing header here (instead at header.jsp) because there are diffrent slogans at each jsp--%>
 </header>
 
 <section class="stats">

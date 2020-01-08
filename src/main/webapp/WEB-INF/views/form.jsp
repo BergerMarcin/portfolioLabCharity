@@ -21,7 +21,10 @@
 
 <body>
 
-<%@ include file="header.jsp" %>
+<header class="header--form-page">
+  <%--Start & closing header here (instead at header.jsp)--%>
+  <%@ include file="header.jsp" %>
+
   <div class="slogan container container--90">
     <div class="slogan--item">
       <h1>
@@ -48,7 +51,6 @@
       </div>
     </div>
   </div>
-<%--Closing header here (instead at header.jsp) because there are diffrent slogans at each jsp--%>
 </header>
 
 

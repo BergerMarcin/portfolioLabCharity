@@ -21,8 +21,9 @@
 
 <body>
 
-<%@ include file="header.jsp" %>
-<%--Closing header here (instead at header.jsp) because there are diffrent slogans at each jsp--%>
+<header>
+    <%--Start & closing header here (instead at header.jsp)--%>
+    <%@ include file="header.jsp" %>
 </header>
 
 <section class="login-page">

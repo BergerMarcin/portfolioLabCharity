@@ -1,6 +1,8 @@
 package pl.coderslab.charity.domain.entities;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -37,5 +39,16 @@ public class Donation {
     private LocalTime pickUpTime;
     @Column
     private String pickUpComment;
+
+    @ManyToOne
+//    @JoinColumn (name = "user_id")
+    private User user;
+
+    @CreationTimestamp
+    @Column
+    private java.sql.Timestamp created;
+//    @UpdateTimestamp
+//    @Column
+//    private java.sql.Timestamp update;
 
 }

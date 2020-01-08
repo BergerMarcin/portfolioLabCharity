@@ -3,6 +3,8 @@ package pl.coderslab.charity.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,13 +12,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
+import pl.coderslab.charity.domain.entities.User;
 import pl.coderslab.charity.dtos.CategoryDataDTO;
+import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
-import pl.coderslab.charity.services.CategoryService;
-import pl.coderslab.charity.services.DonationService;
-import pl.coderslab.charity.services.InstitutionService;
-import pl.coderslab.charity.services.SavingDataException;
+import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -29,14 +30,16 @@ public class DonationController {
     private DonationService donationService;
     private CategoryService categoryService;
     private InstitutionService institutionService;
+    private UserService userService;
 
-    public DonationController(DonationService donationService,
-                              CategoryService categoryService,
-                              InstitutionService institutionService) {
+    public DonationController(DonationService donationService, CategoryService categoryService,
+                              InstitutionService institutionService, UserService userService) {
         this.donationService = donationService;
         this.categoryService = categoryService;
         this.institutionService = institutionService;
+        this.userService = userService;
     }
+
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
     @ModelAttribute("categories")
@@ -67,11 +70,16 @@ public class DonationController {
 
     // form GET & POST
     @GetMapping("/form")
-    public String getDonationPage (Model model) {
+    public String getDonationPage (@AuthenticationPrincipal UserDetails customUser, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         DonationDataDTO donationDataDTO = new DonationDataDTO();
         model.addAttribute("donationDataDTO", donationDataDTO);
         model.addAttribute("errorsMessageMap", null);
+        if (customUser != null) {
+            User user = new userService.findAllWithUserInfoByEmail(customUser.getUsername());
+            ModelMapper modelMapper = new ModelMapper();
+            CurrentUserDataDTO currentUserDataDTO = modelMapper.map(user, CurrentUserDataDTO.class);
+            model.addAttribute("currentUserDataDTO", currentUserDataDTO);
 //        return "form-test-DTO";
         return "form";
     }

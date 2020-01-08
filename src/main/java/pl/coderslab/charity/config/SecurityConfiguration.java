@@ -127,8 +127,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                                     // "/logout" (w tym wypadku ten POST przychodzi bezpośrednio z viewera
                                                     // tj. z header.jsp.
                                                     // Dzięki temu nie potrzeba ani kontrolera ani viewera dla logout
-                .logoutSuccessUrl("/")              // jeżeli logowanie się powiodło Security przekierowuje na ścieżkę
-                                                    // "/" (de facto index.jsp)
+                .logoutSuccessUrl("/login")         // jeżeli logowanie się powiodło Security przekierowuje na ścieżkę
+                                                    // "/login"
                 .and()
                 .csrf()                            // generuje identyfikacyjny numer do kożdego pola formularza (w
                                                     // formularzu *.jsp dodajemy <set:csrfInput/> w obrębie adnotacji <form>

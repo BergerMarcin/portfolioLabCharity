@@ -13,16 +13,13 @@ Start at target jsp (not here) due to starting classes & due to closing slogans
 --%>
     <nav class="container container--70">
         <ul class="nav--actions">
-            <li><a href="/login" class="btn btn--small btn--without-border">Zaloguj</a></li>
-            <li><a href="/registration/form" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-            <%--  Wyświetla przyciski i dane jeżeli zweryfikowany (zalogowany) jest użytkownik
-                                  Jest to weryfikacja ścieżki --%>
+            <sec:authorize access="isAnonymous()">
+                <li><a href="/login" class="btn btn--small btn--without-border">Zaloguj</a></li>
+                <li><a href="/registration/form" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+            </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li class="logged-user">
-                    Witaj ${pageContext.request.userPrincipal.name}, ${pageContext.request.userPrincipal.authenticated}, ${pageContext.request.userPrincipal.authorities.get(0)}
-<%--For extended currentUser                    Witaj ${currentUser.user.firstName} ${currentUser.user.lastName}--%>
-                    Witaj ${currentUser.username}, ${currentUser.authorities.toArray()[0]}
-<%--Not working at all                    Witaj <sec:authentication property="username"/>--%>
+                    Witaj ${currentUser.currentUserDataDTO.firstName} ${currentUser.currentUserDataDTO.lastName}!
                     <ul class="dropdown">
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Ustawienia</a></li>

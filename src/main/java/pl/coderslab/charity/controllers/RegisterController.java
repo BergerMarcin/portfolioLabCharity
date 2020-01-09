@@ -66,11 +66,10 @@ public class RegisterController {
             model.addAttribute("errorsMessageMap", errorsMessageMap);
             return "register";
         }
-        return "/index";
+        return "/login";
     }
 
     // TODO:
     //  - add summary&confirmation post page method
-    //  - add log-in just after success register
 
 }

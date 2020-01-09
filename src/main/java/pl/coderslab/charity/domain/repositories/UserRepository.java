@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // EAGER load of UserInfo
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
-            attributePaths = {"user_infos"})
+            attributePaths = {"userInfo"})
     User findAllWithUserInfoByEmail(String email);
 
 }

@@ -54,6 +54,7 @@
                         <form:input path="password" type="password"/>
                     </form:label>--%>
                 </div>
+<%--TODO: Email password reminder!--%>
                 <a href="#" class="btn btn--small btn--without-border reset-password">Przypomnij hasło (! under construction !)</a>
             </div>
         </div>

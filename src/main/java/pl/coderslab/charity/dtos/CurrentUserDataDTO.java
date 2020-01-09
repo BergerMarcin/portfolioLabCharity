@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.validation.constraints.UniqueEmail;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +26,8 @@ public class CurrentUserDataDTO {
     @NotBlank @Email
     @UniqueEmail
     private String email;
+    @Column(nullable = false)
+    private Boolean active = Boolean.FALSE;
     @NotNull
     private Set<Role> roles = new HashSet<>();
     @NotBlank

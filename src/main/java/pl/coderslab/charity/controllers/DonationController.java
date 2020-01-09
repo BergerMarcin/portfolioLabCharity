@@ -71,16 +71,21 @@ public class DonationController {
     // form GET & POST
 // TODO : CONTINUE
     @GetMapping("/form")
-    public String getDonationPage (@AuthenticationPrincipal UserDetails customUser, Model model) {
+    public String getDonationPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         DonationDataDTO donationDataDTO = new DonationDataDTO();
         model.addAttribute("donationDataDTO", donationDataDTO);
         model.addAttribute("errorsMessageMap", null);
-        if (customUser != null) {
-            User user = userService.findAllWithUserInfoByEmail(customUser.getUsername());
-            ModelMapper modelMapper = new ModelMapper();
-            CurrentUserDataDTO currentUserDataDTO = modelMapper.map(user, CurrentUserDataDTO.class);
-            model.addAttribute("currentUserDataDTO", currentUserDataDTO);
+        if (currentUser != null) {
+            model.addAttribute("currentUser", currentUser);
+            log.debug("Username: {}", currentUser.getUsername());
+            log.debug("Password: {}", currentUser.getPassword());
+            log.debug("Authorities: {}", currentUser.getAuthorities());
+            log.debug("Class: {}", currentUser.getClass());
+            log.debug("currentUser FULL BASIC: {}", currentUser.toString());
+            log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
+            log.debug("currentUser name: {},  {}", currentUser.getCurrentUserDataDTO().getFirstName(), currentUser.getCurrentUserDataDTO().getLastName());
+            log.debug("currentUser email, city: {},  {}", currentUser.getCurrentUserDataDTO().getEmail(), currentUser.getCurrentUserDataDTO().getCity());
         }
 //        return "form-test-DTO";
         return "form";

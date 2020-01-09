@@ -1,5 +1,6 @@
 package pl.coderslab.charity.services.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +33,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public User findAllByEmail(String email) {
         return userRepository.findAllByEmail(email);
     }
 
     @Override
     public User findAllWithUserInfoByEmail(String email) {
-        return userRepository.findAllWithUserInfoByEmail(email);
+        User user = userRepository.findAllWithUserInfoByEmail(email);
+        return user;
     }
 
     @Override

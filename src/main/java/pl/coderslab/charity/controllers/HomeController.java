@@ -28,24 +28,25 @@ public class HomeController {
     }
 
     @GetMapping({"/", "/home", "/index", ""})
-    public String homeAction(@AuthenticationPrincipal UserDetails currentUser, Model model){
+    public String homeAction(@AuthenticationPrincipal CurrentUser currentUser, Model model){
 
-        //institutions list, bagsCount and supportedOrganizationsCount for/@ index.jsp
+        //institutions list, bagsCount, supportedOrganizationsCount & currentUser for/@ index.jsp
         model.addAttribute("institutions",
                 institutionService.allInstitutionList());
         model.addAttribute("bagsCount",
                 donationService.bagsCountBeforeDate(LocalDate.now()));
         model.addAttribute("supportedOrganizationsCount",
                 donationService.supportedOrganizationsCountBeforeDate(LocalDate.now()));
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! {}", currentUser);
         if (currentUser != null) {
+            model.addAttribute("currentUser", currentUser);
             log.debug("Username: {}", currentUser.getUsername());
             log.debug("Password: {}", currentUser.getPassword());
             log.debug("Authorities: {}", currentUser.getAuthorities());
             log.debug("Class: {}", currentUser.getClass());
-            log.debug("currentUser FULL: {}", currentUser.toString());
-//            log.debug("currentUser name: {} {}", currentUser.getUser().getFirstName(), currentUser.getUser().getLastName());
-            model.addAttribute("currentUser", currentUser);
+            log.debug("currentUser FULL BASIC: {}", currentUser.toString());
+            log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
+            log.debug("currentUser name: {},  {}", currentUser.getCurrentUserDataDTO().getFirstName(), currentUser.getCurrentUserDataDTO().getLastName());
+            log.debug("currentUser email, city: {},  {}", currentUser.getCurrentUserDataDTO().getEmail(), currentUser.getCurrentUserDataDTO().getCity());
         }
         return "index";
     }

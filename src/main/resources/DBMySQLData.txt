@@ -51,7 +51,8 @@ INSERT INTO `charity_donation`.`donations_categories` (`donation_id`, `categorie
 INSERT INTO roles (id, name) VALUES (1, 'ROLE_USER');
 INSERT INTO roles (id, name) VALUES (2, 'ROLE_ADMIN');
 
-INSERT INTO users (first_name, last_name, email, password, active) VALUES ('Marcin', 'Berger', 'marcin.berger@wp.pl', 'trudne123', true);
+
+INSERT INTO users (first_name, last_name, email, password, active) VALUES ('Marcin', 'Berger', 'marcin.berger@wp.pl', '{noop}trudne123', true);
 INSERT INTO users_roles (user_id, roles_id) VALUES (1,1);
 INSERT INTO users_roles (user_id, roles_id) VALUES (1,2);
 
@@ -62,3 +63,7 @@ UPDATE users SET password = '{noop}none' WHERE email = 'none';
 INSERT INTO users (first_name, last_name, email, password, active) VALUES ('First', 'User', 'user.first@email.pl', 'abc', true);
 INSERT INTO users_roles (user_id, roles_id) VALUES (3,1);
 UPDATE users SET password = '{noop}abc' WHERE email = 'user.first@email.pl';
+
+
+INSERT INTO user_infos (city, phone, pick_up_comment, street, zip_code) VALUES ('Warszawa', '22 555 56 23 17', 'Proszę o tel. tuż przed odbiorem', 'ul. Prosta 51', '00-234');
+INSERT INTO users_user_infos (user_id, user_infos_id) VALUES (3, 1);

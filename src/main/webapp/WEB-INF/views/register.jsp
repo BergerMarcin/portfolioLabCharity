@@ -94,7 +94,7 @@ TODO: uncomment that checkbox style and add to app.js action on changing box col
 
         <div class="form-group form-group--buttons">
             <button class="btn" type="submit">Załóż konto</button>
-            <a href="/login" class="btn btn--without-border">Zaloguj się (dokończyć)</a>
+            <a href="/login" class="btn btn--without-border">Zaloguj się</a>
         </div>
 
         <sec:csrfInput/>

@@ -1,12 +1,13 @@
 package pl.coderslab.charity.services;
 
 import pl.coderslab.charity.domain.entities.User;
+import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 
 public interface UserService {
 
     Boolean isEmailUnique (String email);
 
-    User findByEmail(String email);
+    User findAllByEmail(String email);
 
     User findAllWithUserInfoByEmail(String email);
 

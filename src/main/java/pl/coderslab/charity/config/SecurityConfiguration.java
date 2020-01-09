@@ -19,11 +19,14 @@ import javax.sql.DataSource;
  *
  */
 //@EnableGlobalMethodSecurity(securedEnabled = true)    // Wymagana adnotacja w przypadku korzystania z adnotacji @Secured
-                                                        // np. @Secured("ROLE_USER) na poziomie metod kontrolera czy serwisu
+                                                        // np. @Secured("ROLE_USER) na poziomie metod kontrolera czy
+                                                        // serwisu (podobno można z niej zrezygnować, bo @EnableWebSecurity
+                                                        // zostaje dodana przez Spring Boot)
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    // DataSource - dane z konfiguracji application.properties. DataSource możemy sobie wstrzykiwać
+    // DataSource - dane z konfiguracji application.properties, niezbędne dla użycia bazy danych do autoryzacji
+    // w mponiższej metodzie  configure(AuthenticationManagerBuilder auth). DataSource można wstrzykiwać
     private final DataSource dataSource;
 
     public SecurityConfiguration(DataSource dataSource) {
@@ -42,28 +45,37 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    }
 
     // ziarno podmiany customUserDetailsService na zwracanie naszego obiektu SpringDataUserDetailsService
-//!!!!!!!!!!!!! Ta pała wogóle tutaj nie włazi (nawet pobierając UserDetail a nie CurrentUser przez @AuthenticationPrincipal) !!!!!!!!!!!!!
     @Bean
     public SpringDataUserDetailsService customUserDetailsService() {
         return new SpringDataUserDetailsService();
     }
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-// TODO: read Spring Security presentation on adding data to user (like firstName, lastName) via UserDetailsDataDTO
         // autoryzacja wg poniższych ustawień (niebezpieczne, bo łatwe do przechwycenia ze strony internetowej)
 //        auth.inMemoryAuthentication()
 //                .withUser("user1").password("{noop}user123").roles("USER")
 //                .and()
 //                .withUser("admin1").password("{noop}admin123").roles("ADMIN");
 
-        // autoryzacja wg danych z bazy danych
-        auth.jdbcAuthentication()                        // autoryzacja wg zapisów bazy danych o sterowniku jdbc
-                .dataSource(dataSource)                  // autoryzacja na podstawie bazy danych podanej w application.properties (w tym wypadku  MySQL)
-                .passwordEncoder(passwordEncoder())      // konfiguracja hasła -> wystawiamy Beana powyżej i mamy passwordEncoder
-                .usersByUsernameQuery("SELECT email, password, active FROM users WHERE email = ?")    // email as username
-                .authoritiesByUsernameQuery("SELECT u.email, r.name FROM users u JOIN users_roles ur ON u.id = ur.user_id JOIN roles r ON ur.roles_id = r.id WHERE u.email = ?");
+        // autoryzacja wg danych z bazy danych (tutaj uzupełniany jest obiekt UserDetail Spring Security,
+        // więc wtedy nie działa metoda loadUserByUsername z klasy SpringDataUserDetailsService implementującej
+        // UserDetailsService powołującej i wypełniającej UserDetail)
+        // In case APPLYING usersByUsernameQuery & authoritiesByUsernameQuery THEY ARE OVERTAKEN UserDetail control (and filling)
+//        auth.jdbcAuthentication()                        // autoryzacja wg zapisów bazy danych o sterowniku jdbc
+//                .dataSource(dataSource)                  // autoryzacja na podstawie bazy danych podanej w application.properties (w tym wypadku  MySQL)
+//                .passwordEncoder(passwordEncoder())      // konfiguracja hasła -> wystawiamy Beana powyżej i mamy passwordEncoder
+//                .usersByUsernameQuery("SELECT email, password, active FROM users WHERE email = ?")    // email as username
+//                .authoritiesByUsernameQuery("SELECT u.email, r.name FROM users u JOIN users_roles ur ON u.id = ur.user_id JOIN roles r ON ur.roles_id = r.id WHERE u.email = ?");
+
+        // Z poniższej autoryzacji hasła należy skorzystać w przypadku użycia autoryzacji z bazy danych oraz użycia metoda
+        // loadUserByUsername z klasy SpringDataUserDetailsService implementującej interface UserDetailsService dla
+        // powołania i wypełnienia UserDetail będącej rozszerzeniem User Spring Security o dodatkowe dowolne pola
+        auth.
+                userDetailsService(customUserDetailsService()).
+                passwordEncoder(passwordEncoder());
     }
 
     @Override

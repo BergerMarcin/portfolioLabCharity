@@ -69,6 +69,7 @@ public class DonationController {
 
 
     // form GET & POST
+// TODO : CONTINUE
     @GetMapping("/form")
     public String getDonationPage (@AuthenticationPrincipal UserDetails customUser, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
@@ -76,10 +77,11 @@ public class DonationController {
         model.addAttribute("donationDataDTO", donationDataDTO);
         model.addAttribute("errorsMessageMap", null);
         if (customUser != null) {
-            User user = new userService.findAllWithUserInfoByEmail(customUser.getUsername());
+            User user = userService.findAllWithUserInfoByEmail(customUser.getUsername());
             ModelMapper modelMapper = new ModelMapper();
             CurrentUserDataDTO currentUserDataDTO = modelMapper.map(user, CurrentUserDataDTO.class);
             model.addAttribute("currentUserDataDTO", currentUserDataDTO);
+        }
 //        return "form-test-DTO";
         return "form";
     }

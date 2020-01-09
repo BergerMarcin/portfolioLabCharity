@@ -11,12 +11,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_infos")
-@Getter @Setter @ToString @EqualsAndHashCode(of = "id")
-public class UserInfo {
+@Getter @Setter @ToString(callSuper = true) @EqualsAndHashCode(of = "id")
+public class UserInfo extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column
     private String street;
     @Column
@@ -27,12 +24,5 @@ public class UserInfo {
     private String phone;
     @Column
     private String pickUpComment;
-
-    @CreationTimestamp
-    @Column
-    private java.sql.Timestamp created;
-//    @UpdateTimestamp
-//    @Column
-//    private java.sql.Timestamp update;
 
 }

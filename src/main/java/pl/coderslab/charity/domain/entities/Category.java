@@ -6,12 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "categories")
-@Getter @Setter @ToString @EqualsAndHashCode(of = "id")
-public class Category {
+@Getter @Setter @ToString(callSuper = true) @EqualsAndHashCode(of = "id")
+public class Category extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column
     private String name;
 

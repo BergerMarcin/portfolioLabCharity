@@ -12,11 +12,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "roles")
-@Getter @Setter @ToString @EqualsAndHashCode(of = "id")
-public class Role {
+@Getter @Setter @ToString(callSuper = true) @EqualsAndHashCode(of = "id")
+public class Role extends BaseEntity {
 
-    @Id
-    private Long id;
     @Column(nullable = false, unique = true)
     private String name;
 

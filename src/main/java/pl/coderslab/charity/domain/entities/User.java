@@ -8,17 +8,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter @ToString(exclude = "password") @EqualsAndHashCode(of = "id")
-public class User {
+@Getter @Setter @ToString(exclude = "password", callSuper = true) @EqualsAndHashCode(of = "id")
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
@@ -37,12 +35,5 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JoinColumn (name = "user_info_id")
     private UserInfo userInfo;
-
-    @CreationTimestamp
-    @Column
-    private java.sql.Timestamp created;
-    @UpdateTimestamp
-    @Column
-    private java.sql.Timestamp update;
 
 }

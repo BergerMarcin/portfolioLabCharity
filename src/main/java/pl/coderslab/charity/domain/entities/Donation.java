@@ -11,12 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "donations")
-@Getter @Setter @ToString(exclude = "categories") @EqualsAndHashCode(of = "id")
-public class Donation {
+@Getter @Setter @ToString(exclude = "categories", callSuper = true) @EqualsAndHashCode(of = "id")
+public class Donation extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column
     private Integer quantity;               // liczba worków
     @ManyToMany
@@ -43,12 +40,5 @@ public class Donation {
     @ManyToOne
 //    @JoinColumn (name = "user_id")
     private User user;
-
-    @CreationTimestamp
-    @Column
-    private java.sql.Timestamp created;
-//    @UpdateTimestamp
-//    @Column
-//    private java.sql.Timestamp update;
 
 }

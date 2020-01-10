@@ -4,7 +4,6 @@ package pl.coderslab.charity.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.entities.Institution;
-import pl.coderslab.charity.domain.entities.User;
 import pl.coderslab.charity.dtos.CategoryDataDTO;
-import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
 import pl.coderslab.charity.services.*;
@@ -30,16 +27,12 @@ public class DonationController {
     private DonationService donationService;
     private CategoryService categoryService;
     private InstitutionService institutionService;
-    private UserService userService;
 
-    public DonationController(DonationService donationService, CategoryService categoryService,
-                              InstitutionService institutionService, UserService userService) {
+    public DonationController(DonationService donationService, CategoryService categoryService, InstitutionService institutionService) {
         this.donationService = donationService;
         this.categoryService = categoryService;
         this.institutionService = institutionService;
-        this.userService = userService;
     }
-
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
     @ModelAttribute("categories")
@@ -78,14 +71,8 @@ public class DonationController {
         model.addAttribute("errorsMessageMap", null);
         if (currentUser != null) {
             model.addAttribute("currentUser", currentUser);
-            log.debug("Username: {}", currentUser.getUsername());
-            log.debug("Password: {}", currentUser.getPassword());
-            log.debug("Authorities: {}", currentUser.getAuthorities());
-            log.debug("Class: {}", currentUser.getClass());
             log.debug("currentUser FULL BASIC: {}", currentUser.toString());
             log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
-            log.debug("currentUser name: {},  {}", currentUser.getCurrentUserDataDTO().getFirstName(), currentUser.getCurrentUserDataDTO().getLastName());
-            log.debug("currentUser email, city: {},  {}", currentUser.getCurrentUserDataDTO().getEmail(), currentUser.getCurrentUserDataDTO().getCity());
         }
 //        return "form-test-DTO";
         return "form";

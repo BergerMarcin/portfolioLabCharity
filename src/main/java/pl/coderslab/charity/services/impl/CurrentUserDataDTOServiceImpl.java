@@ -5,7 +5,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.domain.entities.User;
-import pl.coderslab.charity.domain.entities.UserInfo;
 import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 import pl.coderslab.charity.services.CurrentUserDataDTOService;
 import pl.coderslab.charity.services.UserService;

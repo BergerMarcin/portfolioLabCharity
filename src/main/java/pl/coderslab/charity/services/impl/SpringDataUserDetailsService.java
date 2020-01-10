@@ -27,7 +27,7 @@ public class SpringDataUserDetailsService implements UserDetailsService {
     private CurrentUserDataDTOService currentUserDataDTOService;
 
     @Autowired
-    public void setCurrentUserDataDTOService(CurrentUserDataDTOService currentUserDataDTOService) {
+    private void setCurrentUserDataDTOService(CurrentUserDataDTOService currentUserDataDTOService) {
         this.currentUserDataDTOService = currentUserDataDTOService;
     }
 
@@ -44,18 +44,10 @@ public class SpringDataUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         CurrentUserDataDTO currentUserDataDTO = currentUserDataDTOService.readFromDB(email);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! City: {}", currentUserDataDTO.getCity());
-        // if user does not exists, inactive nor wrong password return exception informing username (in this case email)
+        // if user does not exists nor inactive nor wrong password return exception informing username (in this case email)
         if (currentUserDataDTO == null || !currentUserDataDTO.getActive()) {
             throw new UsernameNotFoundException(email);
-        } else {
-//TODO: check if email is OK. If not throw exception
-
-//            if () {
-//                throw new UsernameNotFoundException(email);
-//            }
         }
-        // if wrong password return exception informing username (in this case email)
-
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         currentUserDataDTO.getRoles().forEach(r ->
                 grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));

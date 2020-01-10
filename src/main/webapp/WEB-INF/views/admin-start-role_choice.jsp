@@ -2,8 +2,9 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -26,8 +27,17 @@
         <div class="slogan--item">
             <h1>
                 Witaj Mistrzu!<br/>
-                Przejmij kontrolę o Wielki Administratorze!
+                Przejmij kontrolę o Wielki Administratorze!<br>
+                Wybierz o rolę Mistrzu:
             </h1>
+            <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDataDTO">
+                <c:forEach items="${adminRoleChoiceDataDTO.roles}" var="adminRole">
+                    <button type="submit" class="btn" name="chosenRoleName" value="${adminRole.name}">
+                            ${substringAfter(adminRole.name, 'ROLE_')}
+                    </button>
+                </c:forEach>
+                <sec:csrfInput/>
+            </form:form>>
         </div>
     </div>
 </header>

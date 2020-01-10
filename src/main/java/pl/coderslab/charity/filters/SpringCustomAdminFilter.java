@@ -21,7 +21,7 @@ import java.io.IOException;
  * https://github.com/eugenp/tutorials/tree/master/spring-security-modules/spring-security-rest-basic-auth
  */
 
-@WebFilter("/*")
+@WebFilter("/**")
 @Slf4j
 public class SpringCustomAdminFilter extends GenericFilterBean {
 
@@ -46,7 +46,12 @@ public class SpringCustomAdminFilter extends GenericFilterBean {
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             CurrentUser currentUser = (CurrentUser)auth.getPrincipal();
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! AdminFilter. currentUser: {}", currentUser.toString());
-            filterChain.doFilter(servletRequest, servletResponse);
+
+            if (currentUser.getCurrentUserDataDTO().getChosenRole().equals("ROLE_USER") && pageContext.request.getAttribute("javax.servlet.forward.request_uri").contains("admin")) {
+                response.sendRedirect("/");
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
         } else {
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. USER NOT AUTHORIZED!!!!");
             //response.sendRedirect("/?msg=Wymagane+logowanie");

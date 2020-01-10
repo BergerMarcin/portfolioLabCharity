@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import pl.coderslab.charity.filters.SpringCustomAdminFilter;
 import pl.coderslab.charity.services.impl.SpringDataUserDetailsService;
 
 import javax.sql.DataSource;
@@ -117,7 +119,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/user", "/user/**").hasRole("USER")
-                .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin", "/admin/**").permitAll()      //TODO: test without .hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 // Redirect to login
@@ -150,5 +152,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // Ponad powyższe globalne zabezpieczenia (typu ".antMatchers("/").permitAll()") można też indywidualnie/osobno
         // zabezpieczać metody dodając nad nimi adnotację @Security i parametryzując tą adnotację
+
+
+        http.addFilterAfter(new SpringCustomAdminFilter(), BasicAuthenticationFilter.class);
     }
 }

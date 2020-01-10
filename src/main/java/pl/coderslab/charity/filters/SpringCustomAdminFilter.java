@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.filter.GenericFilterBean;
 import pl.coderslab.charity.services.CurrentUser;
 
@@ -29,16 +31,26 @@ public class SpringCustomAdminFilter extends GenericFilterBean {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. CHECK !!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. CHECK !!!!!!!!!!!!!!!!!!!!!!!!");
+
+        HttpSessionSecurityContextRepository session = new HttpSessionSecurityContextRepository();
+        if (!session.containsContext(request)) {
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. No Session, so leaving SpringCustomAdminFilter");
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. auth instanceof AnonymousAuthenticationToken: {}", auth instanceof AnonymousAuthenticationToken);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. auth.toString(): {}", auth.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. auth.getPrincipal() instanceof UserDetails: {}", auth.getPrincipal() instanceof UserDetails);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. auth.getPrincipal() instanceof CurrentUser: {}", auth.getPrincipal() instanceof CurrentUser);
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             CurrentUser currentUser = (CurrentUser)auth.getPrincipal();
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! AdminFilter. currentUser: {}", currentUser.toString());
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringCustomAdminFilter. USER NOT AUTHORIZED!!!!");
-            response.sendRedirect("/?msg=Wymagane+logowanie");
+            //response.sendRedirect("/?msg=Wymagane+logowanie");
+            response.sendRedirect("/");
         }
     }
 

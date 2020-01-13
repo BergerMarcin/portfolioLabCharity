@@ -53,9 +53,11 @@ public class DonationController {
         List<Institution> institutionList = institutionService.allInstitutionList();
         List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
         for (Institution institution: institutionList) {
-            ModelMapper modelMapper = new ModelMapper();
-            InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-            institutionDataDTOList.add(institutionDataDTO);
+            if (institution.getTrusted()) {
+                ModelMapper modelMapper = new ModelMapper();
+                InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
+                institutionDataDTOList.add(institutionDataDTO);
+            }
         }
         return institutionDataDTOList;
     }

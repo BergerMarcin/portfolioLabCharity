@@ -5,13 +5,27 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.services.CurrentUser;
+import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.services.*;
+
 
 @Controller
 @RequestMapping("/admin")
 @Slf4j
 public class AdminController {
 
+    private InstitutionService institutionService;
+    private CategoryService categoryService;
+    private DonationService donationService;
+    private UserService userService;
+
+    public AdminController(InstitutionService institutionService, CategoryService categoryService,
+                           DonationService donationService, UserService userService) {
+        this.institutionService = institutionService;
+        this.categoryService = categoryService;
+        this.donationService = donationService;
+        this.userService = userService;
+    }
 
     // ADMIN START PAGE/SERVLET
     @GetMapping("")
@@ -21,6 +35,32 @@ public class AdminController {
         return "admin/admin";
     }
 
+    // ADMIN INSTITUTIONS LIST-START PAGE
+    @GetMapping("/institutions")
+    public String getAdminInstitutionsPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("errorsMessageMap", null);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("institutions", institutionService.allInstitutionList());
+        return "admin/admin-institutions";
+    }
+
+    // ADMIN INSTITUTIONS ADD PAGE
+    @GetMapping("/institution/add")
+    public String getAdminInstitutionsAddPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("errorsMessageMap", null);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("institutions", new InstitutionDataDTO());
+        return "admin/admin-institution-add";
+    }
+
+    // ADMIN INSTITUTIONS UPDATE PAGE
+    @GetMapping("/institution/update")
+    public String getAdminInstitutionsUpdatePage (Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("errorsMessageMap", null);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("institutions", institutionService.institutionById(id));
+        return "admin/admin-institution-update";
+    }
 
 
 

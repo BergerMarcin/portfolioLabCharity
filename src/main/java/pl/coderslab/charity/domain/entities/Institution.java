@@ -13,5 +13,7 @@ public class Institution extends BaseEntity{
     private String name;
     @Column
     private String description;
+    @Column(nullable = false)
+    private Boolean trusted = Boolean.FALSE;
 
 }

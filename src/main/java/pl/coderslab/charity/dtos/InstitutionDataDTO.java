@@ -23,5 +23,6 @@ public class InstitutionDataDTO {
     @Length(min = 3, max = 100)
     private String name;
     private String description;
-
+    @NotNull
+    private Boolean trusted;
 }

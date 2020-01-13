@@ -26,12 +26,12 @@ Start at target jsp (not here) due to starting classes & due to closing slogans
             </ul>
 
             <ul>
-                <li><a href="/admin/roles" class="btn btn--without-border active">Info z kontakt</a></li>
-                <li><a href="/admin/categories" class="btn btn--without-border active">Kategorie</a></li>
+<%--                <li><a href="/admin/contacts" class="btn btn--without-border active">Info z kontakt</a></li>--%>
+<%--                <li><a href="/admin/categories" class="btn btn--without-border active">Kategorie</a></li>--%>
                 <li><a href="/admin/institutions" class="btn btn--without-border active">Fundacje i organizacje</a></li>
-                <li><a href="/admin/donations" class="btn btn--without-border active">Datki</a></li>
-                <li><a href="/admin/users" class="btn btn--without-border active">Użytkownicy</a></li>
-                <li><a href="/admin/roles" class="btn btn--without-border active">Role</a></li>
+<%--                <li><a href="/admin/donations" class="btn btn--without-border active">Datki</a></li>--%>
+<%--                <li><a href="/admin/users" class="btn btn--without-border active">Użytkownicy</a></li>--%>
+<%--                <li><a href="/admin/roles" class="btn btn--without-border active">Role</a></li>--%>
             </ul>
         </nav>
     </sec:authorize>

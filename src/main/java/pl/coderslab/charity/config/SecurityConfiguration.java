@@ -6,12 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import pl.coderslab.charity.filters.SpringCustomAdminFilter;
 import pl.coderslab.charity.services.impl.SpringDataUserDetailsService;
 
 import javax.sql.DataSource;
@@ -30,9 +27,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // DataSource - dane z konfiguracji application.properties, niezbędne dla użycia bazy danych do autoryzacji
     // w mponiższej metodzie  configure(AuthenticationManagerBuilder auth). DataSource można wstrzykiwać
     private final DataSource dataSource;
+    private final SpringCustomSecurityHandler springCustomSecurityHandler;
 
-    public SecurityConfiguration(DataSource dataSource) {
+    public SecurityConfiguration(DataSource dataSource, SpringCustomSecurityHandler springCustomSecurityHandler) {
         this.dataSource = dataSource;
+        this.springCustomSecurityHandler = springCustomSecurityHandler;
     }
 
     // ziarno dla hasłowania - metoda passwordEncoder
@@ -119,7 +118,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/user", "/user/**").hasRole("USER")
-                .antMatchers("/admin", "/admin/**").permitAll()      //TODO: test without .hasRole("ADMIN")
+                .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 // Redirect to login
@@ -128,12 +127,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")                // Security obsługuje działanie logowania na ścieżce "/login" (w tym wypadku
                                                     // LoginController.java + login.jsp; LoginController.java przekierowuje
                                                     // przez Get na login.jsp)
-                .loginProcessingUrl("/login")       // wysłanie/zwrócenie wypełnionego formularza (z login.jsp)
+                //.loginProcessingUrl("/login")       // wysłanie/zwrócenie wypełnionego formularza (z login.jsp)
                 .usernameParameter("email")         // Security sam odbiera POST i sprawdza zgodność username (email) i password
                                                     //  z formularza - JUŻ NIE POTRZEBA obsługi post w LoginController.java
                 .passwordParameter("password")      // j.w.
-                .defaultSuccessUrl("/")             // jeżeli logowanie się powiodło Security przekierowuje na ścieżkę
+                //.defaultSuccessUrl("/")             // jeżeli logowanie się powiodło Security przekierowuje na ścieżkę
                                                     // "/" (de facto index.jsp)
+                                                    // W PRZYPADKU istnienia successHandler, NIE STOSUJE SIĘ defaultSuccessUrl
+                .successHandler(springCustomSecurityHandler)    // klasa SpringCustomSecurityHandler z metodą
+                                                    // onAuthenticationSuccess, która wykonywana jest w przypadku autoryzacji
                 .and()
                 // Finishing after logout
                 .logout()
@@ -154,6 +156,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // zabezpieczać metody dodając nad nimi adnotację @Security i parametryzując tą adnotację
 
 
-        http.addFilterAfter(new SpringCustomAdminFilter(), BasicAuthenticationFilter.class);
+        // Uruchamianie dodatkowego filtra po uruchomieniu wszystkich fitrów
+//        http.addFilterAfter(new SpringCustomAdminFilter(), BasicAuthenticationFilter.class);
     }
 }

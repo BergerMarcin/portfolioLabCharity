@@ -22,27 +22,19 @@
 
 <header class="header--main-page">
     <%--Start & closing header here (instead at header.jsp)--%>
-    <%@ include file="header.jsp" %>
+    <%@ include file="admin-header.jsp" %>
     <div class="slogan container container--90">
         <div class="slogan--item">
             <h1>
-                Witaj Mistrzu!<br/>
-                Przejmij kontrolę o Wielki Administratorze!<br>
-                Wybierz o rolę Mistrzu:
+                Witaj Administratorze!<br/>
+                Wybierz zakres działań!
             </h1>
-            <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDataDTO">
-                <c:forEach items="${adminRoleChoiceDataDTO.roles}" var="adminRole">
-                    <button type="submit" class="btn" name="chosenRoleName" value="${adminRole.name}">
-                            ${substringAfter(adminRole.name, 'ROLE_')}
-                    </button>
-                </c:forEach>
-                <sec:csrfInput/>
-            </form:form>>
+            <a>
         </div>
     </div>
 </header>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="admin-footer.jsp" %>
 
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 

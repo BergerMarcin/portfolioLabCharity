@@ -10,6 +10,7 @@ public interface UserService {
     User findAllByEmail(String email);
 
     User findAllWithUserInfoByEmail(String email);
+//    User findAllWithRulesByEmailQuery(String email);
 
     void saveUser(User user);
 

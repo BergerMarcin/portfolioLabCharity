@@ -4,50 +4,38 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.domain.entities.Role;
-import pl.coderslab.charity.dtos.AdminRoleChoiceDataDTO;
 import pl.coderslab.charity.services.CurrentUser;
-
-import javax.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 @Slf4j
 public class AdminController {
 
+
+    // ADMIN START PAGE/SERVLET
+    @GetMapping("")
+    public String getAdminStartPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("errorsMessageMap", null);
+        model.addAttribute("currentUser", currentUser);
+        return "admin/admin";
+    }
+
+
+
+
+/*
     // PAGE/SERVLET of CHOOSING ROLE in case ADMIN has ROLES USER & ADMIN
     @GetMapping("/start/role_choice")
     public String getAdminStartRoleChoicePage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET ADMIN start role choice !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
 
-        if (currentUser.getCurrentUserDataDTO().getRoles().size()<2) {
-            for (Role role: currentUser.getCurrentUserDataDTO().getRoles()) {
-                if (role.getName().equals("ROLE_ADMIN")) {
-                    currentUser.getCurrentUserDataDTO().setChosenRole(role.getName());
-                }
-            }
-            if (currentUser.getCurrentUserDataDTO().getChosenRole().equals("ROLE_ADMIN")) {
-                return "redirect:/admin/start";
-            } else {
-                return "redirect:/";
-            }
-        }
-        AdminRoleChoiceDataDTO adminRoleChoiceDataDTO = new AdminRoleChoiceDataDTO();
-        adminRoleChoiceDataDTO.setRoles(currentUser.getCurrentUserDataDTO().getRoles());
-        model.addAttribute("adminRoleChoiceDataDTO", adminRoleChoiceDataDTO);
 
         model.addAttribute("errorsMessageMap", null);
         if (currentUser != null) {
             model.addAttribute("currentUser", currentUser);
             log.debug("currentUser FULL BASIC: {}", currentUser.toString());
             log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
-            return "index";
         }
         return "admin-start-role_choice";
     }
@@ -86,11 +74,6 @@ public class AdminController {
         }
         return "index";
     }
+*/
 
-    // ADMIN START PAGE/SERVLET
-    @GetMapping("/start")
-    public String getAdminStartPage (@AuthenticationPrincipal CurrentUser currentUser) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET ADMIN start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        return "admin-start";
-    }
 }

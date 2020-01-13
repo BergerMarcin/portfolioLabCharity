@@ -34,13 +34,8 @@ public class HomeController {
                 donationService.bagsCountBeforeDate(LocalDate.now()));
         model.addAttribute("supportedOrganizationsCount",
                 donationService.supportedOrganizationsCountBeforeDate(LocalDate.now()));
-        if (currentUser != null) {
-            model.addAttribute("currentUser", currentUser);
-            log.debug("currentUser FULL BASIC: {}", currentUser.toString());
-            log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
-        }
+        model.addAttribute("currentUser", currentUser);
+
         return "index";
     }
-
-
 }

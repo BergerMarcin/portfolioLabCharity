@@ -9,7 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,14 +30,15 @@ public class User extends BaseEntity {
     private Boolean active = Boolean.FALSE;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Set<Role> roles = new HashSet<>();
+//    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+//    Only List operates well (set causes problems with adding new records)
+    private List<Role> roles = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_user_infos", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_infos_id"))
-//    @JoinColumn (name = "user_info_id")
+    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinTable(name = "users_user_infos", joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_infos_id"))
+    @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
 }

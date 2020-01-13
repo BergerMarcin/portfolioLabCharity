@@ -9,6 +9,7 @@ import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.domain.repositories.UserRepository;
 import pl.coderslab.charity.services.UserService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -38,16 +39,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findAllWithUserInfoByEmail(String email) {
-        User user = userRepository.findAllWithUserInfoByEmail(email);
-        return user;
+        return userRepository.findAllWithUserInfoByEmail(email);
     }
+//    @Override
+//    public User findAllWithRulesByEmailQuery(String email) {
+//        return userRepository.findAllWithRulesByEmailQuery(email);
+//    }
 
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(Boolean.TRUE);
         Role userRole = roleRepository.findAllByName("ROLE_USER");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        user.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
 }

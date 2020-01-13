@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 import pl.coderslab.charity.services.CurrentUser;
 import pl.coderslab.charity.services.CurrentUserDataDTOService;
@@ -49,20 +48,8 @@ public class SpringDataUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
 
-        // "Manual" choice of role. Especially important in case multiple roles (i.e. ADMIN) - based on that chosen view
-        // If ROLE_USER not found should be reported to ADMIN
-        for (Role role: currentUserDataDTO.getRoles()) {
-            if (role.getName().equals("ROLE_USER")) {
-                currentUserDataDTO.setChosenRole(role.getName());
-            }
-        }
-
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        currentUserDataDTO.getRoles().forEach(role ->
-                grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringDataUserDetailsService. currentUserDataDTO.getChosenRole(): {}", currentUserDataDTO.getChosenRole());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SpringDataUserDetailsService. grantedAuthorities: {}", grantedAuthorities.toString());
+        currentUserDataDTO.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
         return new CurrentUser(currentUserDataDTO.getEmail(),
                 currentUserDataDTOService.getPasswordFromDB(email),

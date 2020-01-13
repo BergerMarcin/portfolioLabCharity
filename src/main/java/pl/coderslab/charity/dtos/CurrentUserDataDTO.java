@@ -7,8 +7,8 @@ import pl.coderslab.charity.validation.constraints.UniqueEmail;
 
 import javax.persistence.Column;
 import javax.validation.constraints.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class CurrentUserDataDTO {
@@ -25,11 +25,7 @@ public class CurrentUserDataDTO {
     @Column(nullable = false)
     private Boolean active = Boolean.FALSE;
     @NotNull
-    private Set<Role> roles = new HashSet<>();
-    @NotBlank
-    // "Manual" choice of role. Especially important in case multiple roles (i.e. ADMIN) - based on that chosen view
-    // If ROLE_USER not found should be reported to ADMIN
-    private String chosenRole;
+    private List<Role> roles = new ArrayList<>();
     @NotBlank
     @Length(min = 3, max = 40)
     private String street;

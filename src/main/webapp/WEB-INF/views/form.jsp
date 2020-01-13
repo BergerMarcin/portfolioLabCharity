@@ -134,7 +134,7 @@
       <div id="data-step-3" data-step="3">
         <h3>Wybierz organizacje, której chcesz pomóc:</h3>
         <p class="error"><form:errors path="institutionId"></form:errors></p>
-        <c:forEach items="${institutions}" var="institution" varStatus="stat">
+        <c:forEach items="${institutionDataDTOList}" var="institution" varStatus="stat">
           <div class="form-group form-group--checkbox">
             <form:label path="institutionId" for="${'instit'.concat(stat.count)}">
               <c:if test="${donationDataDTO.institutionId == institution.id}">

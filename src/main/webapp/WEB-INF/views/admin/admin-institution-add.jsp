@@ -51,15 +51,27 @@
     <p class="error"><form:errors path="trusted"></form:errors></p>
     <div class="form-group form-group--inline">
         <form:label path="trusted" for="trusted">
-            Zaznacz jeżeli intytucja jest zaufana
+            Zaznacz jeżeli instytucja jest zaufana
             <form:checkbox path="trusted" value="true" id="trusted"/>
         </form:label>
     </div>
 
     <div class="form-group form-group--buttons">
-        <button type="submit" class="btn" name="ifConfirmCancel" value="${Boolean.TRUE}">Potwierdzam</button>
-        <button type="submit" class="btn" name="ifConfirmCancel" value="${Boolean.FALSE}">Anuluj</button>
+        <button type="submit" class="btn" name="formButtonChoice" value="1">Dodaj</button>
+        <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
     </div>
+
+    <%-- All Errors --%>
+    <c:if test="${not empty errorsMessageMap && errorsMessageMap != null}">
+        <div class="errors">
+            <h3>Proszę popraw:</h3>
+            <c:set var="errorsMessageMapKeys" value="${errorsMessageMap.keySet()}" scope="page"></c:set>
+            <c:forEach items="${errorsMessageMapKeys}" var="errorsMessageMapKey" varStatus="stat">
+                <p>${stat.count}. W polu ${errorsMessageMapKey} należy: ${errorsMessageMap.get(errorsMessageMapKey)}</p>
+            </c:forEach>
+        </div>
+    </c:if>
+
     </div>
 </div>
 </form:form>

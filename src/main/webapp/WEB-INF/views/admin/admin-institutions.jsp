@@ -26,7 +26,7 @@
 </header>
 
 <section class="login-page">
-<h1>Lista instytucji i organizacji <h3>(zarówno zaufanych jak i nieaktywnych)</h3></h1>
+<h2>Lista instytucji i organizacji <h3>(zarówno zaufanych jak i nieaktywnych)</h3></h2>
     <c:url value="/admin/institution/add" var="addURL"></c:url>
     <a href="${addURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>
     <br>
@@ -39,6 +39,7 @@
                 <th scope="col">opis</th>
                 <th scope="col">zaufana</th>
                 <th scope="col">edycja</th>
+                <th scope="col">usuń</th>
             </tr>
             <c:forEach items="${institutions}" var="instit" varStatus="stat">
                 <tr>
@@ -54,7 +55,13 @@
                         <c:url value="/admin/institution/update" var="updateURL">
                             <c:param name="id" value="${instit.id}"/>
                         </c:url>
-                        <a href="${updateURL}"><button type="button" class="btn">Edytuj/Usuń</button></a>
+                        <a href="${updateURL}"><button type="button" class="btn">Edytuj</button></a>
+                    </td>
+                    <td>
+                        <c:url value="/admin/institution/delete" var="deleteURL">
+                            <c:param name="id" value="${instit.id}"/>
+                        </c:url>
+                        <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
                     </td>
                 </tr>
             </c:forEach>

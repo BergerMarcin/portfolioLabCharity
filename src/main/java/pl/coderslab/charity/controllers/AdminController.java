@@ -49,9 +49,10 @@ public class AdminController {
     public String getAdminInstitutionsPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("institutions", institutionService.allInstitutionList());
+        model.addAttribute("institutions", institutionService.allInstitutionDataDTOList());
         return "admin/admin-institutions";
     }
+
 
     // ADMIN INSTITUTIONS ADD PAGE
     @GetMapping("/institution/add")
@@ -59,17 +60,16 @@ public class AdminController {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("institutionAddDataDTO", new InstitutionAddDataDTO());
-//        model.addAttribute("ifConfirmCancel", Boolean.FALSE);
         return "admin/admin-institution-add";
     }
     @PostMapping("/institution/add")
     public String postAdminInstitutionsAddPage (@ModelAttribute @Valid InstitutionAddDataDTO institutionAddDataDTO,
                                                 BindingResult result, Model model,
-                                                @RequestParam Boolean ifConfirmCancel) {
+                                                @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage institutionAddDataDTO: {}", institutionAddDataDTO.toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage ifConfirmCancel: {}", ifConfirmCancel);
-        if (!ifConfirmCancel) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage formButtonChoice: {}", formButtonChoice);
+        if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/institutions";
         }
 
@@ -84,13 +84,15 @@ public class AdminController {
             model.addAttribute("errorsMessageMap", errorsMessageMap);
             return "admin/admin-institution-add";
         }
-        if (ifConfirmCancel) {
+
+        if (formButtonChoice == 1) {
             // TODO: add record
             // institutionService.save(institutionAddDataDTO);
         }
 
         return "redirect:/admin/institutions";
     }
+
 
     // ADMIN INSTITUTIONS UPDATE PAGE
     @GetMapping("/institution/update")
@@ -100,33 +102,17 @@ public class AdminController {
         model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
         return "admin/admin-institution-update";
     }
-
-
-
-/*
-    // PAGE/SERVLET of CHOOSING ROLE in case ADMIN has ROLES USER & ADMIN
-    @GetMapping("/start/role_choice")
-    public String getAdminStartRoleChoicePage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET ADMIN start role choice !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-
-
-        model.addAttribute("errorsMessageMap", null);
-        if (currentUser != null) {
-            model.addAttribute("currentUser", currentUser);
-            log.debug("currentUser FULL BASIC: {}", currentUser.toString());
-            log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
+    @PostMapping("/institution/update")
+    public String postAdminInstitutionsUpdatePage (@ModelAttribute @Valid InstitutionDataDTO institutionDataDTO,
+                                                         BindingResult result, Model model,
+                                                         @RequestParam Integer formButtonChoice) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage institutionDataDTO: {}", institutionDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage formButtonChoice: {}", formButtonChoice);
+        if (formButtonChoice == 0 || formButtonChoice == null) {
+            return "redirect:/admin/institutions";
         }
-        return "admin-start-role_choice";
-    }
-    @PostMapping("/start/role_choice")
-    public String postAdminStartRoleChoicePage (@AuthenticationPrincipal CurrentUser currentUser,
-                                                @ModelAttribute @Valid AdminRoleChoiceDataDTO adminRoleChoiceDataDTO,
-                                                BindingResult result, Model model,
-                                                @RequestParam String chosenRoleName) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST ADMIN start role choicd !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("DonationController. result from POST: {}", result.getFieldErrors());
-        log.debug("DonationController. donationDataDTO from POST: {}", adminRoleChoiceDataDTO.toString());
-        log.debug("DonationController. chosenRoleName from POST: {}", chosenRoleName);
+
         if (result.hasErrors()) {
             // Taking field errors from result and creating errorsMessageMap
             //    errorsMessageMap - a map of errors (key - field name, value - error message)
@@ -136,23 +122,56 @@ public class AdminController {
                 errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
             model.addAttribute("errorsMessageMap", errorsMessageMap);
-            return "admin-start-role_choice";
+            return "admin/admin-institution-update";
         }
-        // In case admin CHOSEN ROLE
-        if (chosenRoleName.equals("ROLE_ADMIN")) {
-            currentUser.getCurrentUserDataDTO().setChosenRole(chosenRoleName);
-            return "redirect:/admin/start";
+
+        if (formButtonChoice == 1) {
+            // TODO: update record
+            // institutionService.update(institutionDataDTO);
         }
-        if (chosenRoleName.equals("ROLE_USER")) {
-            currentUser.getCurrentUserDataDTO().setChosenRole(chosenRoleName);
-            return "redirect:/";
-        }
-        // In case nothing chosen
-        if (chosenRoleName == null) {
-            return "admin-start-role_choice";
-        }
-        return "index";
+
+        return "redirect:/admin/institutions";
     }
-*/
+
+
+    // ADMIN INSTITUTIONS DELETE PAGE
+    @GetMapping("/institution/delete")
+    public String getAdminInstitutionsDeletePage (Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        model.addAttribute("errorsMessageMap", null);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
+        return "admin/admin-institution-delete";
+    }
+    @PostMapping("/institution/delete")
+    public String postAdminInstitutionsDeletePage (@ModelAttribute @Valid InstitutionDataDTO institutionDataDTO,
+                                                   BindingResult result, Model model,
+                                                   @RequestParam Integer formButtonChoice) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage institutionDataDTO: {}", institutionDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage formButtonChoice: {}", formButtonChoice);
+        if (formButtonChoice == 0 || formButtonChoice == null) {
+            return "redirect:/admin/institutions";
+        }
+
+        if (result.hasErrors()) {
+            // Taking field errors from result and creating errorsMessageMap
+            //    errorsMessageMap - a map of errors (key - field name, value - error message)
+            List<FieldError> fieldErrorList = result.getFieldErrors();
+            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+            for (FieldError fieldError: fieldErrorList) {
+                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            return "admin/admin-institution-delete";
+        }
+
+        if (formButtonChoice == 1) {
+            // TODO: delete record
+            // institutionService.delete(institutionDataDTO);
+        }
+
+        return "redirect:/admin/institutions";
+    }
+
 
 }

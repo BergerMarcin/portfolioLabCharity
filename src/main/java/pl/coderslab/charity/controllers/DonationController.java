@@ -47,19 +47,10 @@ public class DonationController {
         return categoryDataDTOList;
     }
 
-    // Library institutions based on InstitutionDTO (available non-stop in model as "institutions" at @RequestMapping("/donation")
-    @ModelAttribute("institutions")
-    public List<InstitutionDataDTO> institutions() {
-        List<Institution> institutionList = institutionService.allInstitutionList();
-        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
-        for (Institution institution: institutionList) {
-            if (institution.getTrusted()) {
-                ModelMapper modelMapper = new ModelMapper();
-                InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-                institutionDataDTOList.add(institutionDataDTO);
-            }
-        }
-        return institutionDataDTOList;
+    // Library institutions based on InstitutionDTO (available non-stop in model as "institutionDataDTOList" at @RequestMapping("/donation")
+    @ModelAttribute("institutionDataDTOList")
+    public List<InstitutionDataDTO> institutionDataDTOList() {
+        return institutionService.ifTrustedInstitutionDataDTOList(Boolean.TRUE);
     }
 
 

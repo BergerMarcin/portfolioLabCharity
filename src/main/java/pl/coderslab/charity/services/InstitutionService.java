@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface InstitutionService {
 
-    List<Institution> allInstitutionList ();
+    List<InstitutionDataDTO> allInstitutionDataDTOList();
+
+    List<InstitutionDataDTO> ifTrustedInstitutionDataDTOList(Boolean trusted);
 
     InstitutionDataDTO institutionById(Long id);
 

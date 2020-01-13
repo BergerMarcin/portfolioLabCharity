@@ -4,9 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
 import pl.coderslab.charity.services.*;
+
+import javax.validation.Valid;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -30,6 +38,7 @@ public class AdminController {
     // ADMIN START PAGE/SERVLET
     @GetMapping("")
     public String getAdminStartPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminStartPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         return "admin/admin";
@@ -49,8 +58,38 @@ public class AdminController {
     public String getAdminInstitutionsAddPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("institutions", new InstitutionDataDTO());
+        model.addAttribute("institutionAddDataDTO", new InstitutionAddDataDTO());
+//        model.addAttribute("ifConfirmCancel", Boolean.FALSE);
         return "admin/admin-institution-add";
+    }
+    @PostMapping("/institution/add")
+    public String postAdminInstitutionsAddPage (@ModelAttribute @Valid InstitutionAddDataDTO institutionAddDataDTO,
+                                                BindingResult result, Model model,
+                                                @RequestParam Boolean ifConfirmCancel) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage institutionAddDataDTO: {}", institutionAddDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsAddPage ifConfirmCancel: {}", ifConfirmCancel);
+        if (!ifConfirmCancel) {
+            return "redirect:/admin/institutions";
+        }
+
+        if (result.hasErrors()) {
+            // Taking field errors from result and creating errorsMessageMap
+            //    errorsMessageMap - a map of errors (key - field name, value - error message)
+            List<FieldError> fieldErrorList = result.getFieldErrors();
+            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+            for (FieldError fieldError: fieldErrorList) {
+                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            return "admin/admin-institution-add";
+        }
+        if (ifConfirmCancel) {
+            // TODO: add record
+            // institutionService.save(institutionAddDataDTO);
+        }
+
+        return "redirect:/admin/institutions";
     }
 
     // ADMIN INSTITUTIONS UPDATE PAGE
@@ -58,7 +97,7 @@ public class AdminController {
     public String getAdminInstitutionsUpdatePage (Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("institutions", institutionService.institutionById(id));
+        model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
         return "admin/admin-institution-update";
     }
 

@@ -24,7 +24,13 @@
     <%--Start & closing header here (instead at header.jsp)--%>
     <%@ include file="admin-header.jsp" %>
 </header>
-<h1>Edycja istniejącej instytucji lub organizacji</h1>
+
+<section class="login-page">
+<h2>Edycja istniejącej instytucji lub organizacji</h2>
+
+</section>
+
+
 <%--    <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDataDTO">--%>
 <%--    <c:url value="/admin/institutions/add" var="addURL"></c:url>--%>
 <%--    <a href="${updateURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>--%>

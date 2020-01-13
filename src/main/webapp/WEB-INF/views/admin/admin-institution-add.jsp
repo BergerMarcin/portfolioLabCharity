@@ -24,41 +24,46 @@
     <%--Start & closing header here (instead at header.jsp)--%>
     <%@ include file="admin-header.jsp" %>
 </header>
-<h1>Dodawanie nowej instytucji lub organizacji</h1>
-<%--    <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDataDTO">--%>
-<%--    <c:url value="/admin/institutions/add" var="addURL"></c:url>--%>
-<%--    <a href="${updateURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>--%>
-<%--    <br>--%>
 
-<%--        <table border="2">--%>
-<%--            <tr>--%>
-<%--                <th></th>--%>
-<%--                <th scope="col">lp.</th>--%>
-<%--                <th scope="col">ID</th>--%>
-<%--                <th scope="col">nazwa</th>--%>
-<%--                <th scope="col">opis</th>--%>
-<%--                <th scope="col">zaufana</th>--%>
-<%--                <th scope="col">edycja</th>--%>
-<%--            </tr>--%>
-<%--            <c:forEach items="institutions" var="instit" varStatus="stat">--%>
-<%--                <tr>--%>
-<%--                    <td>${stat.count}</td>--%>
-<%--                    <td>${instit.id}</td>--%>
-<%--                    <td>${instit.name}</td>--%>
-<%--                    <td>${instit.description}</td>--%>
-<%--                    <td>${instit.trusted}</td>--%>
-<%--                    <td>--%>
-<%--                        <c:url value="/admin/institutions/update" var="updateURL">--%>
-<%--                            <c:param name="id" value="${instit.id}"/>--%>
-<%--                        </c:url>--%>
-<%--                        <a href="${updateURL}"><button type="button" class="btn">Edytuj</button></a>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
-<%--            </c:forEach>--%>
-<%--        </table>--%>
-<%--        <sec:csrfInput/>--%>
-<%--    </form:form>--%>
+<section class="login-page">
+<h2>Dodawanie nowej instytucji lub organizacji</h2>
 
+<form:form method="post" modelAttribute="institutionAddDataDTO">
+    <sec:csrfInput/>
+
+<%--    <form:hidden path="id"/>--%>
+<div class="form-section form-section--columns">
+    <div class="form-section--column">
+    <p class="error"><form:errors path="name"></form:errors></p>
+    <div class="form-group form-group--inline">
+        <form:label path="name" for="name">
+            Nazwa: <form:input path="name" id="name"/>
+        </form:label>
+    </div>
+
+    <p class="error"><form:errors path="description"></form:errors></p>
+    <div class="form-group form-group--inline">
+        <form:label path="description" for="description">
+            Opis:<form:input path="description" id="description"/>
+        </form:label>
+    </div>
+
+    <p class="error"><form:errors path="trusted"></form:errors></p>
+    <div class="form-group form-group--inline">
+        <form:label path="trusted" for="trusted">
+            Zaznacz jeżeli intytucja jest zaufana
+            <form:checkbox path="trusted" value="true" id="trusted"/>
+        </form:label>
+    </div>
+
+    <div class="form-group form-group--buttons">
+        <button type="submit" class="btn" name="ifConfirmCancel" value="${Boolean.TRUE}">Potwierdzam</button>
+        <button type="submit" class="btn" name="ifConfirmCancel" value="${Boolean.FALSE}">Anuluj</button>
+    </div>
+    </div>
+</div>
+</form:form>
+</section>
 
 <%@ include file="admin-footer.jsp" %>
 

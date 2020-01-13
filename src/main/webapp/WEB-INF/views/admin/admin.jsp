@@ -23,16 +23,14 @@
 <header class="header--main-page">
     <%--Start & closing header here (instead at header.jsp)--%>
     <%@ include file="admin-header.jsp" %>
-    <div class="slogan container container--90">
-        <div class="slogan--item">
-            <h1>
-                Witaj Administratorze!<br/>
-                Wybierz zakres działań!
-            </h1>
-            <a>
-        </div>
-    </div>
 </header>
+
+<section class="login-page">
+    <h2>
+        Witaj Administratorze!<br/>
+        Wybierz zakres działań!
+    </h2>
+</section>
 
 <%@ include file="admin-footer.jsp" %>
 

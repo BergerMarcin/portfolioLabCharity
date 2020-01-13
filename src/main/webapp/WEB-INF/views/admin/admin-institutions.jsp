@@ -24,10 +24,11 @@
     <%--Start & closing header here (instead at header.jsp)--%>
     <%@ include file="admin-header.jsp" %>
 </header>
+
+<section class="login-page">
 <h1>Lista instytucji i organizacji <h3>(zarówno zaufanych jak i nieaktywnych)</h3></h1>
-<%--    <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDataDTO">--%>
     <c:url value="/admin/institution/add" var="addURL"></c:url>
-    <a href="${updateURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>
+    <a href="${addURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>
     <br>
 
         <table border="2">
@@ -58,9 +59,7 @@
                 </tr>
             </c:forEach>
         </table>
-<%--        <sec:csrfInput/>--%>
-<%--    </form:form>--%>
-
+</section>
 
 <%@ include file="admin-footer.jsp" %>
 

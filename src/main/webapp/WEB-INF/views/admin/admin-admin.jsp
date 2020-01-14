@@ -26,39 +26,55 @@
 </header>
 
 <section class="login-page">
-<h2>Lista instytucji i organizacji <h3>(zarówno zaufanych jak i nieaktywnych)</h3></h2>
+<h2>Lista administratorów</h2>
     <c:url value="/admin/institution/add" var="addURL"></c:url>
-    <a href="${addURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>
+    <a href="${addURL}"><button type="button" class="btn">Dodaj nowego administratora</button></a>
     <br><br>
 
     <table border="2">
         <tr>
             <th scope="col">Lp.</th>
             <th scope="col">ID</th>
-            <th scope="col">nazwa</th>
-            <th scope="col">opis</th>
-            <th scope="col">zaufana</th>
+            <th scope="col">imię</th>
+            <th scope="col">nazwisko</th>
+            <th scope="col">email</th>
+            <th scope="col">aktywny</th>
+            <th scope="col">role</th>
+            <th scope="col">ulica</th>
+            <th scope="col">miasto</th>
+            <th scope="col">kod</th>
+            <th scope="col">telefon</th>
             <th scope="col">edycja</th>
             <th scope="col">usuń</th>
         </tr>
-        <c:forEach items="${institutionDataDTOList}" var="user" varStatus="stat">
+        <c:forEach items="${userDataDTOList}" var="user" varStatus="stat">
             <tr>
                 <td>${stat.count}</td>
                 <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.description}</td>
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
+                <td>${user.email}</td>
                 <td>
-                    <c:if test="${user.trusted}">tak</c:if>
-                    <c:if test="${!user.trusted}">NIE</c:if>
+                    <c:if test="${user.active}">tak</c:if>
+                    <c:if test="${!user.active}">NIE</c:if>
                 </td>
                 <td>
-                    <c:url value="/admin/institution/update" var="updateURL">
+                    <c:forEach items="${user.roleDataDTOList}" var="role">
+                        ${role.name}<br>
+                    </c:forEach>
+                </td>
+                <td>${user.userInfoDTO.street}</td>
+                <td>${user.userInfoDTO.city}</td>
+                <td>${user.userInfoDTO.zipCode}</td>
+                <td>${user.userInfoDTO.phone}</td>
+                <td>
+                    <c:url value="/admin/admin/update" var="updateURL">
                         <c:param name="id" value="${user.id}"/>
                     </c:url>
                     <a href="${updateURL}"><button type="button" class="btn">Edytuj</button></a>
                 </td>
                 <td>
-                    <c:url value="/admin/institution/delete" var="deleteURL">
+                    <c:url value="/admin/admin/delete" var="deleteURL">
                         <c:param name="id" value="${user.id}"/>
                     </c:url>
                     <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>

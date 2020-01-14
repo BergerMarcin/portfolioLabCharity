@@ -22,7 +22,7 @@ public class CurrentUserDataDTO {
     @NotBlank @Email
     @UniqueEmail
     private String email;
-    @Column(nullable = false)
+    @NotNull
     private Boolean active = Boolean.FALSE;
     @NotNull
     private List<Role> roles = new ArrayList<>();

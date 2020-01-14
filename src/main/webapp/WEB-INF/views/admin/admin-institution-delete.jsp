@@ -41,15 +41,15 @@
                 <th scope="col">data odbioru</th>
                 <th scope="col">godzina<br>odbioru</th>
             </tr>
-            <c:forEach items="${donationDataDTOList}" var="donation" varStatus="stat">
+            <c:forEach items="${donationDataDTOList}" var="user" varStatus="stat">
                 <tr>
                     <td>${stat.count}</td>
 <%--                    <td>${donation.id}</td>--%>
-                    <td>${donation.categoryIds}</td>
-                    <td>${donation.quantity}</td>
-                    <td>${donation.institutionId}</td>
-                    <td>${donation.pickUpDate}</td>
-                    <td>${donation.pickUpTime}</td>
+                    <td>${user.categoryIds}</td>
+                    <td>${user.quantity}</td>
+                    <td>${user.institutionId}</td>
+                    <td>${user.pickUpDate}</td>
+                    <td>${user.pickUpTime}</td>
                 </tr>
             </c:forEach>
         </table>

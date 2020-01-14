@@ -81,7 +81,7 @@ public class AdminInstitutionController {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
-                return "admin/admin-institution-update";
+                return "admin/admin-institution-add";
             }
         }
 

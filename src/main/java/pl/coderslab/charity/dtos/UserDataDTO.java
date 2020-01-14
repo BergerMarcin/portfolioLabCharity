@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 import pl.coderslab.charity.domain.entities.BaseEntity;
 import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.domain.entities.UserInfo;
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @ToString(exclude = "password") @EqualsAndHashCode(of = "id")
+@Getter @Setter @ToString(exclude = "roleDataDTOList") @EqualsAndHashCode(of = "id")
 public class UserDataDTO {
 
     @NotNull @Positive @Digits(integer = 4, fraction = 0)
@@ -25,17 +26,10 @@ public class UserDataDTO {
     private String lastName;
     @NotBlank @Email @UniqueEmail
     private String email;
-    @NotBlank @Size(min = 4, max = 12)
-    private String password;
-    @NotBlank
-    private Boolean active;
-
-    //TODO: check if ROLE is needed
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles = new ArrayList<>();
-    //?????????
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_info_id", unique = true)
-    private UserInfo userInfo;
+    @NotNull
+    private Boolean active = Boolean.FALSE;
+    @NotNull
+    private List<RoleDataDTO> roleDataDTOList = new ArrayList<>();
+    private UserInfoDTO userInfoDTO;
 
 }

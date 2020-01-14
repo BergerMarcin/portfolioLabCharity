@@ -86,8 +86,15 @@ public class AdminController {
         }
 
         if (formButtonChoice == 1) {
-            // TODO: add record
-            // institutionService.save(institutionAddDataDTO);
+            // Mapping & saving data at method saveInstitution (+ exception catch of both operation)
+            try {
+                institutionService.saveInstitution(institutionAddDataDTO);
+            } catch (SavingDataException e) {
+                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+                errorsMessageMap.put("Błąd ogólny", e.getMessage());
+                model.addAttribute("errorsMessageMap", errorsMessageMap);
+                return "admin/admin-institution-update";
+            }
         }
 
         return "redirect:/admin/institutions";
@@ -126,8 +133,15 @@ public class AdminController {
         }
 
         if (formButtonChoice == 1) {
-            // TODO: update record
-            // institutionService.update(institutionDataDTO);
+            // Mapping & update data at method saveUpdateInstitution (+ exception catch of both operation)
+            try {
+                institutionService.updateInstitution(institutionDataDTO);
+            } catch (SavingDataException e) {
+                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+                errorsMessageMap.put("Błąd ogólny", e.getMessage());
+                model.addAttribute("errorsMessageMap", errorsMessageMap);
+                return "admin/admin-institution-update";
+            }
         }
 
         return "redirect:/admin/institutions";
@@ -166,8 +180,7 @@ public class AdminController {
         }
 
         if (formButtonChoice == 1) {
-            // TODO: delete record
-            // institutionService.delete(institutionDataDTO);
+            institutionService.deleteInstitution(institutionDataDTO);
         }
 
         return "redirect:/admin/institutions";

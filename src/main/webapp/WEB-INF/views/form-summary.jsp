@@ -104,7 +104,7 @@
                                 <span class="icon icon-bag"></span>
                                 <span class="summary--text">
                                     ${donationDataDTO.quantity} worków zawierających
-                                    <c:forEach items="${categories}" var="category">
+                                    <c:forEach items="${categoryDataDTOList}" var="category">
                                         <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
                                             ${category.name},
                                         </c:if>
@@ -116,7 +116,7 @@
                                 <span class="icon icon-hand"></span>
                                 <span class="summary--text">
                                     Dla fundacji
-                                     <c:forEach items="${institutions}" var="institution">
+                                     <c:forEach items="${institutionDataDTOList}" var="institution">
                                          <c:if test="${donationDataDTO.institutionId == institution.id}">
                                              ${institution.name}
                                          </c:if>

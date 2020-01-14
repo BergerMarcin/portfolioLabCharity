@@ -33,8 +33,8 @@ public class DonationController {
     }
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
-    @ModelAttribute("categories")
-    public List<CategoryDataDTO> categories() {
+    @ModelAttribute("categoryDataDTOList")
+    public List<CategoryDataDTO> categoryDataDTOList() {
         return categoryService.allCategoryDataDTOList();
     }
 

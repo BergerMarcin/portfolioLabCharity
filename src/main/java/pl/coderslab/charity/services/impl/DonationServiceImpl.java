@@ -11,6 +11,7 @@ import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
 import pl.coderslab.charity.domain.repositories.DonationRepository;
 import pl.coderslab.charity.domain.repositories.InstitutionRepository;
+import pl.coderslab.charity.dtos.CategoryDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.services.DonationService;
 import pl.coderslab.charity.services.SavingDataException;
@@ -47,6 +48,22 @@ public class DonationServiceImpl implements DonationService {
     @Override
     public Long supportedOrganizationsCountBeforeDate(LocalDate localDate) {
         return donationRepository.supportedOrganizationsCountBeforeDate(localDate);
+    }
+
+    @Override
+    public List<DonationDataDTO> donationListByInstitutionId(Long institutionId) {
+        Institution institution = institutionRepository.findAllById(institutionId);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId institution: {}", institution.toString());
+        List<Donation> donationList = donationRepository.findAllWithCategoriesByInstitutionOrderByInstitution(institution);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationList: {}", donationList.toString());
+        List<DonationDataDTO> donationDataDTOList = new ArrayList<>();
+        for (Donation donation: donationList) {
+            ModelMapper modelMapper = new ModelMapper();
+            DonationDataDTO donationDataDTO = modelMapper.map(donation, DonationDataDTO.class);
+            donationDataDTOList.add(donationDataDTO);
+        }
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationDataDTOList: {}", donationDataDTOList.toString());
+        return donationDataDTOList;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pl.coderslab.charity.domain.repositories;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.coderslab.charity.domain.entities.Donation;
@@ -12,7 +13,10 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
 
     Donation findAllById(Long id);
 
-    Donation findAllByInstitutionOrderByInstitutionName(Institution institution);
+    // EAGER load of Categories
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = "categories")
+    List<Donation> findAllWithCategoriesByInstitutionOrderByInstitution(Institution institution);
 
     @Query("SELECT d FROM Donation d ORDER BY d.pickUpDate, d.pickUpTime")
     List<Donation> findAllByOrderByPickUpDateAndPickUpTime();

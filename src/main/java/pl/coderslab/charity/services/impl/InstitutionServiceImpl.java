@@ -5,8 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.coderslab.charity.domain.entities.Donation;
 import pl.coderslab.charity.domain.entities.Institution;
+import pl.coderslab.charity.domain.repositories.DonationRepository;
 import pl.coderslab.charity.domain.repositories.InstitutionRepository;
+import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
 import pl.coderslab.charity.services.InstitutionService;
@@ -21,9 +24,11 @@ import java.util.List;
 public class InstitutionServiceImpl implements InstitutionService {
 
     private InstitutionRepository institutionRepository;
+    private DonationRepository donationRepository;
 
-    public InstitutionServiceImpl(InstitutionRepository institutionRepository) {
+    public InstitutionServiceImpl(InstitutionRepository institutionRepository, DonationRepository donationRepository) {
         this.institutionRepository = institutionRepository;
+        this.donationRepository = donationRepository;
     }
 
     @Override
@@ -107,7 +112,7 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     @Override
     public void deleteInstitution(InstitutionDataDTO institutionDataDTO) {
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveInstitution !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution START !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institutionDataDTO to be mapped to Institution: {}", institutionDataDTO.toString());
 
         ModelMapper modelMapper = new ModelMapper();
@@ -115,7 +120,11 @@ public class InstitutionServiceImpl implements InstitutionService {
         Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
 
-        // Final deleting donation
+
+        // Deleting all related donations
+        donationRepository.deleteAll(donationRepository.findAllWithCategoriesByInstitutionOrderByInstitution(institution));
+
+        // Final deleting institution
         institutionRepository.delete(institution);
     }
 

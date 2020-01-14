@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Donation extends BaseEntity {
     private Integer quantity;               // liczba worków
     @ManyToMany
     @JoinColumn (name = "categories_id")
-    private List<Category> categories;      // categories - lista obiektów typu Category
+    private List<Category> categories = new ArrayList<>();   // categories - lista obiektów typu Category
     @ManyToOne
     @JoinColumn (name = "institution_id")
     private Institution institution;        // institution - obiekt typu Institution

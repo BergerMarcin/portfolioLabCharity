@@ -1,6 +1,7 @@
 package pl.coderslab.charity.services;
 
 import pl.coderslab.charity.domain.entities.Institution;
+import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
 

@@ -84,7 +84,7 @@
       <div id="data-step-1" data-step="1" class="active">
         <h3>Zaznacz co chcesz oddać:</h3>
         <p class="error"><form:errors path="categoryIds"></form:errors></p>
-        <c:forEach items="${categories}" var="category" varStatus="stat">
+        <c:forEach items="${categoryDataDTOList}" var="category" varStatus="stat">
           <div class="form-group form-group--checkbox">
             <form:label path="categoryIds" for="${'categ'.concat(stat.count)}">
               <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">

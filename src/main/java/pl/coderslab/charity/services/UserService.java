@@ -7,11 +7,10 @@ public interface UserService {
 
     Boolean isEmailUnique (String email);
 
-    User findAllByEmail(String email);
-
-    User findAllWithUserInfoByEmail(String email);
-//    User findAllWithRulesByEmailQuery(String email);
-
-    void saveUser(User user);
+//    User findAllByEmail(String email);
+//
+//    User findAllWithUserInfoByEmail(String email);
+//
+//    void saveUser(User user);
 
 }

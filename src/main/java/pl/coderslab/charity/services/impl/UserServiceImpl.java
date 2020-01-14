@@ -32,26 +32,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByEmail(email) == null;
     }
 
-    @Override
-    public User findAllByEmail(String email) {
-        return userRepository.findAllByEmail(email);
-    }
-
-    @Override
-    public User findAllWithUserInfoByEmail(String email) {
-        return userRepository.findAllWithUserInfoByEmail(email);
-    }
 //    @Override
-//    public User findAllWithRulesByEmailQuery(String email) {
-//        return userRepository.findAllWithRulesByEmailQuery(email);
+//    public User findAllByEmail(String email) {
+//        return userRepository.findAllByEmail(email);
 //    }
-
-    @Override
-    public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(Boolean.TRUE);
-        Role userRole = roleRepository.findAllByName("ROLE_USER");
-        user.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
-        userRepository.save(user);
-    }
+//
+//    @Override
+//    public User findAllWithUserInfoByEmail(String email) {
+//        return userRepository.findAllWithUserInfoByEmail(email);
+//    }
+//
+//    @Override
+//    public void saveUser(User user) {
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setActive(Boolean.TRUE);
+//        Role userRole = roleRepository.findAllByName("ROLE_USER");
+//        user.setRoles(new ArrayList<Role>(Arrays.asList(userRole)));
+//        userRepository.save(user);
+//    }
 }

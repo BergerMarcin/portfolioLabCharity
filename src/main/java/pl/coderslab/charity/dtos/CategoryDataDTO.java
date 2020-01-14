@@ -17,7 +17,6 @@ public class CategoryDataDTO {
     @NotNull
     @Positive
     @Digits(integer = 4, fraction = 0)
-    @UniqueElements
     private Long id;
     @NotBlank
     @Length(min = 3, max = 40)

@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.domain.entities.Category;
-import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.dtos.CategoryDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
@@ -37,14 +35,7 @@ public class DonationController {
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
     @ModelAttribute("categories")
     public List<CategoryDataDTO> categories() {
-        List<Category> categoryList = categoryService.allCategoryList();
-        List<CategoryDataDTO> categoryDataDTOList = new ArrayList<>();
-        for (Category category: categoryList) {
-            ModelMapper modelMapper = new ModelMapper();
-            CategoryDataDTO categoryDataDTO = modelMapper.map(category, CategoryDataDTO.class);
-            categoryDataDTOList.add(categoryDataDTO);
-        }
-        return categoryDataDTOList;
+        return categoryService.allCategoryDataDTOList();
     }
 
     // Library institutions based on InstitutionDTO (available non-stop in model as "institutionDataDTOList" at @RequestMapping("/donation")

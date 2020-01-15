@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.dtos.RegistrationDataDTO;
 import pl.coderslab.charity.services.RegistrationService;
-import pl.coderslab.charity.services.SavingDataException;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 import javax.validation.Valid;
 import java.util.LinkedHashMap;
@@ -60,7 +60,7 @@ public class RegisterController {
         // Mapping & saving data at method register (+ exception catch of both operation)
         try {
             registrationService.register(registrationDataDTO);
-        } catch (SavingDataException e) {
+        } catch (EntityToDataBaseException e) {
             Map<String, String> errorsMessageMap = new LinkedHashMap<>();
             errorsMessageMap.put("Błąd ogólny", e.getMessage());
             model.addAttribute("errorsMessageMap", errorsMessageMap);

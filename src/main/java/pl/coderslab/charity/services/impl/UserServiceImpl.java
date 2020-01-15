@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDataDTO> findAllByRoleName (String roleName) {
         Role role = roleRepository.findAllByName(roleName);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName role: {}", role.toString());
-        List<User> userList = userRepository.findAllWithRolesWthUserInfoByRoles
-                (role);
+        List<User> userList = userRepository.findAllWithRolesWthUserInfoByRoles(role);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userList: {}", userList.toString());
         List<UserDataDTO> userDataDTOList = new ArrayList<>();
         for (User user: userList) {

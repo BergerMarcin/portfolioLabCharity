@@ -7,9 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
@@ -23,6 +23,9 @@ import java.util.Map;
 @Slf4j
 public class AdminInstitutionController {
 
+    // ID protects against unauthorised ID change when editing/update record
+    private static Long idProtected = 0L;
+
     private InstitutionService institutionService;
     private DonationService donationService;
 
@@ -30,6 +33,10 @@ public class AdminInstitutionController {
         this.institutionService = institutionService;
         this.donationService = donationService;
     }
+
+    private static Long getIdProtected() {return idProtected;}
+    private static void setIdProtected(Long idProtected) {AdminInstitutionController.idProtected = idProtected;}
+
 
     // ADMIN INSTITUTIONS LIST-START PAGE
     @GetMapping
@@ -46,7 +53,7 @@ public class AdminInstitutionController {
     public String getAdminInstitutionsAddPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("institutionAddDataDTO", new InstitutionAddDataDTO());
+        model.addAttribute("institutionAddDataDTO", new InstitutionAddDataDTO());;
         return "admin/admin-institution-add";
     }
 
@@ -77,9 +84,9 @@ public class AdminInstitutionController {
             // Mapping & saving data at method saveInstitution (+ exception catch of both operation)
             try {
                 institutionService.saveInstitution(institutionAddDataDTO);
-            } catch (SavingDataException e) {
+            } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny operacji", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
                 return "admin/admin-institution-add";
             }
@@ -91,10 +98,12 @@ public class AdminInstitutionController {
 
     // ADMIN INSTITUTIONS UPDATE PAGE
     @GetMapping("/update")
-    public String getAdminInstitutionsUpdatePage(Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    public String getAdminInstitutionsUpdatePage(@AuthenticationPrincipal CurrentUser currentUser, Model model,
+                                                 @RequestParam Long id) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
+        AdminInstitutionController.setIdProtected(id);
         return "admin/admin-institution-update";
     }
 
@@ -122,12 +131,12 @@ public class AdminInstitutionController {
         }
 
         if (formButtonChoice == 1) {
-            // Mapping & update data at method saveUpdateInstitution (+ exception catch of both operation)
+            // Mapping & update data at method updateInstitution (+ exception catch of both operation)
             try {
-                institutionService.updateInstitution(institutionDataDTO);
-            } catch (SavingDataException e) {
+                institutionService.updateInstitution(AdminInstitutionController.getIdProtected(), institutionDataDTO);
+            } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny operacji", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
                 return "admin/admin-institution-update";
             }
@@ -139,13 +148,16 @@ public class AdminInstitutionController {
 
     // ADMIN INSTITUTIONS DELETE PAGE
     @GetMapping("/delete")
-    public String getAdminInstitutionsDeletePage(Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    public String getAdminInstitutionsDeletePage(@AuthenticationPrincipal CurrentUser currentUser, Model model,
+                                                 @RequestParam Long id) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
         model.addAttribute("donationDataDTOList", donationService.donationListByInstitutionId(id));
+        AdminInstitutionController.setIdProtected(id);
         return "admin/admin-institution-delete";
     }
+
     @PostMapping("/delete")
     public String postAdminInstitutionsDeletePage(@ModelAttribute @Valid InstitutionDataDTO institutionDataDTO,
                                                   BindingResult result, Model model,
@@ -170,7 +182,15 @@ public class AdminInstitutionController {
         }
 
         if (formButtonChoice == 1) {
-            institutionService.deleteInstitution(institutionDataDTO);
+            // Mapping & delete data at method deleteInstitution (+ exception catch of both operation)
+            try {
+                institutionService.deleteInstitution(AdminInstitutionController.getIdProtected(), institutionDataDTO);
+            } catch (EntityToDataBaseException e) {
+                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+                errorsMessageMap.put("Błąd ogólny operacji", e.getMessage());
+                model.addAttribute("errorsMessageMap", errorsMessageMap);
+                return "admin/admin-institution-delete";
+            }
         }
 
         return "redirect:/admin/institution";

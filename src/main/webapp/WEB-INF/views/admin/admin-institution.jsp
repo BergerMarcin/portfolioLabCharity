@@ -41,25 +41,25 @@
             <th scope="col">edycja</th>
             <th scope="col">usuń</th>
         </tr>
-        <c:forEach items="${institutionDataDTOList}" var="user" varStatus="stat">
+        <c:forEach items="${institutionDataDTOList}" var="institution" varStatus="stat">
             <tr>
                 <td>${stat.count}</td>
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.description}</td>
+                <td>${institution.id}</td>
+                <td>${institution.name}</td>
+                <td>${institution.description}</td>
                 <td>
-                    <c:if test="${user.trusted}">tak</c:if>
-                    <c:if test="${!user.trusted}">NIE</c:if>
+                    <c:if test="${institution.trusted}">tak</c:if>
+                    <c:if test="${!institution.trusted}">NIE</c:if>
                 </td>
                 <td>
                     <c:url value="/admin/institution/update" var="updateURL">
-                        <c:param name="id" value="${user.id}"/>
+                        <c:param name="id" value="${institution.id}"/>
                     </c:url>
                     <a href="${updateURL}"><button type="button" class="btn">Edytuj</button></a>
                 </td>
                 <td>
                     <c:url value="/admin/institution/delete" var="deleteURL">
-                        <c:param name="id" value="${user.id}"/>
+                        <c:param name="id" value="${institution.id}"/>
                     </c:url>
                     <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
                 </td>

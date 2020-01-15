@@ -2,7 +2,6 @@ package pl.coderslab.charity.controllers;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.CategoryDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
@@ -117,7 +117,7 @@ public class DonationController {
         // Mapping & saving data at method saveDonation (+ exception catch of both operation)
         try {
             donationService.saveDonation(donationDataDTO);
-        } catch (SavingDataException e) {
+        } catch (EntityToDataBaseException e) {
             Map<String, String> errorsMessageMap = new LinkedHashMap<>();
             errorsMessageMap.put("Błąd ogólny", e.getMessage());
             model.addAttribute("errorsMessageMap", errorsMessageMap);

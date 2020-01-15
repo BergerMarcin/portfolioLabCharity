@@ -2,6 +2,7 @@ package pl.coderslab.charity.services;
 
 
 import pl.coderslab.charity.dtos.DonationDataDTO;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,6 +15,6 @@ public interface DonationService {
 
     List<DonationDataDTO> donationListByInstitutionId (Long institutionId);
 
-    void saveDonation (DonationDataDTO donationDataDTO) throws SavingDataException;
+    void saveDonation (DonationDataDTO donationDataDTO) throws EntityToDataBaseException;
 
 }

@@ -10,7 +10,7 @@ import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.domain.repositories.UserRepository;
 import pl.coderslab.charity.dtos.RegistrationDataDTO;
 import pl.coderslab.charity.services.RegistrationService;
-import pl.coderslab.charity.services.SavingDataException;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 @Service
 @Transactional
@@ -28,7 +28,7 @@ public class DefaultRegistrationService implements RegistrationService {
     }
 
     @Override
-    public void register(RegistrationDataDTO registrationDataDTO) throws SavingDataException {
+    public void register(RegistrationDataDTO registrationDataDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveUser from Registration !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. registrationDataDTO to be mapped to user: {}", registrationDataDTO.toString());
 
@@ -50,7 +50,7 @@ public class DefaultRegistrationService implements RegistrationService {
         User userSaved = userRepository.save(user);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user saved: {}", user.toString());
         if (userSaved == null) {
-            throw new SavingDataException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
+            throw new EntityToDataBaseException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
         }
     }
 }

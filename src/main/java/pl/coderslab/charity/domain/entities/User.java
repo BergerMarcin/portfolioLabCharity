@@ -33,7 +33,7 @@ public class User extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
 //    @JoinTable(name = "users_user_infos", joinColumns = @JoinColumn(name = "user_id"),
 //            inverseJoinColumns = @JoinColumn(name = "user_infos_id"))
-    @JoinColumn(name = "user_info_id", unique = true)
+//    @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
 }

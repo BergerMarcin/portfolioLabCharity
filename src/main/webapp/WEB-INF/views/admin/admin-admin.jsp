@@ -27,7 +27,7 @@
 
 <section class="login-page">
 <h2>Lista administratorów</h2>
-    <c:url value="/admin/institution/add" var="addURL"></c:url>
+    <c:url value="/admin/admin/add" var="addURL"></c:url>
     <a href="${addURL}"><button type="button" class="btn">Dodaj nowego administratora</button></a>
     <br><br>
 

@@ -73,7 +73,7 @@ public class AdminAdminController {
             // Mapping & saving data at method saveUser (+ exception catch of both operation)
 //            try {
 //                userService.saveUser(userDataDTO);
-//            } catch (SavingDataException e) {
+//            } catch (EntityToDataBaseException e) {
 //                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 //                errorsMessageMap.put("Błąd ogólny", e.getMessage());
 //                model.addAttribute("errorsMessageMap", errorsMessageMap);
@@ -120,7 +120,7 @@ public class AdminAdminController {
             // Mapping & update data at method saveUpdateUser (+ exception catch of both operation)
 //            try {
 //                userService.updateUser(userDataDTO);
-//            } catch (SavingDataException e) {
+//            } catch (EntityToDataBaseException e) {
 //                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 //                errorsMessageMap.put("Błąd ogólny", e.getMessage());
 //                model.addAttribute("errorsMessageMap", errorsMessageMap);

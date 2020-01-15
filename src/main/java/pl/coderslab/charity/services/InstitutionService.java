@@ -1,9 +1,8 @@
 package pl.coderslab.charity.services;
 
-import pl.coderslab.charity.domain.entities.Institution;
-import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 import java.util.List;
 
@@ -15,10 +14,10 @@ public interface InstitutionService {
 
     InstitutionDataDTO institutionById(Long id);
 
-    void saveInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws SavingDataException;
+    void saveInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException;
 
-    void updateInstitution(InstitutionDataDTO institutionDataDTO) throws SavingDataException;
+    void updateInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException;
 
-    void deleteInstitution(InstitutionDataDTO institutionDataDTO);
+    void deleteInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException;
 
 }

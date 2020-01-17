@@ -60,20 +60,11 @@
                     <button type="submit" class="btn" name="formButtonChoice" value="1">Zmień</button>
                     <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
                 </div>
-
-                    <%-- All Errors --%>
-                <c:if test="${not empty errorsMessageMap && errorsMessageMap != null}">
-                    <div class="errors">
-                        <h3>Proszę popraw:</h3>
-                        <c:set var="errorsMessageMapKeys" value="${errorsMessageMap.keySet()}" scope="page"></c:set>
-                        <c:forEach items="${errorsMessageMapKeys}" var="errorsMessageMapKey" varStatus="stat">
-                            <p>${stat.count}. W polu ${errorsMessageMapKey} należy: ${errorsMessageMap.get(errorsMessageMapKey)}</p>
-                        </c:forEach>
-                    </div>
-                </c:if>
-
             </div>
         </div>
+
+        <%@ include file="admin-error-messages-list.jsp" %>
+
     </form:form>
 </section>
 

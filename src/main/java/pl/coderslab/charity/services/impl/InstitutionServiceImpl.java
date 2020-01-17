@@ -98,6 +98,7 @@ public class InstitutionServiceImpl implements InstitutionService {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
         Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
+        institution.setCreatedOn(institutionRepository.findAllById(idProtected).getCreatedOn());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact update another record/line (instead of update the right one record/line)

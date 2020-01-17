@@ -4,18 +4,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
-import pl.coderslab.charity.domain.entities.BaseEntity;
-import pl.coderslab.charity.domain.entities.Role;
-import pl.coderslab.charity.domain.entities.UserInfo;
 import pl.coderslab.charity.validation.constraints.UniqueEmail;
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @ToString(exclude = "roleDataDTOList") @EqualsAndHashCode(of = "id")
+@Getter @Setter @ToString(exclude = {"password", "rePassword"}) @EqualsAndHashCode(of = "id")
 public class UserDataDTO {
 
     @NotNull @Positive @Digits(integer = 4, fraction = 0)
@@ -26,10 +21,16 @@ public class UserDataDTO {
     private String lastName;
     @NotBlank @Email @UniqueEmail
     private String email;
+    @NotBlank @Size(min = 4, max = 12)
+    private String password;
+    @NotBlank @Size(min = 4, max = 12)
+    private String rePassword;
+    @NotNull @AssertTrue
+    private Boolean termsAcceptance;
     @NotNull
     private Boolean active = Boolean.FALSE;
+    private UserInfoDataDTO userInfoDataDTO = new UserInfoDataDTO();
     @NotNull
     private List<RoleDataDTO> roleDataDTOList = new ArrayList<>();
-    private UserInfoDTO userInfoDTO;
 
 }

@@ -6,7 +6,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.CategoryDataDTO;
 import pl.coderslab.charity.dtos.DonationDataDTO;
@@ -25,11 +24,14 @@ public class DonationController {
     private DonationService donationService;
     private CategoryService categoryService;
     private InstitutionService institutionService;
+    private CommonForControllers commonForControllers;
 
-    public DonationController(DonationService donationService, CategoryService categoryService, InstitutionService institutionService) {
+    public DonationController(DonationService donationService, CategoryService categoryService,
+                              InstitutionService institutionService, CommonForControllers commonForControllers) {
         this.donationService = donationService;
         this.categoryService = categoryService;
         this.institutionService = institutionService;
+        this.commonForControllers = commonForControllers;
     }
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
@@ -58,31 +60,20 @@ public class DonationController {
             log.debug("currentUser FULL BASIC: {}", currentUser.toString());
             log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
         }
-//        return "form-test-DTO";
         return "form";
     }
     @PostMapping("/form")
     public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO,
                                     BindingResult result, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST FORM proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("DonationController. result from FORM: {}", result.getFieldErrors());
         log.debug("DonationController. donationDataDTO from FORM: {}", donationDataDTO.toString());
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            // (errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError: fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
-//            return "form-test-DTO";
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "form";
         }
 
         // before summary-form reset parameters if back-to-form or save
         model.addAttribute("donationDataDTO", donationDataDTO);
-//        return "redirect:/donation/form-summary";
         return "form-summary";
     }
 
@@ -98,14 +89,7 @@ public class DonationController {
         log.debug("DonationController. donationDataDTO from SUMMARY: {}", donationDataDTO.toString());
         log.debug("DonationController. ifBackToForm from SUMMARY: {}", ifBackToForm);
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError: fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "form";
         }
         // In case user ASK TO REWRITE DATA

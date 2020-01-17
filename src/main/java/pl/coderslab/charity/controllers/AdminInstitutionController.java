@@ -5,7 +5,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
@@ -14,7 +13,6 @@ import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -28,10 +26,13 @@ public class AdminInstitutionController {
 
     private InstitutionService institutionService;
     private DonationService donationService;
+    private CommonForControllers commonForControllers;
 
-    public AdminInstitutionController(InstitutionService institutionService, DonationService donationService) {
+    public AdminInstitutionController(InstitutionService institutionService, DonationService donationService,
+                                      CommonForControllers commonForControllers) {
         this.institutionService = institutionService;
         this.donationService = donationService;
+        this.commonForControllers = commonForControllers;
     }
 
     private static Long getIdProtected() {return idProtected;}
@@ -69,14 +70,7 @@ public class AdminInstitutionController {
         }
 
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError : fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "admin/admin-institution-add";
         }
 
@@ -104,6 +98,7 @@ public class AdminInstitutionController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
         AdminInstitutionController.setIdProtected(id);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminInstitutionsUpdatePage idProtected: {}", AdminInstitutionController.getIdProtected());
         return "admin/admin-institution-update";
     }
 
@@ -114,19 +109,13 @@ public class AdminInstitutionController {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsUpdatePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsUpdatePage institutionDataDTO: {}", institutionDataDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsUpdatePage formButtonChoice: {}", formButtonChoice);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsUpdatePage idProtected: {}", AdminInstitutionController.getIdProtected());
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/institution";
         }
 
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError : fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "admin/admin-institution-update";
         }
 
@@ -155,6 +144,7 @@ public class AdminInstitutionController {
         model.addAttribute("institutionDataDTO", institutionService.institutionById(id));
         model.addAttribute("donationDataDTOList", donationService.donationListByInstitutionId(id));
         AdminInstitutionController.setIdProtected(id);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminInstitutionsDeletePage idProtected: {}", AdminInstitutionController.getIdProtected());
         return "admin/admin-institution-delete";
     }
 
@@ -165,19 +155,13 @@ public class AdminInstitutionController {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsDeletePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsDeletePage institutionDataDTO: {}", institutionDataDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsDeletePage formButtonChoice: {}", formButtonChoice);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminInstitutionsDeletePage idProtected: {}", AdminInstitutionController.getIdProtected());
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/institution";
         }
 
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError : fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "admin/admin-institution-delete";
         }
 

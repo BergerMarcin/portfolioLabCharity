@@ -63,10 +63,10 @@
                         ${role.name}<br>
                     </c:forEach>
                 </td>
-                <td>${user.userInfoDTO.street}</td>
-                <td>${user.userInfoDTO.city}</td>
-                <td>${user.userInfoDTO.zipCode}</td>
-                <td>${user.userInfoDTO.phone}</td>
+                <td>${user.userInfoDataDTO.street}</td>
+                <td>${user.userInfoDataDTO.city}</td>
+                <td>${user.userInfoDataDTO.zipCode}</td>
+                <td>${user.userInfoDataDTO.phone}</td>
                 <td>
                     <c:url value="/admin/admin/update" var="updateURL">
                         <c:param name="id" value="${user.id}"/>

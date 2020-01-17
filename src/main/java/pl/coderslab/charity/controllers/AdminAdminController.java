@@ -1,19 +1,22 @@
 package pl.coderslab.charity.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.domain.entities.Role;
+import pl.coderslab.charity.dtos.RoleDataDTO;
 import pl.coderslab.charity.dtos.UserDataDTO;
+import pl.coderslab.charity.dtos.UserInfoDataDTO;
 import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -21,11 +24,23 @@ import java.util.Map;
 @Slf4j
 public class AdminAdminController {
 
-    private UserService userService;
+    // ID & email protected against unauthorised ID change when editing/update record
+    private static Long idProtected = 0L;
 
-    public AdminAdminController(UserService userService) {
+    private UserService userService;
+    private RoleService roleService;
+    private CommonForControllers commonForControllers;
+
+    public AdminAdminController(UserService userService, RoleService roleService,
+                                CommonForControllers commonForControllers) {
         this.userService = userService;
+        this.roleService = roleService;
+        this.commonForControllers = commonForControllers;
     }
+
+    private static Long getIdProtected() {return idProtected;}
+    private static void setIdProtected(Long idProtected) {AdminAdminController.idProtected = idProtected;}
+
 
     // ADMIN ADMINS LIST-START PAGE
     @GetMapping
@@ -40,6 +55,7 @@ public class AdminAdminController {
     // ADMIN ADMINS ADD PAGE
     @GetMapping("/add")
     public String getAdminAdminsAddPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userDataDTO", new UserDataDTO());
@@ -48,8 +64,9 @@ public class AdminAdminController {
 
     @PostMapping("/add")
     public String postAdminAdminsAddPage(@ModelAttribute @Valid UserDataDTO userDataDTO,
-                                               BindingResult result, Model model,
-                                               @RequestParam Integer formButtonChoice) {
+                                         BindingResult result, Model model,
+                                         @RequestParam Boolean roleUser,
+                                         @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO: {}", userDataDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage formButtonChoice: {}", formButtonChoice);
@@ -58,21 +75,30 @@ public class AdminAdminController {
         }
 
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError : fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "admin/admin-admin-add";
         }
 
         if (formButtonChoice == 1) {
+            // Set userDataDTO.roleDataDTOList
+            List<Role> roleList = new ArrayList<>();
+            roleList.add(roleService.findAllByName("ROLE_ADMIN"));
+            if (roleUser) {
+                roleList.add(roleService.findAllByName("ROLE_USER"));
+            }
+            List<RoleDataDTO> roleDataDTOList = new ArrayList();
+            for (Role role:roleList) {
+                ModelMapper modelMapper = new ModelMapper();
+                modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+                RoleDataDTO roleDataDTO = modelMapper.map(role, RoleDataDTO.class);
+                roleDataDTOList.add(roleDataDTO);
+            }
+            userDataDTO.setRoleDataDTOList(roleDataDTOList);
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO.roleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
+
             // Mapping & saving data at method saveUser (+ exception catch of both operation)
 //            try {
-//                userService.saveUser(userDataDTO);
+//                adminService.saveAdmin(userDataDTO, roleUser);
 //            } catch (EntityToDataBaseException e) {
 //                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 //                errorsMessageMap.put("Błąd ogólny", e.getMessage());
@@ -91,6 +117,8 @@ public class AdminAdminController {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userDataDTO", userService.findAllById(id));
+        AdminAdminController.setIdProtected(id);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage idProtected: {}", AdminAdminController.getIdProtected());
         return "admin/admin-admin-update";
     }
     @PostMapping("/update")
@@ -105,21 +133,14 @@ public class AdminAdminController {
         }
 
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError : fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "admin/admin-admin-update";
         }
 
         if (formButtonChoice == 1) {
-            // Mapping & update data at method saveUpdateUser (+ exception catch of both operation)
+            // Mapping & update data & emailing to previous email at method saveUpdateUser (+ exception catch of both operation)
 //            try {
-//                userService.updateUser(userDataDTO);
+//                userService.updateUser(AdminAdminController.getIdProtected(), userDataDTO, roleUser);
 //            } catch (EntityToDataBaseException e) {
 //                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
 //                errorsMessageMap.put("Błąd ogólny", e.getMessage());
@@ -152,14 +173,7 @@ public class AdminAdminController {
         }
 
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            //    errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError : fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "admin/admin-admin-delete";
         }
 

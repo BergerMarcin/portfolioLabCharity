@@ -25,9 +25,11 @@ import java.util.Map;
 public class RegisterController {
 
     private RegistrationService registrationService;
+    private CommonForControllers commonForControllers;
 
-    public RegisterController(RegistrationService registrationService) {
+    public RegisterController(RegistrationService registrationService, CommonForControllers commonForControllers) {
         this.registrationService = registrationService;
+        this.commonForControllers = commonForControllers;
     }
 
     @GetMapping("/form")
@@ -46,14 +48,7 @@ public class RegisterController {
         log.debug("RegisterController. result from REGISTRATION: {}", result.getFieldErrors());
         log.debug("RegisterController. registrationDataDTO from REGISTRATION: {}", registrationDataDTO.toString());
         if (result.hasErrors()) {
-            // Taking field errors from result and creating errorsMessageMap
-            // (errorsMessageMap - a map of errors (key - field name, value - error message)
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            for (FieldError fieldError: fieldErrorList) {
-                errorsMessageMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }
-            model.addAttribute("errorsMessageMap", errorsMessageMap);
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "register";
         }
 

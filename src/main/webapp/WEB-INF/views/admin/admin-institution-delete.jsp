@@ -88,8 +88,7 @@
                     <button type="submit" class="btn" name="formButtonChoice" value="1">Potwierdź Usunięcie</button>
                     <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
                 </div>
-
-                </div>
+            </div>
         </div>
     </form:form>
 </section>

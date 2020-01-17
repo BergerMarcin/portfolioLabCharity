@@ -30,50 +30,41 @@
 
 <form:form method="post" modelAttribute="institutionAddDataDTO">
     <sec:csrfInput/>
+    <%--    <form:hidden path="id"/>--%>
 
-<%--    <form:hidden path="id"/>--%>
-<div class="form-section form-section--columns">
-    <div class="form-section--column">
-    <p class="error"><form:errors path="name"></form:errors></p>
-    <div class="form-group form-group--inline">
-        <form:label path="name" for="name">
-            Nazwa: <form:input path="name" id="name"/>
-        </form:label>
-    </div>
+    <div class="form-section form-section--columns">
+        <div class="form-section--column">
+            <p class="error"><form:errors path="name"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="name" for="name">
+                    Nazwa: <form:input path="name" id="name"/>
+                </form:label>
+            </div>
 
-    <p class="error"><form:errors path="description"></form:errors></p>
-    <div class="form-group form-group--inline">
-        <form:label path="description" for="description">
-            Opis:<form:input path="description" id="description"/>
-        </form:label>
-    </div>
+            <p class="error"><form:errors path="description"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="description" for="description">
+                    Opis:<form:input path="description" id="description"/>
+                </form:label>
+            </div>
 
-    <p class="error"><form:errors path="trusted"></form:errors></p>
-    <div class="form-group form-group--inline">
-        <form:label path="trusted" for="trusted">
-            Zaznacz jeżeli instytucja jest zaufana
-            <form:checkbox path="trusted" value="true" id="trusted"/>
-        </form:label>
-    </div>
+            <p class="error"><form:errors path="trusted"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="trusted" for="trusted">
+                    Zaznacz jeżeli instytucja jest zaufana
+                    <form:checkbox path="trusted" value="true" id="trusted"/>
+                </form:label>
+            </div>
 
-    <div class="form-group form-group--buttons">
-        <button type="submit" class="btn" name="formButtonChoice" value="1">Dodaj</button>
-        <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
-    </div>
-
-    <%-- All Errors --%>
-    <c:if test="${not empty errorsMessageMap && errorsMessageMap != null}">
-        <div class="errors">
-            <h3>Proszę popraw:</h3>
-            <c:set var="errorsMessageMapKeys" value="${errorsMessageMap.keySet()}" scope="page"></c:set>
-            <c:forEach items="${errorsMessageMapKeys}" var="errorsMessageMapKey" varStatus="stat">
-                <p>${stat.count}. W polu ${errorsMessageMapKey} należy: ${errorsMessageMap.get(errorsMessageMapKey)}</p>
-            </c:forEach>
+            <div class="form-group form-group--buttons">
+                <button type="submit" class="btn" name="formButtonChoice" value="1">Dodaj</button>
+                <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
+            </div>
         </div>
-    </c:if>
-
     </div>
-</div>
+
+    <%@ include file="admin-error-messages-list.jsp" %>
+
 </form:form>
 </section>
 

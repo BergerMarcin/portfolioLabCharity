@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.dtos.RoleDataDTO;
 import pl.coderslab.charity.dtos.UserDataDTO;
-import pl.coderslab.charity.dtos.UserInfoDataDTO;
 import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
@@ -69,6 +68,7 @@ public class AdminAdminController {
                                          @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage roleUser: {}", roleUser);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage formButtonChoice: {}", formButtonChoice);
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/admin";
@@ -95,6 +95,7 @@ public class AdminAdminController {
             }
             userDataDTO.setRoleDataDTOList(roleDataDTOList);
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO.roleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO: {}", userDataDTO.toString());
 
             // Mapping & saving data at method saveUser (+ exception catch of both operation)
 //            try {

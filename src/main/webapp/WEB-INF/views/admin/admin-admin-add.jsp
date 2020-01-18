@@ -36,7 +36,9 @@
 
                 <form:hidden path="id"/>
                 <form:hidden path="userInfoDataDTO.id"/>
-                <form:hidden path="roleDataDTOList"/>
+<%--                If roleDataDTOList is empty/null then below line passes to Controller roleDataDTOList as a String instead of list
+                    (Spring Validation or Binding expects a list, and may not accept String), so below line is commented--%>
+<%--                <form:hidden path="roleDataDTOList"/>--%>
 
                 <p class="error"><form:errors path="firstName"></form:errors></p>
                 <div class="form-group form-group--inline">
@@ -73,13 +75,13 @@
                 <p class="error"><form:errors path="password"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="password">
-                        Hasło <form:input path="password" type="password"/>
+                        Hasło <form:input path="password" type="password" required="true"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="rePassword"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="rePassword">
-                        Powtórz hasło <form:input path="rePassword" type="password"/>
+                        Powtórz hasło <form:input path="rePassword" type="password" required="true"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="active"></form:errors></p>

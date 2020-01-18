@@ -4,16 +4,21 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.coderslab.charity.validation.constraints.EqualTwoFields;
 import pl.coderslab.charity.validation.constraints.UniqueEmail;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @ToString(exclude = {"password", "rePassword"}) @EqualsAndHashCode(of = "id")
+
+@Getter @Setter @ToString
+//        (exclude = {"password", "rePassword"})
+@EqualsAndHashCode(of = "id")
+@EqualTwoFields(baseField = "password", matchField = "rePassword", reportOn = "rePassword")
 public class UserDataDTO {
 
-    @NotNull @Positive @Digits(integer = 4, fraction = 0)
+    //    @NotNull @Positive @Digits(integer = 4, fraction = 0)
     private Long id;
     @NotBlank @Size(min = 2, max = 30)
     private String firstName;
@@ -30,7 +35,9 @@ public class UserDataDTO {
     @NotNull
     private Boolean active = Boolean.FALSE;
     private UserInfoDataDTO userInfoDataDTO = new UserInfoDataDTO();
-    @NotNull
     private List<RoleDataDTO> roleDataDTOList = new ArrayList<>();
 
 }
+
+
+

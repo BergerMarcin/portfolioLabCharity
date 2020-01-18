@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 @Getter @Setter @ToString @EqualsAndHashCode(of = "id")
 public class UserInfoDataDTO {
 
-    @NotNull @Positive @Digits(integer = 4, fraction = 0)
+//    @NotNull @Positive @Digits(integer = 4, fraction = 0)
     private Long id;
     @NotBlank @Length(min = 3, max = 40)
     private String street;

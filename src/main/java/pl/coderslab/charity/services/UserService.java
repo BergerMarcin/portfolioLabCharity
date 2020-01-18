@@ -4,6 +4,7 @@ import pl.coderslab.charity.domain.entities.User;
 import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 import pl.coderslab.charity.dtos.RoleDataDTO;
 import pl.coderslab.charity.dtos.UserDataDTO;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface UserService {
 //    User findAllByEmail(String email);
 //
 //    User findAllWithUserInfoByEmail(String email);
-//
-//    void saveUser(User user);
+
+    void saveUser(UserDataDTO userDataDTO) throws EntityToDataBaseException;
 
 }

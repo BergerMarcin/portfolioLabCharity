@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.dtos.RoleDataDTO;
 import pl.coderslab.charity.dtos.UserDataDTO;
+import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -80,7 +83,7 @@ public class AdminAdminController {
         }
 
         if (formButtonChoice == 1) {
-            // Set userDataDTO.roleDataDTOList
+            // Set roleDataDTOList of userDataDTO
             List<Role> roleList = new ArrayList<>();
             roleList.add(roleService.findAllByName("ROLE_ADMIN"));
             if (roleUser) {
@@ -98,14 +101,14 @@ public class AdminAdminController {
             log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO: {}", userDataDTO.toString());
 
             // Mapping & saving data at method saveUser (+ exception catch of both operation)
-//            try {
-//                adminService.saveAdmin(userDataDTO, roleUser);
-//            } catch (EntityToDataBaseException e) {
-//                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-//                errorsMessageMap.put("Błąd ogólny", e.getMessage());
-//                model.addAttribute("errorsMessageMap", errorsMessageMap);
-//                return "admin/admin-admin-add";
-//            }
+            try {
+                userService.saveUser(userDataDTO);
+            } catch (EntityToDataBaseException e) {
+                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+                errorsMessageMap.put("Błąd ogólny", e.getMessage());
+                model.addAttribute("errorsMessageMap", errorsMessageMap);
+                return "admin/admin-admin-add";
+            }
         }
 
         return "redirect:/admin/admin";

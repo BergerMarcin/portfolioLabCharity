@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // EAGER load of UserInfo
-    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
-            attributePaths = {"roles", "userInfo"})
-    List<User> findAllWithRolesWthUserInfoByRoles(Role role);
+//    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
+//            attributePaths = {"roles", "userInfo"})
+    List<User> findAllByRoles(Role role);
 
     // EAGER load of UserInfo
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,

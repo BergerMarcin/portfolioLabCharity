@@ -33,6 +33,7 @@
 
         <div class="form-section form-section--columns">
             <div class="form-section--column">
+                <h4>Główne dane konta</h4>
 
                 <form:hidden path="id"/>
                 <form:hidden path="userInfoDataDTO.id"/>
@@ -98,6 +99,22 @@
                 </form:label>
                 <%--        </div>--%>
                 <br>
+                    <%--        <div class="form-group form-group--checkbox">--%>
+                    <%--                <form:label path="roleUser" for="roleUser">--%>
+                    <%--
+                    TODO: uncomment that checkbox style and add to app.js action on changing box color
+                                    <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
+                    --%>
+                <span class="description">Jednocześnie użytkownik </span>
+                    <%--                    <form:checkbox path="roleUser" value="true" id="roleUser"/>--%>
+                <input type="checkbox" name="roleUser" value="true" checked/>
+                <input type="hidden" name="roleUser" value="false"/>
+                    <%--                </form:label>--%>
+                    <%--        </div>--%>
+            </div>>
+
+            <div class="form-section--column">
+                <h4>Adres odbioru</h4>
 
                 <p class="error"><form:errors path="userInfoDataDTO.street"></form:errors></p>
                 <div class="form-group form-group--inline">
@@ -129,26 +146,11 @@
                         Uwagi do odbioru <form:input path="userInfoDataDTO.pickUpComment" id="userInfoDataDTO.pickUpComment"/>
                     </form:label>
                 </div>
-                <br>
+            </div>
 
-                <%--        <div class="form-group form-group--checkbox">--%>
-<%--                <form:label path="roleUser" for="roleUser">--%>
-                    <%--
-                    TODO: uncomment that checkbox style and add to app.js action on changing box color
-                                    <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
-                    --%>
-                    <span class="description">Jednocześnie użytkownik </span>
-<%--                    <form:checkbox path="roleUser" value="true" id="roleUser"/>--%>
-                    <input type="checkbox" name="roleUser" value="true" checked/>
-                    <input type="hidden" name="roleUser" value="false"/>
-<%--                </form:label>--%>
-                <%--        </div>--%>
-                <br>
-
-                <div class="form-group form-group--buttons">
-                    <button type="submit" class="btn" name="formButtonChoice" value="1">Dodaj</button>
-                    <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
-                </div>
+            <div class="form-group form-group--buttons">
+                <button type="submit" class="btn" name="formButtonChoice" value="1">Dodaj</button>
+                <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
             </div>
         </div>
 

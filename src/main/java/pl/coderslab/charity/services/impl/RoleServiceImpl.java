@@ -7,6 +7,8 @@ import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.services.RoleService;
 
+import java.util.List;
+
 @Service
 @Transactional
 @Slf4j
@@ -19,7 +21,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public List<Role> findAll() { return roleRepository.findAll(); }
+
+    @Override
     public Role findAllByName(String name) {
         return roleRepository.findAllByName(name);
     }
+
 }

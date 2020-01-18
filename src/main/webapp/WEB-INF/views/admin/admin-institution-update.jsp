@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="form-group form-group--buttons">
-                    <button type="submit" class="btn" name="formButtonChoice" value="1">Zmień</button>
+                    <button type="submit" class="btn" name="formButtonChoice" value="1">Wprowadź zmiany</button>
                     <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
                 </div>
             </div>

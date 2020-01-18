@@ -117,18 +117,29 @@ public class AdminAdminController {
 
     // ADMIN ADMINS UPDATE PAGE
     @GetMapping("/update")
-    public String getAdminAdminsUpdatePage(Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    public String getAdminAdminsUpdatePage(Long id, String email, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        UserDataDTO userDataDTO = userService.findAllById(id);
+        // additional validation of data from GET-request
+        if (email == null || !email.equals(userDataDTO.getEmail())) {
+            return "redirect:/admin/admin";
+        }
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("userDataDTO", userService.findAllById(id));
+        userDataDTO.setPassword("");
+        userDataDTO.setRePassword("");
+        userDataDTO.setTermsAcceptance(Boolean.TRUE);
+        model.addAttribute("userDataDTO", userDataDTO);
+        model.addAttribute("roleDataDTOList", roleService.findAll());
         AdminAdminController.setIdProtected(id);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage idProtected: {}", AdminAdminController.getIdProtected());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage userDataDTO: {}", userDataDTO);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage roleDataDTOList: {}", roleService.findAll());
         return "admin/admin-admin-update";
     }
     @PostMapping("/update")
     public String postAdminAdminsUpdatePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
-                                                  BindingResult result, Model model,
-                                                  @RequestParam Integer formButtonChoice) {
+                                            BindingResult result, Model model,
+                                            @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsUpdatePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsUpdatePage userDataDTO: {}", userDataDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsUpdatePage formButtonChoice: {}", formButtonChoice);

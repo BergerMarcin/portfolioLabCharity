@@ -70,12 +70,14 @@
                 <td>
                     <c:url value="/admin/admin/update" var="updateURL">
                         <c:param name="id" value="${user.id}"/>
+                        <c:param name="email" value="${user.email}"/>
                     </c:url>
                     <a href="${updateURL}"><button type="button" class="btn">Edytuj</button></a>
                 </td>
                 <td>
                     <c:url value="/admin/admin/delete" var="deleteURL">
                         <c:param name="id" value="${user.id}"/>
+                        <c:param name="email" value="${user.email}"/>
                     </c:url>
                     <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
                 </td>

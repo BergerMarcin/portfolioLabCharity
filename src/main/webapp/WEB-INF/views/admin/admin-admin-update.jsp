@@ -26,7 +26,7 @@
 </header>
 
 <section class="login-page">
-    <h2>Dodanie nowego administratora</h2>
+    <h2>Zmiana danych istniejącego administratora</h2>
 
     <form:form method="post" modelAttribute="userDataDTO">
         <sec:csrfInput/>
@@ -36,10 +36,8 @@
                 <h4>Główne dane konta</h4>
 
                 <form:hidden path="id"/>
+                <form:hidden path="termsAcceptance"/>
                 <form:hidden path="userInfoDataDTO.id"/>
-<%--                If roleDataDTOList is empty/null then below line passes to Controller roleDataDTOList as a String instead of list
-                    (Spring Validation or Binding expects a list, and may not accept String), so below line is commented--%>
-<%--                <form:hidden path="roleDataDTOList"/>--%>
 
                 <p class="error"><form:errors path="firstName"></form:errors></p>
                 <div class="form-group form-group--inline">
@@ -59,20 +57,6 @@
                         Email <form:input type="email" path="email" id="email"  required="true"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="termsAcceptance"></form:errors></p>
-                <div class="form-group form-group--inline">
-                </div>
-                <%--        <div class="form-group form-group--checkbox">--%>
-                <form:label path="termsAcceptance" for="termsAcceptance">
-                    <%--
-                    TODO: uncomment that checkbox style and add to app.js action on changing box color
-                                    <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
-                    --%>
-                    <span class="description">Zaznacz zgodę na przetwarzanie danych osobowych</span>
-                    <form:checkbox path="termsAcceptance" value="true" id="termsAcceptance"/>
-                </form:label>
-                <%--        </div>--%>
-                <br>
                 <p class="error"><form:errors path="password"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="password">
@@ -95,22 +79,26 @@
                                     <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
                     --%>
                     <span class="description">Aktywny status</span>
-                    <form:checkbox path="active" value="true" id="active"/>
+                    <form:checkbox path="active" id="active"/>
                 </form:label>
                 <%--        </div>--%>
-                <br>
-                    <%--        <div class="form-group form-group--checkbox">--%>
-                    <%--                <form:label path="roleUser" for="roleUser">--%>
-                    <%--
-                    TODO: uncomment that checkbox style and add to app.js action on changing box color
-                                    <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
-                    --%>
-                <span class="description">Jednocześnie użytkownik </span>
-                    <%--                    <form:checkbox path="roleUser" value="true" id="roleUser"/>--%>
-                <input type="checkbox" name="roleUser" value="true" checked/>
-                <input type="hidden" name="roleUser" value="false"/>
-                    <%--                </form:label>--%>
-                    <%--        </div>--%>
+
+<%--
+                <c:forEach items="${roleDataDTOList}" var="role" varStatus="stat">
+                    <div class="form-group form-group--checkbox">
+                        <form:label path="categoryIds" for="${'categ'.concat(stat.count)}">
+                            <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
+                                <span class="checkbox" data-checked="on" style="background-color: #f9c910;"></span>
+                            </c:if>
+                            <c:if test="${!donationDataDTO.categoryIds.contains(category.id)}">
+                                <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
+                            </c:if>
+                            <span class="description">${category.name}</span>
+                            <form:checkbox path="categoryIds" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
+                        </form:label>
+                    </div>
+                </c:forEach>
+--%>
             </div>>
 
             <div class="form-section--column">
@@ -149,7 +137,7 @@
             </div>
 
             <div class="form-group form-group--buttons">
-                <button type="submit" class="btn" name="formButtonChoice" value="1">Dodaj</button>
+                <button type="submit" class="btn" name="formButtonChoice" value="1">Wprowadź zmiany</button>
                 <button type="submit" class="btn" name="formButtonChoice" value="0">Anuluj</button>
             </div>
         </div>

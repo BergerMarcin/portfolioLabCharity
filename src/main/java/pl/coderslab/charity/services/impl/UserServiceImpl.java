@@ -14,6 +14,7 @@ import pl.coderslab.charity.domain.repositories.UserRepository;
 import pl.coderslab.charity.dtos.RoleDataDTO;
 import pl.coderslab.charity.dtos.UserDataDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
+import pl.coderslab.charity.services.Mapper;
 import pl.coderslab.charity.services.UserService;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
             ModelMapper modelMapper = new ModelMapper();
             modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
             UserDataDTO userDataDTO = modelMapper.map(user, UserDataDTO.class);
-            // Role list mapping manually (ModelMapper does not map)
+            // Role list mapping manually (ModelMapper does not map role of User to roleDataDTOList of UserDataDTO)
             List<RoleDataDTO> roleDataDTOList = new ArrayList<>();
             for (Role r: user.getRoles()) {
                 ModelMapper modelMapper1 = new ModelMapper();
@@ -74,13 +75,22 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findAllById(id);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user: {}", user.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getRoleDataDTOList: {}", user.getRoles().toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getUserInfoDTO: {}", user.getUserInfo().toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getUserInfoDTO: {}", user.getUserInfo());
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         UserDataDTO userDataDTO = modelMapper.map(user, UserDataDTO.class);
+        // Role list mapping manually (ModelMapper does not map role of User to roleDataDTOList of UserDataDTO)
+        List<RoleDataDTO> roleDataDTOList = new ArrayList<>();
+        for (Role r: user.getRoles()) {
+            ModelMapper modelMapper1 = new ModelMapper();
+            modelMapper1.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+            RoleDataDTO roleDataDTO = modelMapper.map(r, RoleDataDTO.class);
+            roleDataDTOList.add(roleDataDTO);
+        }
+        userDataDTO.setRoleDataDTOList(roleDataDTOList);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO: {}", userDataDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO.getRoleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO.getUserInfoDTO: {}", userDataDTO.getUserInfoDataDTO().toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO.getUserInfoDTO: {}", userDataDTO.getUserInfoDataDTO());
         return userDataDTO;
     }
 
@@ -96,13 +106,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(UserDataDTO userDataDTO) throws EntityToDataBaseException {
-
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveUser !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser userDataDTO to be mapped to User: {}", userDataDTO.toString());
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-        User user = modelMapper.map(userDataDTO, User.class);
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+//        User user = modelMapper.map(userDataDTO, User.class);
+        Mapper<UserDataDTO, User> mapper1 = new Mapper();
+        User user = mapper1.mapObj(userDataDTO, new User(),"STANDARD");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user (from userDataDTO) after simple mapping: {}", user.toString());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.userInfo (from userDataDTO) after simple mapping: {}", user.getUserInfo().toString());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.roles (from userDataDTO) after simple mapping: {}", user.getRoles().toString());
@@ -113,14 +124,18 @@ public class UserServiceImpl implements UserService {
         }
 
         // Fill-in roles of user
-        List<Role> roleList = new ArrayList<>();
-        for (RoleDataDTO roleDataDTO: userDataDTO.getRoleDataDTOList()) {
-            ModelMapper modelMapper2 = new ModelMapper();
-            modelMapper2.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-            Role role = modelMapper2.map(roleDataDTO, Role.class);
-            roleList.add(role);
-        }
+//        List<Role> roleList = new ArrayList<>();
+//        for (RoleDataDTO roleDataDTO: userDataDTO.getRoleDataDTOList()) {
+//            ModelMapper modelMapper2 = new ModelMapper();
+//            modelMapper2.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+//            Role role = modelMapper2.map(roleDataDTO, Role.class);
+//            roleList.add(role);
+//        }
+//        user.setRoles(roleList);
+        Mapper<RoleDataDTO, Role> mapper2 = new Mapper();
+        List<Role> roleList = mapper2.mapList(userDataDTO.getRoleDataDTOList(), new Role(),"STANDARD");
         user.setRoles(roleList);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.roles (from user) after mapping: {}", user.getRoles().toString());
 
         // Encoding password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -132,7 +147,36 @@ public class UserServiceImpl implements UserService {
         if (userSaved == null) {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
-
-
     }
+
+    @Override
+    public void saveAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException {
+
+        // Set roleList and then mapping it to roleDataDTOList. Then roleDataDTOList is put into userDataDTO
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(roleRepository.findAllByName("ROLE_ADMIN"));
+        if (roleUser) {
+            roleList.add(roleRepository.findAllByName("ROLE_USER"));
+        }
+//        List<RoleDataDTO> roleDataDTOList = new ArrayList();
+//        for (Role role:roleList) {
+//            ModelMapper modelMapper = new ModelMapper();
+//            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+//            RoleDataDTO roleDataDTO = modelMapper.map(role, RoleDataDTO.class);
+//            roleDataDTOList.add(roleDataDTO);
+//        }
+        Mapper<Role, RoleDataDTO> mapper = new Mapper<>();
+        List<RoleDataDTO> roleDataDTOList = mapper.mapList(roleList, new RoleDataDTO(),"STANDARD");
+        if (roleDataDTOList == null) {
+            throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
+        }
+        userDataDTO.setRoleDataDTOList(roleDataDTOList);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.addAdmin userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.addAdmin userDataDTO.roleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
+
+        // saving Admin (userDataDTO) as each User. Exception is coming from method saveUser
+        saveUser(userDataDTO);
+    }
+
+
 }

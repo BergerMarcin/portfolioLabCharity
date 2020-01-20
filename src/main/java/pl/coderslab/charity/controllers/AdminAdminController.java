@@ -43,6 +43,8 @@ public class AdminAdminController {
     private static Long getIdProtected() {return idProtected;}
     private static void setIdProtected(Long idProtected) {AdminAdminController.idProtected = idProtected;}
 
+    @ModelAttribute("roleDataDTOList")
+    public List<RoleDataDTO> roleDataDTOList () { return roleService.findAllMapToListOfRoleDataDTO(); }
 
     // ADMIN ADMINS LIST-START PAGE
     @GetMapping
@@ -56,8 +58,8 @@ public class AdminAdminController {
 
     // ADMIN ADMINS ADD PAGE
     @GetMapping("/add")
-    public String getAdminAdminsAddPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    public String getAdminAdminAddPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userDataDTO", new UserDataDTO());
@@ -65,14 +67,14 @@ public class AdminAdminController {
     }
 
     @PostMapping("/add")
-    public String postAdminAdminsAddPage(@ModelAttribute @Valid UserDataDTO userDataDTO,
+    public String postAdminAdminAddPage(@ModelAttribute @Valid UserDataDTO userDataDTO,
                                          BindingResult result, Model model,
                                          @RequestParam Boolean roleUser,
                                          @RequestParam Integer formButtonChoice) {
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO: {}", userDataDTO.toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage roleUser: {}", roleUser);
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage formButtonChoice: {}", formButtonChoice);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage roleUser: {}", roleUser);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage formButtonChoice: {}", formButtonChoice);
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/admin";
         }
@@ -83,26 +85,9 @@ public class AdminAdminController {
         }
 
         if (formButtonChoice == 1) {
-            // Set roleDataDTOList of userDataDTO
-            List<Role> roleList = new ArrayList<>();
-            roleList.add(roleService.findAllByName("ROLE_ADMIN"));
-            if (roleUser) {
-                roleList.add(roleService.findAllByName("ROLE_USER"));
-            }
-            List<RoleDataDTO> roleDataDTOList = new ArrayList();
-            for (Role role:roleList) {
-                ModelMapper modelMapper = new ModelMapper();
-                modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-                RoleDataDTO roleDataDTO = modelMapper.map(role, RoleDataDTO.class);
-                roleDataDTOList.add(roleDataDTO);
-            }
-            userDataDTO.setRoleDataDTOList(roleDataDTOList);
-            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO.roleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
-            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsAddPage userDataDTO: {}", userDataDTO.toString());
-
-            // Mapping & saving data at method saveUser (+ exception catch of both operation)
+            // Mapping & saving new Admin (+ exception catch of both operation)
             try {
-                userService.saveUser(userDataDTO);
+                userService.saveAdmin (userDataDTO, roleUser);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny", e.getMessage());
@@ -117,32 +102,32 @@ public class AdminAdminController {
 
     // ADMIN ADMINS UPDATE PAGE
     @GetMapping("/update")
-    public String getAdminAdminsUpdatePage(Long id, String email, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    public String getAdminAdminUpdatePage(Long id, String em,
+                                           @AuthenticationPrincipal CurrentUser currentUser, Model model) {
         UserDataDTO userDataDTO = userService.findAllById(id);
-        // additional validation of data from GET-request
-        if (email == null || !email.equals(userDataDTO.getEmail())) {
+        // additional validation (double check) of data from GET-request by checking email of user of id from request
+        if (em == null || !em.equals(userDataDTO.getEmail())) {
             return "redirect:/admin/admin";
         }
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
+        userDataDTO.setEmail("x@x.xxx");
         userDataDTO.setPassword("");
         userDataDTO.setRePassword("");
         userDataDTO.setTermsAcceptance(Boolean.TRUE);
         model.addAttribute("userDataDTO", userDataDTO);
-        model.addAttribute("roleDataDTOList", roleService.findAll());
         AdminAdminController.setIdProtected(id);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage idProtected: {}", AdminAdminController.getIdProtected());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage userDataDTO: {}", userDataDTO);
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage roleDataDTOList: {}", roleService.findAll());
         return "admin/admin-admin-update";
     }
     @PostMapping("/update")
-    public String postAdminAdminsUpdatePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
+    public String postAdminAdminUpdatePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
                                             BindingResult result, Model model,
                                             @RequestParam Integer formButtonChoice) {
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsUpdatePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsUpdatePage userDataDTO: {}", userDataDTO.toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsUpdatePage formButtonChoice: {}", formButtonChoice);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage formButtonChoice: {}", formButtonChoice);
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/admin";
         }

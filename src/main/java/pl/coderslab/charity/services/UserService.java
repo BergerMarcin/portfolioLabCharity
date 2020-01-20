@@ -22,4 +22,5 @@ public interface UserService {
 
     void saveUser(UserDataDTO userDataDTO) throws EntityToDataBaseException;
 
+    void saveAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException;
 }

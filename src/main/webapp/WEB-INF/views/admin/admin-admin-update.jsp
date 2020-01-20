@@ -33,42 +33,33 @@
 
         <div class="form-section form-section--columns">
             <div class="form-section--column">
-                <h4>Główne dane konta</h4>
 
                 <form:hidden path="id"/>
+                <form:hidden path="email"/>
                 <form:hidden path="termsAcceptance"/>
                 <form:hidden path="userInfoDataDTO.id"/>
 
+                <h4>Główne dane konta</h4>
                 <p class="error"><form:errors path="firstName"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="firstName" for="firstName">
-                        Imię <form:input path="firstName" id="firstName" required="true"/>
+                        Imię <form:input path="firstName" id="firstName"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="lastName"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="lastName" for="lastName">
-                        Nazwisko <form:input path="lastName" id="lastName" required="true"/>
+                        Nazwisko <form:input path="lastName" id="lastName"/>
                     </form:label>
                 </div>
+<%--
                 <p class="error"><form:errors path="email"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="email" for="email">
-                        Email <form:input type="email" path="email" id="email"  required="true"/>
+                        Email <form:input path="email" type="email" id="email"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="password"></form:errors></p>
-                <div class="form-group form-group--inline">
-                    <form:label path="password">
-                        Hasło <form:input path="password" type="password" required="true"/>
-                    </form:label>
-                </div>
-                <p class="error"><form:errors path="rePassword"></form:errors></p>
-                <div class="form-group form-group--inline">
-                    <form:label path="rePassword">
-                        Powtórz hasło <form:input path="rePassword" type="password" required="true"/>
-                    </form:label>
-                </div>
+--%>
                 <p class="error"><form:errors path="active"></form:errors></p>
                 <div class="form-group form-group--inline">
                 </div>
@@ -83,22 +74,27 @@
                 </form:label>
                 <%--        </div>--%>
 
-<%--
-                <c:forEach items="${roleDataDTOList}" var="role" varStatus="stat">
+                <h4>Wybierz poziom dostępu</h4>
+                <p>Dostęp:
+<%--                    TODO: improve below select form--%>
+                    <form:select path="roleDataDTOList" items="${roleDataDTOList}" itemLabel="name"
+                                 itemValue="id" multiple="true">
+                    </form:select>
+                </p>
+                <%--<c:forEach items="${roleDataDTOListAll}" var="role" varStatus="stat">
                     <div class="form-group form-group--checkbox">
-                        <form:label path="categoryIds" for="${'categ'.concat(stat.count)}">
-                            <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
+                        <form:label path="roleDataDTOList" for="${'role'.concat(stat.count)}">
+                            <c:if test="${userDataDTO.roleDataDTOList.contains(role)}">
                                 <span class="checkbox" data-checked="on" style="background-color: #f9c910;"></span>
                             </c:if>
-                            <c:if test="${!donationDataDTO.categoryIds.contains(category.id)}">
+                            <c:if test="${!userDataDTO.roleDataDTOList.contains(role)}">
                                 <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
                             </c:if>
-                            <span class="description">${category.name}</span>
-                            <form:checkbox path="categoryIds" value="${category.id}" id="${'categ'.concat(stat.count)}"/>
+                            <span class="description">${substringAfter(role.name, 'ROLE_')}</span>
+                            <form:checkbox path="roleDataDTOList" value="${role}" id="${'role'.concat(stat.count)}"/>
                         </form:label>
                     </div>
-                </c:forEach>
---%>
+                </c:forEach>--%>
             </div>>
 
             <div class="form-section--column">
@@ -134,6 +130,20 @@
                         Uwagi do odbioru <form:input path="userInfoDataDTO.pickUpComment" id="userInfoDataDTO.pickUpComment"/>
                     </form:label>
                 </div>
+            </div>
+
+            <h4>Potwierdź powyższe zmiany hasłem</h4>
+            <p class="error"><form:errors path="password"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="password">
+                    Hasło <form:input path="password" type="password"/>
+                </form:label>
+            </div>
+            <p class="error"><form:errors path="rePassword"></form:errors></p>
+            <div class="form-group form-group--inline">
+                <form:label path="rePassword">
+                    Powtórz hasło <form:input path="rePassword" type="password"/>
+                </form:label>
             </div>
 
             <div class="form-group form-group--buttons">

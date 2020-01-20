@@ -87,7 +87,7 @@ public class InstitutionServiceImpl implements InstitutionService {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
 
-        // Final saving donation
+        // Final saving institution
         Institution institutionSaved = institutionRepository.save(institution);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institutionSaved saved: {}", institutionSaved.toString());
         // check if saved
@@ -110,19 +110,15 @@ public class InstitutionServiceImpl implements InstitutionService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact update another record/line (instead of update the right one record/line)
-        if (institution.getId() != idProtected) {
+        if (institution.getId() == null || institution.getId() != idProtected) {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
 
-        // Final update donation
+        // Final update institution
         Institution institutionSaved = institutionRepository.save(institution);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institutionSaved saved: {}", institutionSaved.toString());
-        // check if update/saved
-        if (institutionSaved == null) {
-            throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
-        }
-        // check if updated (at update ID does not change)
-        if (institution.getId() != null && institution.getId() != institutionSaved.getId()) {
+        // check if update succeed
+        if (institutionSaved == null || institution.getId() != institutionSaved.getId()) {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
     }

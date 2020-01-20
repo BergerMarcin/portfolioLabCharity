@@ -79,6 +79,9 @@ public class AdminAdminController {
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
+            userDataDTO.setPassword("");
+            userDataDTO.setRePassword("");
+            model.addAttribute("userDataDTO", userDataDTO);
             return "admin/admin-admin-add";
         }
 
@@ -88,8 +91,11 @@ public class AdminAdminController {
                 userService.saveAdmin (userDataDTO, roleUser);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny. ", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
+                userDataDTO.setPassword("");
+                userDataDTO.setRePassword("");
+                model.addAttribute("userDataDTO", userDataDTO);
                 return "admin/admin-admin-add";
             }
         }
@@ -102,7 +108,7 @@ public class AdminAdminController {
     @GetMapping("/update")
     public String getAdminAdminUpdatePage(Long id, String em,
                                            @AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        UserDataDTO userDataDTO = userService.findAllById(id);
+        UserDataDTO userDataDTO = userService.findById(id);
         // additional validation (double check) of data from GET-request by checking email of user of id from request
         if (em == null || !em.equals(userDataDTO.getEmail())) {
             return "redirect:/admin/admin";
@@ -120,6 +126,10 @@ public class AdminAdminController {
         return "admin/admin-admin-update";
     }
 
+    // TODO:    - veryfing password
+    //          - issue with saving - not saving (probably again due to failed email verification)
+    //          - change email and password - probably new views
+    //          - check issue with email existing
     @PostMapping("/update")
     public String postAdminAdminUpdatePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
                                             BindingResult result, Model model,
@@ -141,14 +151,17 @@ public class AdminAdminController {
 
         if (formButtonChoice == 1) {
             // Mapping & update data & emailing to previous email at method saveUpdateUser (+ exception catch of both operation)
-//            try {
-//                userService.updateUser(AdminAdminController.getIdProtected(), userDataDTO, roleUser);
-//            } catch (EntityToDataBaseException e) {
-//                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-//                errorsMessageMap.put("Błąd ogólny", e.getMessage());
-//                model.addAttribute("errorsMessageMap", errorsMessageMap);
-//                return "admin/admin-admin-update";
-//            }
+            try {
+                userService.updateAdmin(AdminAdminController.getIdProtected(), userDataDTO);
+            } catch (EntityToDataBaseException e) {
+                Map<String, String> errorsMessageMap = new LinkedHashMap<>();
+                errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
+                model.addAttribute("errorsMessageMap", errorsMessageMap);
+                userDataDTO.setPassword("");
+                userDataDTO.setRePassword("");
+                model.addAttribute("userDataDTO", userDataDTO);
+                return "admin/admin-admin-update";
+            }
         }
 
         return "redirect:/admin/admin";
@@ -160,7 +173,7 @@ public class AdminAdminController {
     public String getAdminAdminsDeletePage(Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("userDataDTO", userService.findAllById(id));
+        model.addAttribute("userDataDTO", userService.findById(id));
         return "admin/admin-admin-delete";
     }
     @PostMapping("/delete")

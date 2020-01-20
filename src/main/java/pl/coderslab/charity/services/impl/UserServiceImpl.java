@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.domain.entities.User;
 import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.domain.repositories.UserRepository;
+import pl.coderslab.charity.dtos.InstitutionDataDTO;
 import pl.coderslab.charity.dtos.RoleDataDTO;
 import pl.coderslab.charity.dtos.UserDataDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDataDTO findAllById(Long id) {
+    public UserDataDTO findById(Long id) {
         User user = userRepository.findAllById(id);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user: {}", user.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getRoleDataDTOList: {}", user.getRoles().toString());
@@ -68,16 +70,6 @@ public class UserServiceImpl implements UserService {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO.getUserInfoDTO: {}", userDataDTO.getUserInfoDataDTO());
         return userDataDTO;
     }
-
-    //    @Override
-//    public User findAllByEmail(String email) {
-//        return userRepository.findAllByEmail(email);
-//    }
-
-//    @Override
-//    public User findAllWithUserInfoByEmail(String email) {
-//        return userRepository.findAllWithUserInfoByEmail(email);
-//    }
 
     @Override
     public void saveUser(UserDataDTO userDataDTO) throws EntityToDataBaseException {
@@ -128,6 +120,34 @@ public class UserServiceImpl implements UserService {
 
         // saving Admin (userDataDTO) as each User. Exception is coming from method saveUser
         saveUser(userDataDTO);
+    }
+
+    @Override
+    public void updateAdmin(Long idProtected, UserDataDTO userDataDTO) throws EntityToDataBaseException {
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! updateAdmin !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin userDataDTO to be mapped to User: {}", userDataDTO.toString());
+        User oldUser = userRepository.findAllById(idProtected);
+
+        Mapper<UserDataDTO, User> mapper = new Mapper<>();
+        User user = mapper.mapObj(userDataDTO, new User(),"STANDARD");
+        user.setCreatedOn(oldUser.getCreatedOn());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin user (from userDataDTO) after simple mapping: {}", user.toString());
+
+        // Protection against unauthorised in fact update another record/line (instead of update the right one record/line)
+        if (user.getId() == null || user.getId() != idProtected) {
+            throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
+        }
+
+        // Final update Admin
+        User userSaved = userRepository.save(user);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin userSaved saved: {}", userSaved.toString());
+        // check if update succeed
+        if (userSaved == null || user.getId() != userSaved.getId()) {
+            throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
+        }
+
+        //TODO: send an email informing about changes to old and new email.
+        // email to: {oldUser.getEmail(), user.getEmail()}
     }
 
 

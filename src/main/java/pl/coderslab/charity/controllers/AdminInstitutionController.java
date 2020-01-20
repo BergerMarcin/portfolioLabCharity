@@ -80,7 +80,7 @@ public class AdminInstitutionController {
                 institutionService.saveInstitution(institutionAddDataDTO);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny operacji", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
                 return "admin/admin-institution-add";
             }
@@ -125,7 +125,7 @@ public class AdminInstitutionController {
                 institutionService.updateInstitution(AdminInstitutionController.getIdProtected(), institutionDataDTO);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny operacji", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
                 return "admin/admin-institution-update";
             }
@@ -171,7 +171,7 @@ public class AdminInstitutionController {
                 institutionService.deleteInstitution(AdminInstitutionController.getIdProtected(), institutionDataDTO);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny operacji", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
                 return "admin/admin-institution-delete";
             }

@@ -57,7 +57,7 @@ public class RegisterController {
             registrationService.register(registrationDataDTO);
         } catch (EntityToDataBaseException e) {
             Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-            errorsMessageMap.put("Błąd ogólny", e.getMessage());
+            errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
             model.addAttribute("errorsMessageMap", errorsMessageMap);
             return "register";
         }

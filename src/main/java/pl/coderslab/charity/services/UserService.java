@@ -12,15 +12,15 @@ public interface UserService {
 
     Boolean isEmailUnique (String email);
 
-    UserDataDTO findAllById(Long id);
+    UserDataDTO findById(Long id);
 
     List<UserDataDTO> findAllByRoleName(String roleName);
 
-//    User findAllByEmail(String email);
-//
-//    User findAllWithUserInfoByEmail(String email);
 
     void saveUser(UserDataDTO userDataDTO) throws EntityToDataBaseException;
 
     void saveAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException;
+
+    void updateAdmin(Long idProtected, UserDataDTO userDataDTO) throws EntityToDataBaseException;
+
 }

@@ -104,6 +104,8 @@ public class UserServiceImpl implements UserService {
         if (userSaved == null) {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
+
+        //TODO: send an email informing about add as roles.name
     }
 
     @Override

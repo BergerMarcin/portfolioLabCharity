@@ -22,19 +22,18 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepository = roleRepository;
     }
 
-//    @Override
-//    public List<Role> findAll() { return roleRepository.findAll(); }
-
     @Override
-    public List<RoleDataDTO> findAllMapToListOfRoleDataDTO() {
+    public List<RoleDataDTO> findAll() {
         List<Role> roleList = roleRepository.findAll();
         Mapper<Role, RoleDataDTO> mapper = new Mapper();
         return mapper.mapList(roleList, new RoleDataDTO(), "STANDARD");
     }
 
-//    @Override
-//    public Role findAllByName(String name) {
-//        return roleRepository.findAllByName(name);
-//    }
+    @Override
+    public RoleDataDTO findById(Long id) {
+        Role role = roleRepository.findAllById(id);
+        Mapper<Role, RoleDataDTO> mapper = new Mapper();
+        return mapper.mapObj(role, new RoleDataDTO(), "STANDARD");
+    }
 
 }

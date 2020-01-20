@@ -39,8 +39,10 @@ public class AdminAdminController {
     private static Long getIdProtected() {return idProtected;}
     private static void setIdProtected(Long idProtected) {AdminAdminController.idProtected = idProtected;}
 
+    // Common roleDataDTOList library for all controlled views
     @ModelAttribute("roleDataDTOList")
-    public List<RoleDataDTO> roleDataDTOList () { return roleService.findAllMapToListOfRoleDataDTO(); }
+    public List<RoleDataDTO> roleDataDTOList () { return roleService.findAll(); }
+
 
     // ADMIN ADMINS LIST-START PAGE
     @GetMapping
@@ -86,7 +88,7 @@ public class AdminAdminController {
                 userService.saveAdmin (userDataDTO, roleUser);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
-                errorsMessageMap.put("Błąd ogólny", e.getMessage());
+                errorsMessageMap.put("Błąd ogólny. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
                 return "admin/admin-admin-add";
             }
@@ -117,6 +119,7 @@ public class AdminAdminController {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage userDataDTO: {}", userDataDTO);
         return "admin/admin-admin-update";
     }
+
     @PostMapping("/update")
     public String postAdminAdminUpdatePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
                                             BindingResult result, Model model,
@@ -130,6 +133,9 @@ public class AdminAdminController {
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
+            userDataDTO.setPassword("");
+            userDataDTO.setRePassword("");
+            model.addAttribute("userDataDTO", userDataDTO);
             return "admin/admin-admin-update";
         }
 

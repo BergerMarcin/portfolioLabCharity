@@ -1,7 +1,6 @@
 package pl.coderslab.charity.services.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +8,7 @@ import pl.coderslab.charity.domain.entities.*;
 import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.domain.repositories.UserRepository;
 import pl.coderslab.charity.dtos.RegistrationDataDTO;
+import pl.coderslab.charity.services.Mapper;
 import pl.coderslab.charity.services.RegistrationService;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
@@ -33,8 +33,10 @@ public class DefaultRegistrationService implements RegistrationService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. registrationDataDTO to be mapped to user: {}", registrationDataDTO.toString());
 
         // mapping registrationDataDTO to user
-        ModelMapper modelMapper = new ModelMapper();
-        User user = modelMapper.map(registrationDataDTO, User.class);
+        Mapper<RegistrationDataDTO, User> mapper = new Mapper<>();
+        User user = mapper.mapObj(registrationDataDTO, new User(), "STANDARD");
+//        ModelMapper modelMapper = new ModelMapper();
+//        User user = modelMapper.map(registrationDataDTO, User.class);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user (from registrationDataDTO) after simple mapping: {}", user.toString());
 
         // FILL-IN DEFAULT DATA/attributes (role, active) + ENCODE password

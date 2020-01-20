@@ -1,13 +1,12 @@
 package pl.coderslab.charity.services.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.domain.entities.User;
 import pl.coderslab.charity.domain.repositories.UserRepository;
 import pl.coderslab.charity.dtos.CurrentUserDataDTO;
 import pl.coderslab.charity.services.CurrentUserDataDTOService;
+import pl.coderslab.charity.services.Mapper;
 
 @Service
 @Slf4j
@@ -23,11 +22,15 @@ public class CurrentUserDataDTOServiceImpl implements CurrentUserDataDTOService 
     public CurrentUserDataDTO readFromDB(String email) {
         User user = userRepository.findAllWithUserInfoByEmail(email);
         if (user == null) {return null;}
-        ModelMapper modelMapper = new ModelMapper();
         // LOOSE method mapping nested objects of main/parent source object
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        CurrentUserDataDTO currentUserDataDTO = modelMapper.map(user, CurrentUserDataDTO.class);
-        return currentUserDataDTO;
+        Mapper<User, CurrentUserDataDTO> mapper = new Mapper<>();
+        return mapper.mapObj(user, new CurrentUserDataDTO(), "LOOSE");
+
+//        // LOOSE method mapping nested objects of main/parent source object
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+//        CurrentUserDataDTO currentUserDataDTO = modelMapper.map(user, CurrentUserDataDTO.class);
+//        return currentUserDataDTO;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package pl.coderslab.charity.services.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.domain.entities.Institution;
@@ -12,8 +10,8 @@ import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
 import pl.coderslab.charity.dtos.InstitutionDataDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.InstitutionService;
+import pl.coderslab.charity.services.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,27 +30,31 @@ public class InstitutionServiceImpl implements InstitutionService {
     @Override
     public List<InstitutionDataDTO> allInstitutionDataDTOList() {
         List<Institution> institutionList = institutionRepository.findAllByNameIsNotNullOrderByName();
-        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
-        for (Institution institution : institutionList) {
-            ModelMapper modelMapper = new ModelMapper();
-            InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-            institutionDataDTOList.add(institutionDataDTO);
-        }
-        return institutionDataDTOList;
+//        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
+//        for (Institution institution : institutionList) {
+//            ModelMapper modelMapper = new ModelMapper();
+//            InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
+//            institutionDataDTOList.add(institutionDataDTO);
+//        }
+//        return institutionDataDTOList;
+        Mapper<Institution, InstitutionDataDTO> mapper = new Mapper<>();
+        return mapper.mapList(institutionList, new InstitutionDataDTO(),"STANDARD");
     }
 
     @Override
     public List<InstitutionDataDTO> ifTrustedInstitutionDataDTOList(Boolean trusted) {
         List<Institution> institutionList = institutionRepository.findAllByNameIsNotNullOrderByName();
-        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
-        for (Institution institution : institutionList) {
-            if (institution.getTrusted() == trusted) {
-                ModelMapper modelMapper = new ModelMapper();
-                InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-                institutionDataDTOList.add(institutionDataDTO);
-            }
-        }
-        return institutionDataDTOList;
+//        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
+//        for (Institution institution : institutionList) {
+//            if (institution.getTrusted() == trusted) {
+//                ModelMapper modelMapper = new ModelMapper();
+//                InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
+//                institutionDataDTOList.add(institutionDataDTO);
+//            }
+//        }
+//        return institutionDataDTOList;
+        Mapper<Institution, InstitutionDataDTO> mapper = new Mapper<>();
+        return mapper.mapList(institutionList, new InstitutionDataDTO(),"STANDARD");
     }
 
     @Override
@@ -61,9 +63,11 @@ public class InstitutionServiceImpl implements InstitutionService {
         if (institution==null){
             return null;
         }
-        ModelMapper modelMapper = new ModelMapper();
-        InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-        return  institutionDataDTO;
+//        ModelMapper modelMapper = new ModelMapper();
+//        InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
+//        return  institutionDataDTO;
+        Mapper<Institution, InstitutionDataDTO> mapper = new Mapper<>();
+        return mapper.mapObj(institution, new InstitutionDataDTO(),"STANDARD");
     }
 
     @Override
@@ -71,9 +75,11 @@ public class InstitutionServiceImpl implements InstitutionService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveInstitution !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institutionDataDTO to be mapped to Institution: {}", institutionAddDataDTO.toString());
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-        Institution institution = modelMapper.map(institutionAddDataDTO, Institution.class);
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+//        Institution institution = modelMapper.map(institutionAddDataDTO, Institution.class);
+        Mapper<InstitutionAddDataDTO, Institution> mapper = new Mapper<>();
+        Institution institution = mapper.mapObj(institutionAddDataDTO, new Institution(),"STANDARD");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact update (instead of save=add new record/line)
@@ -95,9 +101,11 @@ public class InstitutionServiceImpl implements InstitutionService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! updateInstitution !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institutionDataDTO to be mapped to Institution: {}", institutionDataDTO.toString());
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-        Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+//        Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
+        Mapper<InstitutionDataDTO, Institution> mapper = new Mapper<>();
+        Institution institution = mapper.mapObj(institutionDataDTO, new Institution(),"STANDARD");
         institution.setCreatedOn(institutionRepository.findAllById(idProtected).getCreatedOn());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
 
@@ -124,9 +132,11 @@ public class InstitutionServiceImpl implements InstitutionService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution START !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institutionDataDTO to be mapped to Institution: {}", institutionDataDTO.toString());
 
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-        Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+//        Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
+        Mapper<InstitutionDataDTO, Institution> mapper = new Mapper<>();
+        Institution institution = mapper.mapObj(institutionDataDTO, new Institution(),"STANDARD");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact delete another record/line (instead of delete the right one record/line)

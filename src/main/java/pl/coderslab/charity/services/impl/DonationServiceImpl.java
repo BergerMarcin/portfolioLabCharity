@@ -1,8 +1,6 @@
 package pl.coderslab.charity.services.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.domain.entities.Category;
@@ -14,9 +12,9 @@ import pl.coderslab.charity.domain.repositories.InstitutionRepository;
 import pl.coderslab.charity.dtos.DonationDataDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.DonationService;
+import pl.coderslab.charity.services.Mapper;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,7 +32,6 @@ public class DonationServiceImpl implements DonationService {
         this.categoryRepository = categoryRepository;
         this.institutionRepository = institutionRepository;
     }
-
 
     @Override
     public Long bagsCountBeforeDate(LocalDate localDate) {
@@ -54,12 +51,14 @@ public class DonationServiceImpl implements DonationService {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId institution: {}", institution.toString());
         List<Donation> donationList = donationRepository.findAllWithCategoriesByInstitutionOrderByInstitution(institution);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationList: {}", donationList.toString());
-        List<DonationDataDTO> donationDataDTOList = new ArrayList<>();
-        for (Donation donation: donationList) {
-            ModelMapper modelMapper = new ModelMapper();
-            DonationDataDTO donationDataDTO = modelMapper.map(donation, DonationDataDTO.class);
-            donationDataDTOList.add(donationDataDTO);
-        }
+//        List<DonationDataDTO> donationDataDTOList = new ArrayList<>();
+//        for (Donation donation: donationList) {
+//            ModelMapper modelMapper = new ModelMapper();
+//            DonationDataDTO donationDataDTO = modelMapper.map(donation, DonationDataDTO.class);
+//            donationDataDTOList.add(donationDataDTO);
+//        }
+        Mapper<Donation, DonationDataDTO> mapper = new Mapper<>();
+        List<DonationDataDTO> donationDataDTOList = mapper.mapList(donationList, new DonationDataDTO(),"STANDARD");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationDataDTOList: {}", donationDataDTOList.toString());
         return donationDataDTOList;
     }
@@ -72,9 +71,11 @@ public class DonationServiceImpl implements DonationService {
         // STRICT mapping donation
         // (categories & institution is not mapped here;
         //  in case STANDARD mapping id is wrongly mapped from institutionId)
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Donation donation = modelMapper.map(donationDataDTO, Donation.class);
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        Donation donation = modelMapper.map(donationDataDTO, Donation.class);
+        Mapper<DonationDataDTO, Donation> mapper = new Mapper<>();
+        Donation donation = mapper.mapObj(donationDataDTO, new Donation(),"STRICT");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after simple mapping: {}", donation.toString());
         // InstitutionId need to be copied directly (due to STRICK matching strategy of mapping; STRICT matching requirred for id of donationDataDTO)
         Institution institution = new Institution();

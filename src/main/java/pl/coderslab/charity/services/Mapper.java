@@ -1,7 +1,6 @@
 package pl.coderslab.charity.services;
 
 
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
@@ -12,24 +11,23 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-@Slf4j
 public class Mapper<TIn, TOut> {
 
-//    private TIn tIn;
-//    private TOut tOut;
-//    private Class<TIn> tInType;
-//    private Class<TOut> tOutType;
-//
-//    public Mapper(Class<TIn> tInType, Class<TOut> tOutType) {
-//        this.tInType = tInType;
-//        this.tOutType = tOutType;
-//    }
-
-    public TOut mapObj (TIn tIn, TOut tOut, String method) {
-        if (!Arrays.asList("LOOSE", "STANDARD", "STRICT").contains(method.toUpperCase())) { return null; }
+    /**
+     * Generic method of converting/mapping object of TIn class to object of TOut class
+     * Applied map method of ModelMapper class acc. strategy
+     * @param tIn       - object of class TIn to be mapped to TOut class
+     * @param tOut      - just empty class for parameter of map method of ModelMapper class
+     * @param strategy  - strategy of map method of ModelMapper class
+     * @return          - object of class TOut converted/mapped from TIn class
+     */
+    public TOut mapObj (TIn tIn, TOut tOut, String strategy) {
+        // validation
+        if (tIn == null || tOut == null) { return null; }
+        if (!Arrays.asList("LOOSE", "STANDARD", "STRICT").contains(strategy.toUpperCase())) { return null; }
 
         ModelMapper modelMapper = new ModelMapper();
-        switch (method.toUpperCase()) {
+        switch (strategy.toUpperCase()) {
             case "LOOSE":
                 modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
                 break;
@@ -42,28 +40,26 @@ public class Mapper<TIn, TOut> {
             default:
                 return null;
         }
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tIn: {}", tIn);
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tIn.getClass(): {}", tIn.getClass());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj (Type) tIn.getClass(): {}", (Type) tIn.getClass());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOut: {}", tOut);
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOut.getClass(): {}", tOut.getClass());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj (Type) tOut.getClass(): {}", (Type) tOut.getClass());
-//        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOutType: {}", tOutType);
-//        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOutType.getClass(): {}", tOutType.getClass());
-//        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOutType.getClasses(): {}", tOutType.getClasses());
-//        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOutType.getClassLoader(): {}", tOutType.getClassLoader());
-//        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mapper.mapObj tOutType.getComponentType(): {}", tOutType.getComponentType());
         return modelMapper.map(tIn, (Type) tOut.getClass());
     }
 
-    public List<TOut> mapList (List<TIn> tInList, TOut tOut, String method) {
-        if (!Arrays.asList("LOOSE", "STANDARD", "STRICT").contains(method.toUpperCase())) { return null; }
+    /**
+     * Generic method of converting/mapping list of objects of TIn class to ArrayList of objects of TOut class
+     * Applied map method of ModelMapper class acc. strategy
+     * @param tInList   - List of objects of Class TIn to be mapped
+     * @param tOut      - just empty class for parameter of map method of ModelMapper class
+     * @param strategy  - strategy of map method of ModelMapper class
+     * @return          - ArrayList of objects of class TOut converted/mapped from list of objects of TIn class
+     */
+    public List<TOut> mapList (List<TIn> tInList, TOut tOut, String strategy) {
+        // validation
+        if (tInList == null || tOut == null) { return null; }
+        if (!Arrays.asList("LOOSE", "STANDARD", "STRICT").contains(strategy.toUpperCase())) { return null; }
 
         List<TOut> tOutList = new ArrayList<>();
         for (TIn tIn : tInList) {
-            tOutList.add(mapObj(tIn, tOut, method));
+            tOutList.add(mapObj(tIn, tOut, strategy));
         }
-
         return tOutList;
     }
 

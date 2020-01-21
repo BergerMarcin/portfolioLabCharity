@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.dtos.RoleDataDTO;
-import pl.coderslab.charity.dtos.UserDataDTO;
+import pl.coderslab.charity.dtos.RoleDTO;
+import pl.coderslab.charity.dtos.UserDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.*;
 
@@ -39,9 +39,9 @@ public class AdminAdminController {
     private static Long getIdProtected() {return idProtected;}
     private static void setIdProtected(Long idProtected) {AdminAdminController.idProtected = idProtected;}
 
-    // Common roleDataDTOList library for all controlled views
-    @ModelAttribute("roleDataDTOList")
-    public List<RoleDataDTO> roleDataDTOList () { return roleService.findAll(); }
+    // Common roleDTOList library for all controlled views
+    @ModelAttribute("roleDTOList")
+    public List<RoleDTO> roleDTOList() { return roleService.findAll(); }
 
 
     // ADMIN ADMINS LIST-START PAGE
@@ -49,7 +49,7 @@ public class AdminAdminController {
     public String getAdminAdminsPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("userDataDTOList", userService.findAllByRoleName("ROLE_ADMIN"));
+        model.addAttribute("userDTOList", userService.findAllByRoleName("ROLE_ADMIN"));
         return "admin/admin-admin";
     }
 
@@ -60,17 +60,17 @@ public class AdminAdminController {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("userDataDTO", new UserDataDTO());
+        model.addAttribute("userDTO", new UserDTO());
         return "admin/admin-admin-add";
     }
 
     @PostMapping("/add")
-    public String postAdminAdminAddPage(@ModelAttribute @Valid UserDataDTO userDataDTO,
+    public String postAdminAdminAddPage(@ModelAttribute @Valid UserDTO userDTO,
                                          BindingResult result, Model model,
                                          @RequestParam Boolean roleUser,
                                          @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage userDTO: {}", userDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage roleUser: {}", roleUser);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminAddPage formButtonChoice: {}", formButtonChoice);
         if (formButtonChoice == 0 || formButtonChoice == null) {
@@ -86,7 +86,7 @@ public class AdminAdminController {
         if (formButtonChoice == 1) {
             // Mapping & saving new Admin (+ exception catch of both operation)
             try {
-                userService.saveNewAdmin(userDataDTO, roleUser);
+                userService.saveNewAdmin(userDTO, roleUser);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
@@ -104,21 +104,21 @@ public class AdminAdminController {
     @GetMapping("/update")
     public String getAdminAdminUpdatePage(Long id, String em,
                                            @AuthenticationPrincipal CurrentUser currentUser, Model model) {
-        UserDataDTO userDataDTO = userService.findById(id);
+        UserDTO userDTO = userService.findById(id);
         // additional validation (double check) of data from GET-request by checking email of user of id from request
-        if (userDataDTO == null || em == null || !em.equals(userDataDTO.getEmail())) {
+        if (userDTO == null || em == null || !em.equals(userDTO.getEmail())) {
             return "redirect:/admin/admin";
         }
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        userDataDTO.setEmail("x@x.xxx");
-        userDataDTO.setPassword("");
-        userDataDTO.setRePassword("");
-        userDataDTO.setTermsAcceptance(Boolean.TRUE);
-        model.addAttribute("userDataDTO", userDataDTO);
+        userDTO.setEmail("x@x.xxx");
+        userDTO.setPassword("");
+        userDTO.setRePassword("");
+        userDTO.setTermsAcceptance(Boolean.TRUE);
+        model.addAttribute("userDTO", userDTO);
         AdminAdminController.setIdProtected(id);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage idProtected: {}", AdminAdminController.getIdProtected());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage userDataDTO: {}", userDataDTO);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminUpdatePage userDTO: {}", userDTO);
         return "admin/admin-admin-update";
     }
 
@@ -127,11 +127,11 @@ public class AdminAdminController {
     //          - change email and password - probably new views
     //          - check issue with email existing
     @PostMapping("/update")
-    public String postAdminAdminUpdatePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
+    public String postAdminAdminUpdatePage(@ModelAttribute @Valid UserDTO userDTO,
                                             BindingResult result, Model model,
                                             @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage userDTO: {}", userDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminUpdatePage formButtonChoice: {}", formButtonChoice);
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/admin";
@@ -146,7 +146,7 @@ public class AdminAdminController {
         if (formButtonChoice == 1) {
             // Mapping & update data & emailing to previous email at method saveUpdateUser (+ exception catch of both operation)
             try {
-                userService.updateAdmin(AdminAdminController.getIdProtected(), userDataDTO);
+                userService.updateAdmin(AdminAdminController.getIdProtected(), userDTO);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
@@ -165,15 +165,15 @@ public class AdminAdminController {
     public String getAdminAdminsDeletePage(Long id, @AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("userDataDTO", userService.findById(id));
+        model.addAttribute("userDTO", userService.findById(id));
         return "admin/admin-admin-delete";
     }
     @PostMapping("/delete")
-    public String postAdminAdminsDeletePage(@ModelAttribute @Valid UserDataDTO userDataDTO,
+    public String postAdminAdminsDeletePage(@ModelAttribute @Valid UserDTO userDTO,
                                                   BindingResult result, Model model,
                                                   @RequestParam Integer formButtonChoice) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsDeletePage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsDeletePage userDataDTO: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsDeletePage userDTO: {}", userDTO.toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminsDeletePage formButtonChoice: {}", formButtonChoice);
         if (formButtonChoice == 0 || formButtonChoice == null) {
             return "redirect:/admin/admin";
@@ -185,7 +185,7 @@ public class AdminAdminController {
         }
 
         if (formButtonChoice == 1) {
-//            userService.deleteUser(userDataDTO);
+//            userService.deleteUser(userDTO);
         }
 
         return "redirect:/admin/admin";

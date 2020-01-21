@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isELIgnored="false" %>
 
-<%-- This is viewer for TESTs on donationDataDTO and DonationServiceImpl operation--%>
+<%-- This is viewer for TESTs on donationDTO and DonationServiceImpl operation--%>
 
 <!DOCTYPE html>
 <html>
@@ -18,24 +18,24 @@
     <title>Charity - DONATION FORM TEST</title>
 </head>
 <body>
-<form:form method="post" modelAttribute="donationDataDTO">
+<form:form method="post" modelAttribute="donationDTO">
     <p>Categories: <form:select path="categoriesId" items="${categories}" itemLabel="name" itemValue="id" multiple="true"/>
         <form:errors path="categoriesId"></form:errors></p>
-    <p>Institutions: <form:select path="institutionId" items="${institutions}" itemLabel="name" itemValue="id" required="true"/>
+    <p>Institutions: <form:select path="institutionId" items="${institutions}" itemLabel="name" itemValue="id"/>
         <form:errors path="institutionId"></form:errors></p>
-    <p>Bags quantity: <form:input path="quantity" min="1" step="1" required="true"/>
+    <p>Bags quantity: <form:input path="quantity" min="1" step="1"/>
         <form:errors path="quantity"></form:errors></p>
-    <p>Street: <form:input path="street" required="true"/>
-        <form:errors path="street" required="true"></form:errors></p>
-    <p>City: <form:input path="city" required="true"/>
+    <p>Street: <form:input path="street"/>
+        <form:errors path="street"></form:errors></p>
+    <p>City: <form:input path="city"/>
         <form:errors path="city"></form:errors></p>
-    <p>Zip Code: <form:input path="zipCode"  required="true"/>
+    <p>Zip Code: <form:input path="zipCode"/>
         <form:errors path="zipCode"></form:errors></p>
     <p>Phone: <form:input path="phone"/>
         <form:errors path="phone"></form:errors></p>
     <p>Pick-up date: <form:input type="datetime-local" path="pickUpDate"/>
         <form:errors path="pickUpDate"></form:errors></p>
-    <p>Pick-up time: <form:input type="time-local" path="pickUpTime" required="true"/>
+    <p>Pick-up time: <form:input type="time-local" path="pickUpTime"/>
         <form:errors path="pickUpTime"></form:errors></p>
     <p>Pick-up comment: <form:textarea path="pickUpComment"/>
         <form:errors path="pickUpComment"></form:errors></p>
@@ -45,29 +45,29 @@
 <br><br>
 <ul>
     <li>
-        ${donationDataDTO.categoriesId} |||
+        ${donationDTO.categoriesId} |||
         <c:forEach items="${categories}" var="category">
-            <c:if test="${donationDataDTO.categoriesId.contains(category.id)}">
+            <c:if test="${donationDTO.categoriesId.contains(category.id)}">
                 ${category.id} ${category.name} |
             </c:if>
         </c:forEach>
     </li>
     <li>
-        ${donationDataDTO.institutionId} |||
+        ${donationDTO.institutionId} |||
         <c:forEach items="${institutions}" var="institution">
-            <c:if test="${donationDataDTO.institutionId == institution.id}">
+            <c:if test="${donationDTO.institutionId == institution.id}">
                 ${institution.id} ${institution.name} ${institution.description} |
             </c:if>
         </c:forEach>
     </li>
-    <li>${donationDataDTO.quantity}</li>
-    <li>${donationDataDTO.street}</li>
-    <li>${donationDataDTO.city}</li>
-    <li>${donationDataDTO.zipCode}</li>
-    <li>${donationDataDTO.phone}</li>
-    <li>${donationDataDTO.pickUpDate}</li>
-    <li>${donationDataDTO.pickUpTime}</li>
-    <li>${donationDataDTO.pickUpComment}</li>
+    <li>${donationDTO.quantity}</li>
+    <li>${donationDTO.street}</li>
+    <li>${donationDTO.city}</li>
+    <li>${donationDTO.zipCode}</li>
+    <li>${donationDTO.phone}</li>
+    <li>${donationDTO.pickUpDate}</li>
+    <li>${donationDTO.pickUpTime}</li>
+    <li>${donationDTO.pickUpComment}</li>
 </ul>
 
 </body>

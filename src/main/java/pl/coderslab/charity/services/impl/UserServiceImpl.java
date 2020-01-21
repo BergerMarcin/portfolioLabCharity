@@ -8,8 +8,8 @@ import pl.coderslab.charity.domain.entities.Role;
 import pl.coderslab.charity.domain.entities.User;
 import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.domain.repositories.UserRepository;
-import pl.coderslab.charity.dtos.RoleDataDTO;
-import pl.coderslab.charity.dtos.UserDataDTO;
+import pl.coderslab.charity.dtos.RoleDTO;
+import pl.coderslab.charity.dtos.UserDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.Mapper;
 import pl.coderslab.charity.services.UserService;
@@ -38,46 +38,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDataDTO> findAllByRoleName (String roleName) {
+    public List<UserDTO> findAllByRoleName (String roleName) {
         Role role = roleRepository.findAllByName(roleName);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName role: {}", role.toString());
         List<User> userList = userRepository.findAllByRoles(role);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userList: {}", userList.toString());
 
-        List<UserDataDTO> userDataDTOList = new ArrayList<>();
+        List<UserDTO> userDTOList = new ArrayList<>();
         for (User user: userList) {
-            UserDataDTO userDataDTO = mapUserToUserDataDTO(user);
-            userDataDTOList.add(userDataDTO);
-            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDataDTO: {}", userDataDTO.toString());
-            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDataDTO.getRoleDataDTOList: {}", userDataDTO.getRoleDataDTOList());
-            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDataDTO.getUserInfoDTO: {}", userDataDTO.getUserInfoDataDTO());
+            UserDTO userDTO = mapUserToUserDTO(user);
+            userDTOList.add(userDTO);
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDTO: {}", userDTO.toString());
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDTO.getRoleDTOList: {}", userDTO.getRoleDTOList());
+            log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDTO.getUserInfoDTO: {}", userDTO.getUserInfoDTO());
         }
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDataDTOList: {}", userDataDTOList.toString());
-        return userDataDTOList;
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllByRoleName userDTOList: {}", userDTOList.toString());
+        return userDTOList;
     }
 
     @Override
-    public UserDataDTO findById(Long id) {
+    public UserDTO findById(Long id) {
         User user = userRepository.findAllById(id);
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user: {}", user.toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getRoleDataDTOList: {}", user.getRoles().toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getRoleDTOList: {}", user.getRoles().toString());
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById user.getUserInfoDTO: {}", user.getUserInfo());
-        UserDataDTO userDataDTO = mapUserToUserDataDTO(user);
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO: {}", userDataDTO.toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO.getRoleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDataDTO.getUserInfoDTO: {}", userDataDTO.getUserInfoDataDTO());
-        return userDataDTO;
+        UserDTO userDTO = mapUserToUserDTO(user);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDTO: {}", userDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDTO.getRoleDTOList: {}", userDTO.getRoleDTOList().toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.findAllById userDTO.getUserInfoDTO: {}", userDTO.getUserInfoDTO());
+        return userDTO;
     }
 
     @Override
-    public void saveNewUser(UserDataDTO userDataDTO) throws EntityToDataBaseException {
+    public void saveNewUser(UserDTO userDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveUser !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser userDataDTO to be mapped to User: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser userDTO to be mapped to User: {}", userDTO.toString());
 
-        User user = mapUserDataDTOToUser(userDataDTO);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user (from userDataDTO) after simple mapping: {}", user.toString());
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.userInfo (from userDataDTO) after simple mapping: {}", user.getUserInfo().toString());
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.roles (from userDataDTO) after simple mapping: {}", user.getRoles().toString());
+        User user = mapUserDTOToUser(userDTO);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user (from userDTO) after simple mapping: {}", user.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.userInfo (from userDTO) after simple mapping: {}", user.getUserInfo().toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.saveUser user.roles (from userDTO) after simple mapping: {}", user.getRoles().toString());
 
         // Protection against unauthorised in fact update (instead of save=add new record/line)
         if (user.getId() != null) {
@@ -99,35 +99,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveNewAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException {
-        // Set roleList (ROLE_ADMIN + ROLE_USER if roleUser) and then mapping it to roleDataDTOList.
-        // Then roleDataDTOList is put into userDataDTO (with all new admin data) to be finally saved with saveUser method
+    public void saveNewAdmin(UserDTO userDTO, Boolean roleUser) throws EntityToDataBaseException {
+        // Set roleList (ROLE_ADMIN + ROLE_USER if roleUser) and then mapping it to roleDTOList.
+        // Then roleDTOList is put into userDTO (with all new admin data) to be finally saved with saveUser method
         List<Role> roleList = new ArrayList<>();
         roleList.add(roleRepository.findAllByName("ROLE_ADMIN"));
         if (roleUser) {
             roleList.add(roleRepository.findAllByName("ROLE_USER"));
         }
-        Mapper<Role, RoleDataDTO> mapper = new Mapper<>();
-        List<RoleDataDTO> roleDataDTOList = mapper.mapList(roleList, new RoleDataDTO(),"STANDARD");
-        if (roleDataDTOList == null) {
+        Mapper<Role, RoleDTO> mapper = new Mapper<>();
+        List<RoleDTO> roleDTOList = mapper.mapList(roleList, new RoleDTO(),"STANDARD");
+        if (roleDTOList == null) {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
-        userDataDTO.setRoleDataDTOList(roleDataDTOList);
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.addAdmin userDataDTO: {}", userDataDTO.toString());
-        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.addAdmin userDataDTO.roleDataDTOList: {}", userDataDTO.getRoleDataDTOList().toString());
+        userDTO.setRoleDTOList(roleDTOList);
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.addAdmin userDTO: {}", userDTO.toString());
+        log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UserServiceImpl.addAdmin userDTO.roleDTOList: {}", userDTO.getRoleDTOList().toString());
 
-        // saving Admin (userDataDTO) as each User. Exception is coming from method saveUser
-        saveNewUser(userDataDTO);
+        // saving Admin (userDTO) as each User. Exception is coming from method saveUser
+        saveNewUser(userDTO);
     }
 
     @Override
-    public void updateAdmin(Long idProtected, UserDataDTO userDataDTO) throws EntityToDataBaseException {
+    public void updateAdmin(Long idProtected, UserDTO userDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! updateAdmin !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin userDataDTO to be mapped to User: {}", userDataDTO.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin userDTO to be mapped to User: {}", userDTO.toString());
         User oldUser = userRepository.findAllById(idProtected);
 
-        User user =  mapUserDataDTOToUser(userDataDTO);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin user (from userDataDTO) after simple mapping: {}", user.toString());
+        User user =  mapUserDTOToUser(userDTO);
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin user (from userDTO) after simple mapping: {}", user.toString());
 
         // Protection against unauthorised in fact update another record/line (instead of update the right one record/line)
         if (user.getId() == null || user.getId() != idProtected) {
@@ -162,35 +162,35 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * Separate method to map UserDataDTO to User
-     * (due to issue mapping field with nested object RoleDataDTO to Role)
-     * @param userDataDTO
+     * Separate method to map UserDTO to User
+     * (due to issue mapping field with nested object RoleDTO to Role)
+     * @param userDTO
      * @return
      */
-    private User mapUserDataDTOToUser(UserDataDTO userDataDTO) {
-        // Mapping UserDataDTO to User (issue with RolesDataDTO, so below mapping separately)
-        Mapper<UserDataDTO, User> mapper1 = new Mapper();
-        User user = mapper1.mapObj(userDataDTO, new User(),"STANDARD");
-        // Mapping list of RoleDataDTO and set it to User
-        Mapper<RoleDataDTO, Role> mapper2 = new Mapper();
-        user.setRoles(mapper2.mapList(userDataDTO.getRoleDataDTOList(), new Role(),"STANDARD"));
+    private User mapUserDTOToUser(UserDTO userDTO) {
+        // Mapping UserDTO to User (issue with RoleDTO, so below mapping separately)
+        Mapper<UserDTO, User> mapper1 = new Mapper();
+        User user = mapper1.mapObj(userDTO, new User(),"STANDARD");
+        // Mapping list of RoleDTO and set it to User
+        Mapper<RoleDTO, Role> mapper2 = new Mapper();
+        user.setRoles(mapper2.mapList(userDTO.getRoleDTOList(), new Role(),"STANDARD"));
         return user;
     }
 
     /**
-     * Separate method to map User to UserDataDTO
-     * (due to issue mapping field with nested object Role to RoleDataDTO)
+     * Separate method to map User to UserDTO
+     * (due to issue mapping field with nested object Role to RoleDTO)
      * @param user
      * @return
      */
-    private UserDataDTO mapUserToUserDataDTO(User user) {
-        // Mapping User to UserDataDTO (below maps UserInfoDTO but does not RoleDataDTO)
-        Mapper<User, UserDataDTO> mapper1 = new Mapper<>();
-        UserDataDTO userDataDTO = mapper1.mapObj(user, new UserDataDTO(), "LOOSE");
-        // RoleDataDTO have to be mapped separately (probably due to short field list of RoleDataDTO)
-        Mapper<Role, RoleDataDTO> mapper2 = new Mapper<>();
-        userDataDTO.setRoleDataDTOList(mapper2.mapList(user.getRoles(), new RoleDataDTO(), "LOOSE"));
-        return userDataDTO;
+    private UserDTO mapUserToUserDTO(User user) {
+        // Mapping User to UserDTO (below maps UserInfoDTO but does not RoleDTO)
+        Mapper<User, UserDTO> mapper1 = new Mapper<>();
+        UserDTO userDTO = mapper1.mapObj(user, new UserDTO(), "LOOSE");
+        // RoleDTO have to be mapped separately (probably due to short field list of RoleDTO)
+        Mapper<Role, RoleDTO> mapper2 = new Mapper<>();
+        userDTO.setRoleDTOList(mapper2.mapList(user.getRoles(), new RoleDTO(), "LOOSE"));
+        return userDTO;
     }
 
 }

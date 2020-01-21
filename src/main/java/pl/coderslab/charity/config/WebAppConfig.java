@@ -5,8 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import pl.coderslab.charity.converters.RoleDataDTOConverter;
-import pl.coderslab.charity.dtos.RoleDataDTO;
+import pl.coderslab.charity.converters.RoleDTOConverter;
 
 @Configuration
 public class WebAppConfig implements WebMvcConfigurer {
@@ -14,11 +13,11 @@ public class WebAppConfig implements WebMvcConfigurer {
     // Declaring converter for Role
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(roleDataDTOConverter());
+        registry.addConverter(roleDTOConverter());
     }
     @Bean
-    public RoleDataDTOConverter roleDataDTOConverter() {
-        return new RoleDataDTOConverter();
+    public RoleDTOConverter roleDTOConverter() {
+        return new RoleDTOConverter();
     }
 
     @Override

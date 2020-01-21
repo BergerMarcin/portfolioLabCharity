@@ -17,7 +17,7 @@ import java.util.List;
 //        (exclude = {"password", "rePassword"})
 @EqualsAndHashCode(of = "id")
 @EqualTwoFields(baseField = "password", matchField = "rePassword", reportOn = "rePassword")
-public class UserDataDTO {
+public class UserDTO {
 
     //    @NotNull @Positive @Digits(integer = 4, fraction = 0)
     private Long id;
@@ -36,9 +36,9 @@ public class UserDataDTO {
     @NotNull
     private Boolean active = Boolean.FALSE;
     @Valid
-    private UserInfoDataDTO userInfoDataDTO = new UserInfoDataDTO();
+    private UserInfoDTO userInfoDTO = new UserInfoDTO();
     @Valid
-    private List<RoleDataDTO> roleDataDTOList = new ArrayList<>();
+    private List<RoleDTO> roleDTOList = new ArrayList<>();
 
 }
 

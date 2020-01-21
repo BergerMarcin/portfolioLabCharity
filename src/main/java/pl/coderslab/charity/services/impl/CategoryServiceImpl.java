@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.domain.entities.Category;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
-import pl.coderslab.charity.dtos.CategoryDataDTO;
+import pl.coderslab.charity.dtos.CategoryDTO;
 import pl.coderslab.charity.services.CategoryService;
 import pl.coderslab.charity.services.Mapper;
 
@@ -21,18 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDataDTO> allCategoryDataDTOList() {
+    public List<CategoryDTO> allCategoryDTOList() {
         List<Category> categoryList = categoryRepository.findAllByNameIsNotNullOrderByName();
-        Mapper<Category, CategoryDataDTO> mapper = new Mapper<>();
-        return mapper.mapList(categoryList, new CategoryDataDTO(), "STANDARD");
-
-//        List<CategoryDataDTO> categoryDataDTOList = new ArrayList<>();
-//        for (Category category: categoryList) {
-//            ModelMapper modelMapper = new ModelMapper();
-//            CategoryDataDTO categoryDataDTO = modelMapper.map(category, CategoryDataDTO.class);
-//            categoryDataDTOList.add(categoryDataDTO);
-//        }
-//        return categoryDataDTOList;
+        Mapper<Category, CategoryDTO> mapper = new Mapper<>();
+        return mapper.mapList(categoryList, new CategoryDTO(), "STANDARD");
     }
 
 }

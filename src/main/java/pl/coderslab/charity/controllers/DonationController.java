@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.dtos.CategoryDataDTO;
-import pl.coderslab.charity.dtos.DonationDataDTO;
-import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.dtos.CategoryDTO;
+import pl.coderslab.charity.dtos.DonationDTO;
+import pl.coderslab.charity.dtos.InstitutionDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.*;
 
@@ -35,15 +35,15 @@ public class DonationController {
     }
 
     // Library categories based on CategoryDTO (available non-stop in model as "categories" at @RequestMapping("/donation")
-    @ModelAttribute("categoryDataDTOList")
-    public List<CategoryDataDTO> categoryDataDTOList() {
-        return categoryService.allCategoryDataDTOList();
+    @ModelAttribute("categoryDTOList")
+    public List<CategoryDTO> categoryDTOList() {
+        return categoryService.allCategoryDTOList();
     }
 
-    // Library institutions based on InstitutionDTO (available non-stop in model as "institutionDataDTOList" at @RequestMapping("/donation")
-    @ModelAttribute("institutionDataDTOList")
-    public List<InstitutionDataDTO> institutionDataDTOList() {
-        return institutionService.ifTrustedInstitutionDataDTOList(Boolean.TRUE);
+    // Library institutions based on InstitutionDTO (available non-stop in model as "institutionDTOList" at @RequestMapping("/donation")
+    @ModelAttribute("institutionDTOList")
+    public List<InstitutionDTO> institutionDTOList() {
+        return institutionService.ifTrustedInstitutionDTOList(Boolean.TRUE);
     }
 
 
@@ -52,28 +52,28 @@ public class DonationController {
     @GetMapping("/form")
     public String getDonationPage (@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! GET FORM start !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        DonationDataDTO donationDataDTO = new DonationDataDTO();
-        model.addAttribute("donationDataDTO", donationDataDTO);
+        DonationDTO donationDTO = new DonationDTO();
+        model.addAttribute("donationDTO", donationDTO);
         model.addAttribute("errorsMessageMap", null);
         if (currentUser != null) {
             model.addAttribute("currentUser", currentUser);
             log.debug("currentUser FULL BASIC: {}", currentUser.toString());
-            log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDataDTO().toString());
+            log.debug("currentUser FULL DETAILS: {}", currentUser.getCurrentUserDTO().toString());
         }
         return "form";
     }
     @PostMapping("/form")
-    public String postDonationPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO,
+    public String postDonationPage (@ModelAttribute @Valid DonationDTO donationDTO,
                                     BindingResult result, Model model) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST FORM proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("DonationController. donationDataDTO from FORM: {}", donationDataDTO.toString());
+        log.debug("DonationController. donationDTO from FORM: {}", donationDTO.toString());
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
             return "form";
         }
 
         // before summary-form reset parameters if back-to-form or save
-        model.addAttribute("donationDataDTO", donationDataDTO);
+        model.addAttribute("donationDTO", donationDTO);
         return "form-summary";
     }
 
@@ -81,12 +81,12 @@ public class DonationController {
     // form-summary POST
     // (no GET as applied instead direct "jump" into form-summary.jsp from postDonationPage i.e. from POST of form.jsp)
     @PostMapping("/form-summary")
-    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDataDTO donationDataDTO,
+    public String postDonationSummaryPage (@ModelAttribute @Valid DonationDTO donationDTO,
                                            BindingResult result, Model model,
                                            @RequestParam Integer ifBackToForm) {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! POST SUMMARY proceed !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("DonationController. result from SUMMARY: {}", result.getFieldErrors());
-        log.debug("DonationController. donationDataDTO from SUMMARY: {}", donationDataDTO.toString());
+        log.debug("DonationController. donationDTO from SUMMARY: {}", donationDTO.toString());
         log.debug("DonationController. ifBackToForm from SUMMARY: {}", ifBackToForm);
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
@@ -100,7 +100,7 @@ public class DonationController {
         // In case user CONFIRMATION DATA
         // Mapping & saving data at method saveDonation (+ exception catch of both operation)
         try {
-            donationService.saveNewDonation(donationDataDTO);
+            donationService.saveNewDonation(donationDTO);
         } catch (EntityToDataBaseException e) {
             Map<String, String> errorsMessageMap = new LinkedHashMap<>();
             errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());

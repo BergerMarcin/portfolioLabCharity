@@ -47,7 +47,7 @@
             <th scope="col">edycja</th>
             <th scope="col">usuń</th>
         </tr>
-        <c:forEach items="${userDataDTOList}" var="user" varStatus="stat">
+        <c:forEach items="${userDTOList}" var="user" varStatus="stat">
             <tr>
                 <td>${stat.count}</td>
                 <td>${user.id}</td>
@@ -59,14 +59,14 @@
                     <c:if test="${!user.active}">NIE</c:if>
                 </td>
                 <td>
-                    <c:forEach items="${user.roleDataDTOList}" var="role">
+                    <c:forEach items="${user.roleDTOList}" var="role">
                         ${role.name}<br>
                     </c:forEach>
                 </td>
-                <td>${user.userInfoDataDTO.street}</td>
-                <td>${user.userInfoDataDTO.city}</td>
-                <td>${user.userInfoDataDTO.zipCode}</td>
-                <td>${user.userInfoDataDTO.phone}</td>
+                <td>${user.userInfoDTO.street}</td>
+                <td>${user.userInfoDTO.city}</td>
+                <td>${user.userInfoDTO.zipCode}</td>
+                <td>${user.userInfoDTO.phone}</td>
                 <td>
                     <c:url value="/admin/admin/update" var="updateURL">
                         <c:param name="id" value="${user.id}"/>

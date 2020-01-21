@@ -79,7 +79,7 @@
         <div class="form--steps-counter"><span></span></div>
 <%--        <div class="form--steps-counter">Krok <span>1</span>/4--%>
 
-        <form:form action="/donation/form-summary" method="post" modelAttribute="donationDataDTO">
+        <form:form action="/donation/form-summary" method="post" modelAttribute="donationDTO">
             <sec:csrfInput/>
             <form:hidden path="categoryIds"/>
             <form:hidden path="institutionId"/>
@@ -103,9 +103,9 @@
                             <li>
                                 <span class="icon icon-bag"></span>
                                 <span class="summary--text">
-                                    ${donationDataDTO.quantity} worków zawierających
-                                    <c:forEach items="${categoryDataDTOList}" var="category">
-                                        <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
+                                    ${donationDTO.quantity} worków zawierających
+                                    <c:forEach items="${categoryDTOList}" var="category">
+                                        <c:if test="${donationDTO.categoryIds.contains(category.id)}">
                                             ${category.name},
                                         </c:if>
                                     </c:forEach>
@@ -116,8 +116,8 @@
                                 <span class="icon icon-hand"></span>
                                 <span class="summary--text">
                                     Dla fundacji
-                                     <c:forEach items="${institutionDataDTOList}" var="institution">
-                                         <c:if test="${donationDataDTO.institutionId == institution.id}">
+                                     <c:forEach items="${institutionDTOList}" var="institution">
+                                         <c:if test="${donationDTO.institutionId == institution.id}">
                                              ${institution.name}
                                          </c:if>
                                      </c:forEach>
@@ -130,23 +130,23 @@
                         <div class="form-section--column">
                             <h4>Adres odbioru:</h4>
                             <ul>
-                                <li><c:out value="ul. ${donationDataDTO.street}"/></li>
-                                <li>${donationDataDTO.city}</li>
-                                <li>${donationDataDTO.zipCode}</li>
-                                <li>${donationDataDTO.phone}</li>
+                                <li><c:out value="ul. ${donationDTO.street}"/></li>
+                                <li>${donationDTO.city}</li>
+                                <li>${donationDTO.zipCode}</li>
+                                <li>${donationDTO.phone}</li>
                             </ul>
                         </div>
 
                         <div class="form-section--column">
                             <h4>Termin odbioru:</h4>
                             <ul>
-                                <li>${donationDataDTO.pickUpDate}</li>
-                                <li>${donationDataDTO.pickUpTime}</li>
+                                <li>${donationDTO.pickUpDate}</li>
+                                <li>${donationDTO.pickUpTime}</li>
                                 <li>
-                                    <c:if test="${not empty donationDataDTO.pickUpComment}">
-                                        ${donationDataDTO.pickUpComment}
+                                    <c:if test="${not empty donationDTO.pickUpComment}">
+                                        ${donationDTO.pickUpComment}
                                     </c:if>
-                                    <c:if test="${empty donationDataDTO.pickUpComment}">
+                                    <c:if test="${empty donationDTO.pickUpComment}">
                                         Brak uwag
                                     </c:if>
                                 </li>

@@ -28,7 +28,7 @@
 <section class="login-page">
     <h2>Dodanie nowego administratora</h2>
 
-    <form:form method="post" modelAttribute="userDataDTO">
+    <form:form method="post" modelAttribute="userDTO">
         <sec:csrfInput/>
 
         <div class="form-section form-section--columns">
@@ -36,27 +36,27 @@
                 <h4>Główne dane konta</h4>
 
                 <form:hidden path="id"/>
-                <form:hidden path="userInfoDataDTO.id"/>
-<%--                If roleDataDTOList is empty/null then below line passes to Controller roleDataDTOList as a String instead of list
+                <form:hidden path="userInfoDTO.id"/>
+<%--                If roleDTOList is empty/null then below line passes to Controller roleDTOList as a String instead of list
                     (Spring Validation or Binding expects a list, and may not accept String), so below line is commented--%>
-<%--                <form:hidden path="roleDataDTOList"/>--%>
+<%--                <form:hidden path="roleDTOList"/>--%>
 
                 <p class="error"><form:errors path="firstName"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="firstName" for="firstName">
-                        Imię <form:input path="firstName" id="firstName" required="true"/>
+                        Imię <form:input path="firstName" id="firstName"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="lastName"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="lastName" for="lastName">
-                        Nazwisko <form:input path="lastName" id="lastName" required="true"/>
+                        Nazwisko <form:input path="lastName" id="lastName"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="email"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="email" for="email">
-                        Email <form:input type="email" path="email" id="email"  required="true"/>
+                        Email <form:input type="email" path="email" id="email"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="termsAcceptance"></form:errors></p>
@@ -76,13 +76,13 @@
                 <p class="error"><form:errors path="password"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="password">
-                        Hasło <form:input path="password" type="password" required="true"/>
+                        Hasło <form:input path="password" type="password"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="rePassword"></form:errors></p>
                 <div class="form-group form-group--inline">
                     <form:label path="rePassword">
-                        Powtórz hasło <form:input path="rePassword" type="password" required="true"/>
+                        Powtórz hasło <form:input path="rePassword" type="password"/>
                     </form:label>
                 </div>
                 <p class="error"><form:errors path="active"></form:errors></p>
@@ -116,34 +116,34 @@
             <div class="form-section--column">
                 <h4>Adres odbioru</h4>
 
-                <p class="error"><form:errors path="userInfoDataDTO.street"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.street"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.street" for="userInfoDataDTO.street">
-                        Ulica <form:input path="userInfoDataDTO.street" id="userInfoDataDTO.street"/>
+                    <form:label path="userInfoDTO.street" for="userInfoDTO.street">
+                        Ulica <form:input path="userInfoDTO.street" id="userInfoDTO.street"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.city"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.city"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.city" for="userInfoDataDTO.city">
-                        Miasto <form:input path="userInfoDataDTO.city" id="userInfoDataDTO.city"/>
+                    <form:label path="userInfoDTO.city" for="userInfoDTO.city">
+                        Miasto <form:input path="userInfoDTO.city" id="userInfoDTO.city"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.zipCode"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.zipCode"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.zipCode" for="userInfoDataDTO.zipCode">
-                        Kod pocztowy <form:input path="userInfoDataDTO.zipCode" id="userInfoDataDTO.zipCode"/>
+                    <form:label path="userInfoDTO.zipCode" for="userInfoDTO.zipCode">
+                        Kod pocztowy <form:input path="userInfoDTO.zipCode" id="userInfoDTO.zipCode"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.phone"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.phone"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.phone" for="userInfoDataDTO.phone">
-                        Telefon <form:input path="userInfoDataDTO.phone" id="userInfoDataDTO.phone"/>
+                    <form:label path="userInfoDTO.phone" for="userInfoDTO.phone">
+                        Telefon <form:input path="userInfoDTO.phone" id="userInfoDTO.phone"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.pickUpComment"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.pickUpComment"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.pickUpComment" for="userInfoDataDTO.pickUpComment">
-                        Uwagi do odbioru <form:input path="userInfoDataDTO.pickUpComment" id="userInfoDataDTO.pickUpComment"/>
+                    <form:label path="userInfoDTO.pickUpComment" for="userInfoDTO.pickUpComment">
+                        Uwagi do odbioru <form:input path="userInfoDTO.pickUpComment" id="userInfoDTO.pickUpComment"/>
                     </form:label>
                 </div>
             </div>

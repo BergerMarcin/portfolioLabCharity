@@ -28,7 +28,7 @@
 <section class="login-page">
 <h2>Dodawanie nowej instytucji lub organizacji</h2>
 
-<form:form method="post" modelAttribute="institutionAddDataDTO">
+<form:form method="post" modelAttribute="institutionAddDTO">
     <sec:csrfInput/>
     <%--    <form:hidden path="id"/>--%>
 

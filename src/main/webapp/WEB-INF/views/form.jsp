@@ -77,20 +77,20 @@
   <div class="form--steps-container">
     <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-    <form:form action="/donation/form" method="post" modelAttribute="donationDataDTO">
+    <form:form action="/donation/form" method="post" modelAttribute="donationDTO">
       <sec:csrfInput/>
 
       <!-- STEP 1: class .active is switching steps -->
       <div id="data-step-1" data-step="1" class="active">
         <h3>Zaznacz co chcesz oddać:</h3>
         <p class="error"><form:errors path="categoryIds"></form:errors></p>
-        <c:forEach items="${categoryDataDTOList}" var="category" varStatus="stat">
+        <c:forEach items="${categoryDTOList}" var="category" varStatus="stat">
           <div class="form-group form-group--checkbox">
             <form:label path="categoryIds" for="${'categ'.concat(stat.count)}">
-              <c:if test="${donationDataDTO.categoryIds.contains(category.id)}">
+              <c:if test="${donationDTO.categoryIds.contains(category.id)}">
                 <span class="checkbox" data-checked="on" style="background-color: #f9c910;"></span>
               </c:if>
-              <c:if test="${!donationDataDTO.categoryIds.contains(category.id)}">
+              <c:if test="${!donationDTO.categoryIds.contains(category.id)}">
                 <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
               </c:if>
               <span class="description">${category.name}</span>
@@ -134,13 +134,13 @@
       <div id="data-step-3" data-step="3">
         <h3>Wybierz organizacje, której chcesz pomóc:</h3>
         <p class="error"><form:errors path="institutionId"></form:errors></p>
-        <c:forEach items="${institutionDataDTOList}" var="institution" varStatus="stat">
+        <c:forEach items="${institutionDTOList}" var="institution" varStatus="stat">
           <div class="form-group form-group--checkbox">
             <form:label path="institutionId" for="${'instit'.concat(stat.count)}">
-              <c:if test="${donationDataDTO.institutionId == institution.id}">
+              <c:if test="${donationDTO.institutionId == institution.id}">
                 <span class="checkbox radio" data-checked="on" style="background-color: #f9c910;"></span>
               </c:if>
-              <c:if test="${donationDataDTO.institutionId != institution.id}">
+              <c:if test="${donationDTO.institutionId != institution.id}">
                 <span class="checkbox radio" data-checked="off" style="background-color: transparent;"></span>
               </c:if>
               <span class="description">

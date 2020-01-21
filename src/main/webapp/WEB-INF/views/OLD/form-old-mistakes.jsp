@@ -38,7 +38,7 @@
 
 
 <section class="form--steps">
-    <form:form action="/donation/form" method="post" modelAttribute="donationDataDTO">
+    <form:form action="/donation/form" method="post" modelAttribute="donationDTO">
     <div class="form--steps-instructions">
         <div class="form--steps-container">
             <h3>Ważne!</h3>
@@ -80,7 +80,7 @@
                               </div>
                             </c:forEach>--%>
 
-                <%--            <form:form action="/donation/form" method="post" modelAttribute="donationDataDTO">
+                <%--            <form:form action="/donation/form" method="post" modelAttribute="donationDTO">
                               <form:input path="city">DUPA</form:input>
                               <c:forEach items="${categories}" var="category">
                                 <form:checkbox path="categories" itemValue="${category.id}">
@@ -179,7 +179,7 @@
                 <label>
                     Liczba 60l worków:
                     <input type="number" name="bags" step="1" min="1" />
-                        <%--                <form:input path="donationDataDTO.quantity"--%>
+                        <%--                <form:input path="donationDTO.quantity"--%>
                         <%--                            cssClass="form-group form-group--inline"--%>
                         <%--                            type="number" min="1" max="500" step="1">--%>
 
@@ -296,7 +296,7 @@
                         <li>
                             <span class="icon icon-bag"></span>
                             <span class="summary--text"
-                            >${model.donationDataDTO.quantity} 4 worki ${model.donationDataDTO.categories.get(0).name} ubrań w dobrym stanie dla dzieci</span
+                            >${model.donationDTO.quantity} 4 worki ${model.donationDTO.categories.get(0).name} ubrań w dobrym stanie dla dzieci</span
                             >
                         </li>
 

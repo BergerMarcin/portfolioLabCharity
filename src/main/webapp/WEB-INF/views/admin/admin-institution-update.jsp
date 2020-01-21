@@ -28,7 +28,7 @@
 <section class="login-page">
     <h2>Edycja istniejącej instytucji lub organizacji</h2>
 
-    <form:form method="post" modelAttribute="institutionDataDTO">
+    <form:form method="post" modelAttribute="institutionDTO">
         <sec:csrfInput/>
         <form:hidden path="id"/>
 

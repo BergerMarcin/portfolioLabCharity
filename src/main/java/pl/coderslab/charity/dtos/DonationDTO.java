@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Getter @Setter @ToString
-public class DonationDataDTO {
+public class DonationDTO {
 
     @NotNull
     @Positive

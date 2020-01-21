@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.DonationRepository;
 import pl.coderslab.charity.domain.repositories.InstitutionRepository;
-import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
-import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.dtos.InstitutionAddDTO;
+import pl.coderslab.charity.dtos.InstitutionDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.InstitutionService;
 import pl.coderslab.charity.services.Mapper;
@@ -28,59 +28,36 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public List<InstitutionDataDTO> allInstitutionDataDTOList() {
+    public List<InstitutionDTO> allInstitutionDTOList() {
         List<Institution> institutionList = institutionRepository.findAllByNameIsNotNullOrderByName();
-//        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
-//        for (Institution institution : institutionList) {
-//            ModelMapper modelMapper = new ModelMapper();
-//            InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-//            institutionDataDTOList.add(institutionDataDTO);
-//        }
-//        return institutionDataDTOList;
-        Mapper<Institution, InstitutionDataDTO> mapper = new Mapper<>();
-        return mapper.mapList(institutionList, new InstitutionDataDTO(),"STANDARD");
+        Mapper<Institution, InstitutionDTO> mapper = new Mapper<>();
+        return mapper.mapList(institutionList, new InstitutionDTO(),"STANDARD");
     }
 
     @Override
-    public List<InstitutionDataDTO> ifTrustedInstitutionDataDTOList(Boolean trusted) {
+    public List<InstitutionDTO> ifTrustedInstitutionDTOList(Boolean trusted) {
         List<Institution> institutionList = institutionRepository.findAllByNameIsNotNullOrderByName();
-//        List<InstitutionDataDTO> institutionDataDTOList = new ArrayList<>();
-//        for (Institution institution : institutionList) {
-//            if (institution.getTrusted() == trusted) {
-//                ModelMapper modelMapper = new ModelMapper();
-//                InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-//                institutionDataDTOList.add(institutionDataDTO);
-//            }
-//        }
-//        return institutionDataDTOList;
-        Mapper<Institution, InstitutionDataDTO> mapper = new Mapper<>();
-        return mapper.mapList(institutionList, new InstitutionDataDTO(),"STANDARD");
+        Mapper<Institution, InstitutionDTO> mapper = new Mapper<>();
+        return mapper.mapList(institutionList, new InstitutionDTO(),"STANDARD");
     }
 
     @Override
-    public InstitutionDataDTO institutionById(Long id) {
+    public InstitutionDTO institutionById(Long id) {
         Institution institution = institutionRepository.findAllById(id);
         if (institution==null){
             return null;
         }
-//        ModelMapper modelMapper = new ModelMapper();
-//        InstitutionDataDTO institutionDataDTO = modelMapper.map(institution, InstitutionDataDTO.class);
-//        return  institutionDataDTO;
-        Mapper<Institution, InstitutionDataDTO> mapper = new Mapper<>();
-        return mapper.mapObj(institution, new InstitutionDataDTO(),"STANDARD");
+        Mapper<Institution, InstitutionDTO> mapper = new Mapper<>();
+        return mapper.mapObj(institution, new InstitutionDTO(),"STANDARD");
     }
 
     @Override
-    public void saveNewInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException {
+    public void saveNewInstitution(InstitutionAddDTO institutionAddDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveInstitution !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institutionDataDTO to be mapped to Institution: {}", institutionAddDataDTO.toString());
-
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-//        Institution institution = modelMapper.map(institutionAddDataDTO, Institution.class);
-        Mapper<InstitutionAddDataDTO, Institution> mapper = new Mapper<>();
-        Institution institution = mapper.mapObj(institutionAddDataDTO, new Institution(),"STANDARD");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institutionDTO to be mapped to Institution: {}", institutionAddDTO.toString());
+        Mapper<InstitutionAddDTO, Institution> mapper = new Mapper<>();
+        Institution institution = mapper.mapObj(institutionAddDTO, new Institution(),"STANDARD");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institution (from institutionDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact update (instead of save=add new record/line)
         if (institution.getId() != null) {
@@ -97,17 +74,13 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public void updateInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException {
+    public void updateInstitution(Long idProtected, InstitutionDTO institutionDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! updateInstitution !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institutionDataDTO to be mapped to Institution: {}", institutionDataDTO.toString());
-
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-//        Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
-        Mapper<InstitutionDataDTO, Institution> mapper = new Mapper<>();
-        Institution institution = mapper.mapObj(institutionDataDTO, new Institution(),"STANDARD");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institutionDTO to be mapped to Institution: {}", institutionDTO.toString());
+        Mapper<InstitutionDTO, Institution> mapper = new Mapper<>();
+        Institution institution = mapper.mapObj(institutionDTO, new Institution(),"STANDARD");
         institution.setCreatedOn(institutionRepository.findAllById(idProtected).getCreatedOn());
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.updateInstitution institution (from institutionDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact update another record/line (instead of update the right one record/line)
         if (institution.getId() == null || institution.getId() != idProtected) {
@@ -124,16 +97,12 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public void deleteInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException {
+    public void deleteInstitution(Long idProtected, InstitutionDTO institutionDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution START !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institutionDataDTO to be mapped to Institution: {}", institutionDataDTO.toString());
-
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
-//        Institution institution = modelMapper.map(institutionDataDTO, Institution.class);
-        Mapper<InstitutionDataDTO, Institution> mapper = new Mapper<>();
-        Institution institution = mapper.mapObj(institutionDataDTO, new Institution(),"STANDARD");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institution (from institutionDataDTO) after simple mapping: {}", institution.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institutionDTO to be mapped to Institution: {}", institutionDTO.toString());
+        Mapper<InstitutionDTO, Institution> mapper = new Mapper<>();
+        Institution institution = mapper.mapObj(institutionDTO, new Institution(),"STANDARD");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.deleteInstitution institution (from institutionDTO) after simple mapping: {}", institution.toString());
 
         // Protection against unauthorised in fact delete another record/line (instead of delete the right one record/line)
         if (institution.getId() != idProtected) {
@@ -146,6 +115,5 @@ public class InstitutionServiceImpl implements InstitutionService {
         // Final deleting institution
         institutionRepository.delete(institution);
     }
-
 
 }

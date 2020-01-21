@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.domain.entities.*;
 import pl.coderslab.charity.domain.repositories.RoleRepository;
 import pl.coderslab.charity.domain.repositories.UserRepository;
-import pl.coderslab.charity.dtos.RegistrationDataDTO;
+import pl.coderslab.charity.dtos.RegistrationDTO;
 import pl.coderslab.charity.services.Mapper;
 import pl.coderslab.charity.services.RegistrationService;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
@@ -28,25 +28,23 @@ public class DefaultRegistrationService implements RegistrationService {
     }
 
     @Override
-    public void register(RegistrationDataDTO registrationDataDTO) throws EntityToDataBaseException {
+    public void register(RegistrationDTO registrationDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveUser from Registration !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. registrationDataDTO to be mapped to user: {}", registrationDataDTO.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. registrationDTO to be mapped to user: {}", registrationDTO.toString());
 
-        // mapping registrationDataDTO to user
-        Mapper<RegistrationDataDTO, User> mapper = new Mapper<>();
-        User user = mapper.mapObj(registrationDataDTO, new User(), "STANDARD");
-//        ModelMapper modelMapper = new ModelMapper();
-//        User user = modelMapper.map(registrationDataDTO, User.class);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user (from registrationDataDTO) after simple mapping: {}", user.toString());
+        // mapping registrationDTO to user
+        Mapper<RegistrationDTO, User> mapper = new Mapper<>();
+        User user = mapper.mapObj(registrationDTO, new User(), "STANDARD");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user (from registrationDTO) after simple mapping: {}", user.toString());
 
         // FILL-IN DEFAULT DATA/attributes (role, active) + ENCODE password
         // role is always USER (ADMIN might be set only via MySQL's console@localhost)
         Role roleUser = roleRepository.findAllByName("ROLE_USER");
         user.getRoles().add(roleUser);
         user.setActive(Boolean.TRUE);
-        String encodedPassword = passwordEncoder.encode(registrationDataDTO.getPassword());
+        String encodedPassword = passwordEncoder.encode(registrationDTO.getPassword());
         user.setPassword(encodedPassword);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user (from registrationDataDTO) after add dafault parameters + encrypt password: {}", user.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DefaultRegistrationService. user (from registrationDTO) after add dafault parameters + encrypt password: {}", user.toString());
 
         // Final saving donation
         User userSaved = userRepository.save(user);

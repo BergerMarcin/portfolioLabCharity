@@ -30,8 +30,8 @@
                 Przejmij kontrolę o Wielki Administratorze!<br>
                 Wybierz o rolę Mistrzu:
             </h1>
-<%--            <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDataDTO">--%>
-<%--                <c:forEach items="${adminRoleChoiceDataDTO.roles}" var="adminRole">--%>
+<%--            <form:form action="/admin/start/role_choice" method="POST" modelAttribute="adminRoleChoiceDTO">--%>
+<%--                <c:forEach items="${adminRoleChoiceDTO.roles}" var="adminRole">--%>
 <%--                    <button type="submit" class="btn" name="chosenRoleName" value="${adminRole.name}">--%>
 <%--                            ${substringAfter(adminRole.name, 'ROLE_')}--%>
 <%--                    </button>--%>

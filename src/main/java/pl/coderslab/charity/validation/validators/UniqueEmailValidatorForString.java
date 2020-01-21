@@ -30,7 +30,7 @@ public class UniqueEmailValidatorForString implements ConstraintValidator<Unique
     }
 
     /**
-     * Method doing real job of checking data of entity/DataDTO field/attribute
+     * Method doing real job of checking data of entity/DTO field/attribute
      * In that case checking if email is unique based on emails in DataBase
      * @param email
      * @param context

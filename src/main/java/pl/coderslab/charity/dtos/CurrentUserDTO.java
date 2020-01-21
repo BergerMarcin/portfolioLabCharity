@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CurrentUserDataDTO {
+public class CurrentUserDTO {
 
     @NotBlank
     @Size(min = 2, max = 30)

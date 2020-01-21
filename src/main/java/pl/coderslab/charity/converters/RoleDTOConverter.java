@@ -2,11 +2,11 @@ package pl.coderslab.charity.converters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
-import pl.coderslab.charity.dtos.RoleDataDTO;
+import pl.coderslab.charity.dtos.RoleDTO;
 import pl.coderslab.charity.services.RoleService;
 
 // Trzeba wybrać implementacje interfejsu Converter z converter.spring.core.converter
-public class RoleDataDTOConverter implements Converter<String, RoleDataDTO> {
+public class RoleDTOConverter implements Converter<String, RoleDTO> {
 
     private RoleService roleService;
 
@@ -21,14 +21,14 @@ public class RoleDataDTOConverter implements Converter<String, RoleDataDTO> {
     // Zamienia String przesyłany za pomocą GET/POST? na id i sprawdza czy występuje Publisher o danym id
     // W przypadku problemów rzuca wyjątkiem
     @Override
-    public RoleDataDTO convert(String source) {
+    public RoleDTO convert(String source) {
         try {
             Long id = Long.parseLong(source);
-            RoleDataDTO roleDataDTO = roleService.findById(id);
-            if (roleDataDTO == null) {
+            RoleDTO roleDTO = roleService.findById(id);
+            if (roleDTO == null) {
                 throw new IllegalArgumentException("There is no role of id: " + id);
             }
-            return roleDataDTO;
+            return roleDTO;
         } catch (NumberFormatException nfe) {
             throw new IllegalArgumentException("Value " + source + " is not valid for role");
         }

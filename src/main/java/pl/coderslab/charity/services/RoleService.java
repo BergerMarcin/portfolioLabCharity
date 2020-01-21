@@ -1,14 +1,14 @@
 package pl.coderslab.charity.services;
 
 
-import pl.coderslab.charity.dtos.RoleDataDTO;
+import pl.coderslab.charity.dtos.RoleDTO;
 
 import java.util.List;
 
 public interface RoleService {
 
-    List<RoleDataDTO> findAll();
+    List<RoleDTO> findAll();
 
-    RoleDataDTO findById (Long id);
+    RoleDTO findById (Long id);
 
 }

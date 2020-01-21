@@ -8,7 +8,7 @@ import lombok.ToString;
 import javax.validation.constraints.*;
 
 @Getter @Setter @ToString @EqualsAndHashCode(of = "id")
-public class RoleDataDTO {
+public class RoleDTO {
 
 //    @NotNull @Positive @Digits(integer = 4, fraction = 0)
     private Long id;

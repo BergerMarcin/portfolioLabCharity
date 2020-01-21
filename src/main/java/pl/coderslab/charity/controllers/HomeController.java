@@ -29,7 +29,7 @@ public class HomeController {
 
         //institutions list, bagsCount, supportedOrganizationsCount & currentUser for/@ index.jsp
         model.addAttribute("institutions",
-                institutionService.allInstitutionDataDTOList());
+                institutionService.allInstitutionDTOList());
         model.addAttribute("bagsCount",
                 donationService.bagsCountBeforeDate(LocalDate.now()));
         model.addAttribute("supportedOrganizationsCount",

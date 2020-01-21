@@ -9,7 +9,7 @@ import pl.coderslab.charity.domain.entities.Institution;
 import pl.coderslab.charity.domain.repositories.CategoryRepository;
 import pl.coderslab.charity.domain.repositories.DonationRepository;
 import pl.coderslab.charity.domain.repositories.InstitutionRepository;
-import pl.coderslab.charity.dtos.DonationDataDTO;
+import pl.coderslab.charity.dtos.DonationDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.DonationService;
 import pl.coderslab.charity.services.Mapper;
@@ -46,59 +46,50 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public List<DonationDataDTO> donationListByInstitutionId(Long institutionId) {
+    public List<DonationDTO> donationListByInstitutionId(Long institutionId) {
         Institution institution = institutionRepository.findAllById(institutionId);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId institution: {}", institution.toString());
         List<Donation> donationList = donationRepository.findAllWithCategoriesByInstitutionOrderByInstitution(institution);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationList: {}", donationList.toString());
-//        List<DonationDataDTO> donationDataDTOList = new ArrayList<>();
-//        for (Donation donation: donationList) {
-//            ModelMapper modelMapper = new ModelMapper();
-//            DonationDataDTO donationDataDTO = modelMapper.map(donation, DonationDataDTO.class);
-//            donationDataDTOList.add(donationDataDTO);
-//        }
-        Mapper<Donation, DonationDataDTO> mapper = new Mapper<>();
-        List<DonationDataDTO> donationDataDTOList = mapper.mapList(donationList, new DonationDataDTO(),"STANDARD");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationDataDTOList: {}", donationDataDTOList.toString());
-        return donationDataDTOList;
+        Mapper<Donation, DonationDTO> mapper = new Mapper<>();
+        List<DonationDTO> donationDTOList = mapper.mapList(donationList, new DonationDTO(),"STANDARD");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl.donationListByInstitutionId donationDTOList: {}", donationDTOList.toString());
+        return donationDTOList;
     }
 
     @Override
-    public void saveNewDonation(DonationDataDTO donationDataDTO) throws EntityToDataBaseException {
+    public void saveNewDonation(DonationDTO donationDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveDonation !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donationDataDTO to be mapped to donation: {}", donationDataDTO.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donationDTO to be mapped to donation: {}", donationDTO.toString());
 
         // STRICT mapping donation
         // (categories & institution is not mapped here;
         //  in case STANDARD mapping id is wrongly mapped from institutionId)
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//        Donation donation = modelMapper.map(donationDataDTO, Donation.class);
-        Mapper<DonationDataDTO, Donation> mapper = new Mapper<>();
-        Donation donation = mapper.mapObj(donationDataDTO, new Donation(),"STRICT");
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after simple mapping: {}", donation.toString());
-        // InstitutionId need to be copied directly (due to STRICK matching strategy of mapping; STRICT matching requirred for id of donationDataDTO)
+        Mapper<DonationDTO, Donation> mapper = new Mapper<>();
+        Donation donation = mapper.mapObj(donationDTO, new Donation(),"STRICT");
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDTO) after simple mapping: {}", donation.toString());
+        // InstitutionId need to be copied directly (due to STRICK matching strategy of mapping; STRICT matching requirred for id of donationDTO)
         Institution institution = new Institution();
-        institution.setId(donationDataDTO.getInstitutionId());
+        institution.setId(donationDTO.getInstitutionId());
         donation.setInstitution(institution);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after simple mapping + add institution: {}", donation.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDTO) after simple mapping + add institution: {}", donation.toString());
 
         // Fill-in category detail-data of donation
-        List<Category> categories = categoryRepository.findAllByIdIn(donationDataDTO.getCategoryIds());
+        List<Category> categories = categoryRepository.findAllByIdIn(donationDTO.getCategoryIds());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. categories: {}", categories.toString());
         donation.setCategories(categories);
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after categories set: {}", donation.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDTO) after categories set: {}", donation.toString());
         if (donation.getCategories().get(0) == null || donation.getCategories().get(0).getName().length() == 0) {
             throw new EntityToDataBaseException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
         }
 
         //Fill-in institution detail-data of donation
         try {
-            donation.setInstitution(institutionRepository.findAllById(donationDataDTO.getInstitutionId()));
+            donation.setInstitution(institutionRepository.findAllById(donationDTO.getInstitutionId()));
         } catch (Throwable e) {
             throw new EntityToDataBaseException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
         }
-        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDataDTO) after institution set: {}", donation.toString());
+        log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donation (from donationDTO) after institution set: {}", donation.toString());
         if (donation.getInstitution().getName() == null) {
             throw new EntityToDataBaseException("Wystąpił błąd przy zapisie danych. Powtórz całą operację");
         }

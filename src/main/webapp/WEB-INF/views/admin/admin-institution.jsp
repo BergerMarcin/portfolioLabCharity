@@ -41,7 +41,7 @@
             <th scope="col">edycja</th>
             <th scope="col">usuń</th>
         </tr>
-        <c:forEach items="${institutionDataDTOList}" var="institution" varStatus="stat">
+        <c:forEach items="${institutionDTOList}" var="institution" varStatus="stat">
             <tr>
                 <td>${stat.count}</td>
                 <td>${institution.id}</td>

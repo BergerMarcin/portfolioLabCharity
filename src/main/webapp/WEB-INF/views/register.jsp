@@ -32,7 +32,7 @@
 <section class="login-page">
     <h2>Załóż konto</h2>
 
-    <form:form action="/registration/form" method="POST" modelAttribute="registrationDataDTO">
+    <form:form action="/registration/form" method="POST" modelAttribute="registrationDTO">
     <div class="form-section form-section--columns">
         <div class="form-section--column">
             <p class="error"><form:errors path="firstName"></form:errors></p>

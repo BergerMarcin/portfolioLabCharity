@@ -29,7 +29,7 @@
 <section class="login-page">
     <h2>Zmiana danych istniejącego administratora</h2>
 
-    <form:form method="post" modelAttribute="userDataDTO">
+    <form:form method="post" modelAttribute="userDTO">
         <sec:csrfInput/>
 
         <div class="form-section form-section--columns">
@@ -38,7 +38,7 @@
                 <form:hidden path="id"/>
                 <form:hidden path="email"/>
                 <form:hidden path="termsAcceptance"/>
-                <form:hidden path="userInfoDataDTO.id"/>
+                <form:hidden path="userInfoDTO.id"/>
 
                 <h4>Główne dane konta</h4>
                 <p class="error"><form:errors path="firstName"></form:errors></p>
@@ -78,21 +78,21 @@
                 <h4>Wybierz poziom dostępu</h4>
                 <p>Dostęp:
 <%--                    TODO: improve below select form--%>
-                    <form:select path="roleDataDTOList" items="${roleDataDTOList}" itemLabel="name"
+                    <form:select path="roleDTOList" items="${roleDTOList}" itemLabel="name"
                                  itemValue="id" multiple="true">
                     </form:select>
                 </p>
-                <%--<c:forEach items="${roleDataDTOListAll}" var="role" varStatus="stat">
+                <%--<c:forEach items="${roleDTOListAll}" var="role" varStatus="stat">
                     <div class="form-group form-group--checkbox">
-                        <form:label path="roleDataDTOList" for="${'role'.concat(stat.count)}">
-                            <c:if test="${userDataDTO.roleDataDTOList.contains(role)}">
+                        <form:label path="roleDTOList" for="${'role'.concat(stat.count)}">
+                            <c:if test="${userDTO.roleDTOList.contains(role)}">
                                 <span class="checkbox" data-checked="on" style="background-color: #f9c910;"></span>
                             </c:if>
-                            <c:if test="${!userDataDTO.roleDataDTOList.contains(role)}">
+                            <c:if test="${!userDTO.roleDTOList.contains(role)}">
                                 <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
                             </c:if>
                             <span class="description">${substringAfter(role.name, 'ROLE_')}</span>
-                            <form:checkbox path="roleDataDTOList" value="${role}" id="${'role'.concat(stat.count)}"/>
+                            <form:checkbox path="roleDTOList" value="${role}" id="${'role'.concat(stat.count)}"/>
                         </form:label>
                     </div>
                 </c:forEach>--%>
@@ -101,34 +101,34 @@
             <div class="form-section--column">
                 <h4>Adres odbioru</h4>
 
-                <p class="error"><form:errors path="userInfoDataDTO.street"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.street"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.street" for="userInfoDataDTO.street">
-                        Ulica <form:input path="userInfoDataDTO.street" id="userInfoDataDTO.street"/>
+                    <form:label path="userInfoDTO.street" for="userInfoDTO.street">
+                        Ulica <form:input path="userInfoDTO.street" id="userInfoDTO.street"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.city"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.city"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.city" for="userInfoDataDTO.city">
-                        Miasto <form:input path="userInfoDataDTO.city" id="userInfoDataDTO.city"/>
+                    <form:label path="userInfoDTO.city" for="userInfoDTO.city">
+                        Miasto <form:input path="userInfoDTO.city" id="userInfoDTO.city"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.zipCode"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.zipCode"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.zipCode" for="userInfoDataDTO.zipCode">
-                        Kod pocztowy <form:input path="userInfoDataDTO.zipCode" id="userInfoDataDTO.zipCode"/>
+                    <form:label path="userInfoDTO.zipCode" for="userInfoDTO.zipCode">
+                        Kod pocztowy <form:input path="userInfoDTO.zipCode" id="userInfoDTO.zipCode"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.phone"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.phone"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.phone" for="userInfoDataDTO.phone">
-                        Telefon <form:input path="userInfoDataDTO.phone" id="userInfoDataDTO.phone"/>
+                    <form:label path="userInfoDTO.phone" for="userInfoDTO.phone">
+                        Telefon <form:input path="userInfoDTO.phone" id="userInfoDTO.phone"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="userInfoDataDTO.pickUpComment"></form:errors></p>
+                <p class="error"><form:errors path="userInfoDTO.pickUpComment"></form:errors></p>
                 <div class="form-group form-group--inline">
-                    <form:label path="userInfoDataDTO.pickUpComment" for="userInfoDataDTO.pickUpComment">
-                        Uwagi do odbioru <form:input path="userInfoDataDTO.pickUpComment" id="userInfoDataDTO.pickUpComment"/>
+                    <form:label path="userInfoDTO.pickUpComment" for="userInfoDTO.pickUpComment">
+                        Uwagi do odbioru <form:input path="userInfoDTO.pickUpComment" id="userInfoDTO.pickUpComment"/>
                     </form:label>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                 <form:label path="password">
                     Hasło
                     <form:input path="password" type="password"/>
-<%--                    <input type="password" name="password" th:value="${userDataDTO.password}"/>--%>
+<%--                    <input type="password" name="password" th:value="${userDTO.password}"/>--%>
                 </form:label>
             </div>
             <p class="error"><form:errors path="rePassword"></form:errors></p>

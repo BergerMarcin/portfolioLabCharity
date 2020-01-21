@@ -29,7 +29,7 @@
     <h2>Usunięcie istniejącej instytucji lub organizacji</h2>
     <br>
 
-    <c:if test="${donationDataDTOList != null && not empty donationDataDTOList}">
+    <c:if test="${donationDTOList != null && not empty donationDTOList}">
         <h3 class="errors">Uwaga! Dla wybranej do usunięcia instytucji zostaną również usunięte następujące jej datki:</h3>
         <table border="2">
             <tr>
@@ -41,7 +41,7 @@
                 <th scope="col">data odbioru</th>
                 <th scope="col">godzina<br>odbioru</th>
             </tr>
-            <c:forEach items="${donationDataDTOList}" var="user" varStatus="stat">
+            <c:forEach items="${donationDTOList}" var="user" varStatus="stat">
                 <tr>
                     <td>${stat.count}</td>
 <%--                    <td>${donation.id}</td>--%>
@@ -57,7 +57,7 @@
     </c:if>
 
     <p>Istniejąca do usunięcia instytucja lub organizacja:</p>
-    <form:form method="post" modelAttribute="institutionDataDTO">
+    <form:form method="post" modelAttribute="institutionDTO">
         <sec:csrfInput/>
         <form:hidden path="id"/>
         <form:hidden path="name"/>
@@ -74,12 +74,12 @@
                         <th scope="col">zaufana</th>
                     </tr>
                     <tr>
-                        <td>${institutionDataDTO.id}</td>
-                        <td>${institutionDataDTO.name}</td>
-                        <td>${institutionDataDTO.description}</td>
+                        <td>${institutionDTO.id}</td>
+                        <td>${institutionDTO.name}</td>
+                        <td>${institutionDTO.description}</td>
                         <td>
-                            <c:if test="${institutionDataDTO.trusted}">tak</c:if>
-                            <c:if test="${!institutionDataDTO.trusted}">NIE</c:if>
+                            <c:if test="${institutionDTO.trusted}">tak</c:if>
+                            <c:if test="${!institutionDTO.trusted}">NIE</c:if>
                         </td>
                     </tr>
                 </table>

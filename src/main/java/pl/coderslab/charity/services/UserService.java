@@ -1,9 +1,6 @@
 package pl.coderslab.charity.services;
 
-import pl.coderslab.charity.domain.entities.User;
-import pl.coderslab.charity.dtos.CurrentUserDataDTO;
-import pl.coderslab.charity.dtos.RoleDataDTO;
-import pl.coderslab.charity.dtos.UserDataDTO;
+import pl.coderslab.charity.dtos.UserDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 import java.util.List;
@@ -12,15 +9,15 @@ public interface UserService {
 
     Boolean isEmailUnique (String email);
 
-    UserDataDTO findById(Long id);
+    UserDTO findById(Long id);
 
-    List<UserDataDTO> findAllByRoleName(String roleName);
+    List<UserDTO> findAllByRoleName(String roleName);
 
 
-    void saveNewUser(UserDataDTO userDataDTO) throws EntityToDataBaseException;
+    void saveNewUser(UserDTO userDTO) throws EntityToDataBaseException;
 
-    void saveNewAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException;
+    void saveNewAdmin(UserDTO userDTO, Boolean roleUser) throws EntityToDataBaseException;
 
-    void updateAdmin(Long idProtected, UserDataDTO userDataDTO) throws EntityToDataBaseException;
+    void updateAdmin(Long idProtected, UserDTO userDTO) throws EntityToDataBaseException;
 
 }

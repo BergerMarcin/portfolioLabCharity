@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 //@ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.rePassword)", reportOn = "rePassword")
 @EqualTwoFields(baseField = "password", matchField = "rePassword", reportOn = "rePassword")
 @Getter @Setter @ToString(exclude = {"password", "rePassword"}) @EqualsAndHashCode(of = "email")
-public class RegistrationDataDTO {
+public class RegistrationDTO {
 
     @NotBlank
     @Size(min = 2, max = 30)

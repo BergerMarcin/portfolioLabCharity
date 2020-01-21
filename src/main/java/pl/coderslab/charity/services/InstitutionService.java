@@ -1,23 +1,23 @@
 package pl.coderslab.charity.services;
 
-import pl.coderslab.charity.dtos.InstitutionAddDataDTO;
-import pl.coderslab.charity.dtos.InstitutionDataDTO;
+import pl.coderslab.charity.dtos.InstitutionAddDTO;
+import pl.coderslab.charity.dtos.InstitutionDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 
 import java.util.List;
 
 public interface InstitutionService {
 
-    List<InstitutionDataDTO> allInstitutionDataDTOList();
+    List<InstitutionDTO> allInstitutionDTOList();
 
-    List<InstitutionDataDTO> ifTrustedInstitutionDataDTOList(Boolean trusted);
+    List<InstitutionDTO> ifTrustedInstitutionDTOList(Boolean trusted);
 
-    InstitutionDataDTO institutionById(Long id);
+    InstitutionDTO institutionById(Long id);
 
-    void saveNewInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException;
+    void saveNewInstitution(InstitutionAddDTO institutionAddDTO) throws EntityToDataBaseException;
 
-    void updateInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException;
+    void updateInstitution(Long idProtected, InstitutionDTO institutionDTO) throws EntityToDataBaseException;
 
-    void deleteInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException;
+    void deleteInstitution(Long idProtected, InstitutionDTO institutionDTO) throws EntityToDataBaseException;
 
 }

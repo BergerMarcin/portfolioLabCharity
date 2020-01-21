@@ -29,7 +29,7 @@
 <section class="login-page">
     <h2>Zaloguj się</h2>
     <form method="post" action="/login">
-<%--    <form:form action="/login" method="POST" modelAttribute="loginDataDTO">--%>
+<%--    <form:form action="/login" method="POST" modelAttribute="loginDTO">--%>
         <div class="form-section form-section--columns">
             <div class="form-section--column">
 <%--                <p class="error"><form:errors path="email"></form:errors></p>--%>

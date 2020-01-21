@@ -7,9 +7,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pl.coderslab.charity.dtos.CurrentUserDataDTO;
+import pl.coderslab.charity.dtos.CurrentUserDTO;
 import pl.coderslab.charity.services.CurrentUser;
-import pl.coderslab.charity.services.CurrentUserDataDTOService;
+import pl.coderslab.charity.services.CurrentUserDTOService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,16 +19,16 @@ import java.util.Set;
 //     do Spring Security a rozszerzającej User Spring Security (UserDetails posiada pola/atrybuty jak User Spring
 //     Security: username - w tym przypadku jest to email jako unikalna nazwa użytkownika, hasło, authorities - role,
 //     inne Boolean. Ponadto UserDetails może mieć też inne pola - w poniższym przypdaku wszystkie dane użytkownika
-//     CurrentUserDataDTO)
+//     CurrentUserDTO)
 // Sprawdzenie i zalogowanie następuje po wykonaniu metody loadUserByUsername wewnątrz Spring Security
 @Slf4j
 public class SpringDataUserDetailsService implements UserDetailsService {
 
-    private CurrentUserDataDTOService currentUserDataDTOService;
+    private CurrentUserDTOService currentUserDTOService;
 
     @Autowired
-    private void setCurrentUserDataDTOService(CurrentUserDataDTOService currentUserDataDTOService) {
-        this.currentUserDataDTOService = currentUserDataDTOService;
+    private void setCurrentUserDTOService(CurrentUserDTOService currentUserDTOService) {
+        this.currentUserDTOService = currentUserDTOService;
     }
 
     /**
@@ -42,18 +42,18 @@ public class SpringDataUserDetailsService implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        CurrentUserDataDTO currentUserDataDTO = currentUserDataDTOService.readFromDB(email);
+        CurrentUserDTO currentUserDTO = currentUserDTOService.readFromDB(email);
         // if user does not exists, have not roles nor is not active return exception informing username (in this case email)
-        if (currentUserDataDTO == null || currentUserDataDTO.getRoles() == null || !currentUserDataDTO.getActive()) {
+        if (currentUserDTO == null || currentUserDTO.getRoles() == null || !currentUserDTO.getActive()) {
             throw new UsernameNotFoundException(email);
         }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        currentUserDataDTO.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+        currentUserDTO.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        return new CurrentUser(currentUserDataDTO.getEmail(),
-                currentUserDataDTOService.getPasswordFromDB(email),
+        return new CurrentUser(currentUserDTO.getEmail(),
+                currentUserDTOService.getPasswordFromDB(email),
                 grantedAuthorities,
-                currentUserDataDTO);
+                currentUserDTO);
     }
 }

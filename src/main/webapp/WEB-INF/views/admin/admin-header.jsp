@@ -15,7 +15,7 @@ Start at target jsp (not here) due to starting classes & due to closing slogans
         <nav class="container container--70">
             <ul class="nav--actions">
                 <li class="logged-user">
-                    Witaj ${currentUser.currentUserDataDTO.firstName} ${currentUser.currentUserDataDTO.lastName}!
+                    Witaj ${currentUser.currentUserDTO.firstName} ${currentUser.currentUserDTO.lastName}!
                 </li>
                 <li>
                     <form method="post" action="/logout">

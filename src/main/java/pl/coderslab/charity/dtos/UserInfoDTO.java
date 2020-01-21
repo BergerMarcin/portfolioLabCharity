@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.*;
 
 @Getter @Setter @ToString @EqualsAndHashCode(of = "id")
-public class UserInfoDataDTO {
+public class UserInfoDTO {
 
 //    @NotNull @Positive @Digits(integer = 4, fraction = 0)
     private Long id;

@@ -19,7 +19,7 @@ Start at target jsp (not here) due to starting classes & due to closing slogans
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <li class="logged-user">
-                    Witaj ${currentUser.currentUserDataDTO.firstName} ${currentUser.currentUserDataDTO.lastName}!
+                    Witaj ${currentUser.currentUserDTO.firstName} ${currentUser.currentUserDTO.lastName}!
                     <ul class="dropdown">
                         <li><a href="#">Profil</a></li>
                         <li><a href="#">Ustawienia</a></li>

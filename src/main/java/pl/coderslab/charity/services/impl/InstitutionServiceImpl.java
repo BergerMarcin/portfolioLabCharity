@@ -71,7 +71,7 @@ public class InstitutionServiceImpl implements InstitutionService {
     }
 
     @Override
-    public void saveInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException {
+    public void saveNewInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveInstitution !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! InstitutionServiceImpl.saveInstitution institutionDataDTO to be mapped to Institution: {}", institutionAddDataDTO.toString());
 

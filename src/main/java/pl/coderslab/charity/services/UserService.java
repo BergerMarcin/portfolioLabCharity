@@ -17,9 +17,9 @@ public interface UserService {
     List<UserDataDTO> findAllByRoleName(String roleName);
 
 
-    void saveUser(UserDataDTO userDataDTO) throws EntityToDataBaseException;
+    void saveNewUser(UserDataDTO userDataDTO) throws EntityToDataBaseException;
 
-    void saveAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException;
+    void saveNewAdmin(UserDataDTO userDataDTO, Boolean roleUser) throws EntityToDataBaseException;
 
     void updateAdmin(Long idProtected, UserDataDTO userDataDTO) throws EntityToDataBaseException;
 

@@ -64,7 +64,7 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public void saveDonation(DonationDataDTO donationDataDTO) throws EntityToDataBaseException {
+    public void saveNewDonation(DonationDataDTO donationDataDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! saveDonation !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! DonationServiceImpl. donationDataDTO to be mapped to donation: {}", donationDataDTO.toString());
 

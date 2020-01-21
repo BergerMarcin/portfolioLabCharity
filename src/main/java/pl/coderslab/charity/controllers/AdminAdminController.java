@@ -79,23 +79,19 @@ public class AdminAdminController {
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
-            userDataDTO.setPassword("");
-            userDataDTO.setRePassword("");
-            model.addAttribute("userDataDTO", userDataDTO);
+            // TODO: reset password & rePassword probably via FieldError of BindingResult
             return "admin/admin-admin-add";
         }
 
         if (formButtonChoice == 1) {
             // Mapping & saving new Admin (+ exception catch of both operation)
             try {
-                userService.saveAdmin (userDataDTO, roleUser);
+                userService.saveNewAdmin(userDataDTO, roleUser);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
-                userDataDTO.setPassword("");
-                userDataDTO.setRePassword("");
-                model.addAttribute("userDataDTO", userDataDTO);
+                // TODO: reset password & rePassword probably via FieldError of BindingResult
                 return "admin/admin-admin-add";
             }
         }
@@ -110,7 +106,7 @@ public class AdminAdminController {
                                            @AuthenticationPrincipal CurrentUser currentUser, Model model) {
         UserDataDTO userDataDTO = userService.findById(id);
         // additional validation (double check) of data from GET-request by checking email of user of id from request
-        if (em == null || !em.equals(userDataDTO.getEmail())) {
+        if (userDataDTO == null || em == null || !em.equals(userDataDTO.getEmail())) {
             return "redirect:/admin/admin";
         }
         model.addAttribute("errorsMessageMap", null);
@@ -143,9 +139,7 @@ public class AdminAdminController {
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
-            userDataDTO.setPassword("");
-            userDataDTO.setRePassword("");
-            model.addAttribute("userDataDTO", userDataDTO);
+            // TODO: reset password & rePassword probably via FieldError of BindingResult
             return "admin/admin-admin-update";
         }
 
@@ -157,9 +151,7 @@ public class AdminAdminController {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
-                userDataDTO.setPassword("");
-                userDataDTO.setRePassword("");
-                model.addAttribute("userDataDTO", userDataDTO);
+                // TODO: reset password & rePassword probably via FieldError of BindingResult
                 return "admin/admin-admin-update";
             }
         }

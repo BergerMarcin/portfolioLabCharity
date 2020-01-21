@@ -77,7 +77,7 @@ public class AdminInstitutionController {
         if (formButtonChoice == 1) {
             // Mapping & saving data at method saveInstitution (+ exception catch of both operation)
             try {
-                institutionService.saveInstitution(institutionAddDataDTO);
+                institutionService.saveNewInstitution(institutionAddDataDTO);
             } catch (EntityToDataBaseException e) {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());

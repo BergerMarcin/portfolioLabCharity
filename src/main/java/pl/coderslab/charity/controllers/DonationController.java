@@ -100,7 +100,7 @@ public class DonationController {
         // In case user CONFIRMATION DATA
         // Mapping & saving data at method saveDonation (+ exception catch of both operation)
         try {
-            donationService.saveDonation(donationDataDTO);
+            donationService.saveNewDonation(donationDataDTO);
         } catch (EntityToDataBaseException e) {
             Map<String, String> errorsMessageMap = new LinkedHashMap<>();
             errorsMessageMap.put("Błąd ogólny operacji. ", e.getMessage());

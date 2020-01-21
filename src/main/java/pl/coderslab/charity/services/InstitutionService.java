@@ -14,7 +14,7 @@ public interface InstitutionService {
 
     InstitutionDataDTO institutionById(Long id);
 
-    void saveInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException;
+    void saveNewInstitution(InstitutionAddDataDTO institutionAddDataDTO) throws EntityToDataBaseException;
 
     void updateInstitution(Long idProtected, InstitutionDataDTO institutionDataDTO) throws EntityToDataBaseException;
 

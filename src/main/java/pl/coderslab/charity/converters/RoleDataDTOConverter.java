@@ -10,7 +10,7 @@ public class RoleDataDTOConverter implements Converter<String, RoleDataDTO> {
 
     private RoleService roleService;
 
-    // Powołanie publisherDao przez settera (a nie konstruktora) bo musimy w AppConfigu powołać ten
+    // Powołanie roleService przez settera (a nie konstruktora) bo musimy w AppConfigu powołać ten
     // converter, a ten converter do powołania w AppConfig wymaga tam znów publisherDao, a
     // trudno=głupio powoływać publisherDao w AppConfig)
     @Autowired

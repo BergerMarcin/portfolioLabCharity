@@ -15,6 +15,6 @@ public interface DonationService {
 
     List<DonationDataDTO> donationListByInstitutionId (Long institutionId);
 
-    void saveDonation (DonationDataDTO donationDataDTO) throws EntityToDataBaseException;
+    void saveNewDonation(DonationDataDTO donationDataDTO) throws EntityToDataBaseException;
 
 }

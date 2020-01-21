@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -132,11 +133,13 @@
                 </div>
             </div>
 
-            <h4>Potwierdź powyższe zmiany hasłem</h4>
+            <h4>Potwierdź powyższe zmiany hasłem danego administratora</h4>
             <p class="error"><form:errors path="password"></form:errors></p>
             <div class="form-group form-group--inline">
                 <form:label path="password">
-                    Hasło <form:input path="password" type="password"/>
+                    Hasło
+                    <form:input path="password" type="password"/>
+<%--                    <input type="password" name="password" th:value="${userDataDTO.password}"/>--%>
                 </form:label>
             </div>
             <p class="error"><form:errors path="rePassword"></form:errors></p>

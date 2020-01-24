@@ -11,6 +11,13 @@ import pl.coderslab.charity.services.RoleService;
 
 import java.util.List;
 
+/**
+ * ROLE_SUPERADMIN choice is hidden at adding/creating and update admin
+ * ROLE_SUPERADMIN may be set only from MySQL console
+ * ROLE_SUPERADMIN allows (additionally to ROLE_ADMIN) from application admin panel to:
+ *  - delete admin
+ *  - change admin's password and email
+ */
 @Service
 @Transactional
 @Slf4j
@@ -25,6 +32,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> findAll() {
         List<Role> roleList = roleRepository.findAll();
+        // remove/hidden ROLE_SUPERADMIN
+        for (Role role: roleList) {}
         Mapper<Role, RoleDTO> mapper = new Mapper();
         return mapper.mapList(roleList, new RoleDTO(), "STANDARD");
     }

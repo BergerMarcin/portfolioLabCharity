@@ -36,6 +36,9 @@
                 <h4>Główne dane konta</h4>
 
                 <form:hidden path="id"/>
+                <sec:authorize access="!hasRole('ROLE_SUPERADMIN')">
+                    <form:hidden path="active"/>
+                </sec:authorize>
                 <form:hidden path="userInfoDTO.id"/>
 <%--                If roleDTOList is empty/null then below line passes to Controller roleDTOList as a String instead of list
                     (Spring Validation or Binding expects a list, and may not accept String), so below line is commented--%>
@@ -69,7 +72,7 @@
                                     <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
                     --%>
                     <span class="description">Zaznacz zgodę na przetwarzanie danych osobowych</span>
-                    <form:checkbox path="termsAcceptance" value="true" id="termsAcceptance"/>
+                    <form:checkbox path="termsAcceptance" value="false" id="termsAcceptance"/>
                 </form:label>
                 <%--        </div>--%>
                 <br>
@@ -85,30 +88,31 @@
                         Powtórz hasło <form:input path="rePassword" type="password"/>
                     </form:label>
                 </div>
-                <p class="error"><form:errors path="active"></form:errors></p>
-                <div class="form-group form-group--inline">
-                </div>
-                <%--        <div class="form-group form-group--checkbox">--%>
-                <form:label path="active" for="active">
-                    <%--
-                    TODO: uncomment that checkbox style and add to app.js action on changing box color
-                                    <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
-                    --%>
-                    <span class="description">Aktywny status</span>
-                    <form:checkbox path="active" value="true" id="active"/>
-                </form:label>
-                <%--        </div>--%>
-                <br>
+                <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+                    <p class="error"><form:errors path="active"></form:errors></p>
+                    <div class="form-group form-group--inline">
+                    </div>
                     <%--        <div class="form-group form-group--checkbox">--%>
-                    <%--                <form:label path="roleUser" for="roleUser">--%>
+                    <form:label path="active" for="active">
+                        <%--
+                        TODO: uncomment that checkbox style and add to app.js action on changing box color
+                                        <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
+                        --%>
+                        <span class="description">Aktywny status</span>
+                        <form:checkbox path="active" value="false" id="active"/>
+                    </form:label>
+                    <%--        </div>--%>
+                </sec:authorize>
+                    <%--        <div class="form-group form-group--checkbox">--%>
+                    <%--                <form:label path="ifRoleUser" for="ifRoleUser">--%>
                     <%--
                     TODO: uncomment that checkbox style and add to app.js action on changing box color
                                     <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
                     --%>
                 <span class="description">Jednocześnie użytkownik </span>
-                    <%--                    <form:checkbox path="roleUser" value="true" id="roleUser"/>--%>
-                <input type="checkbox" name="roleUser" value="true" checked/>
-                <input type="hidden" name="roleUser" value="false"/>
+                    <%--                    <form:checkbox path="ifRoleUser" value="true" id="ifRoleUser"/>--%>
+                <input type="checkbox" name="ifRoleUser" value="true" checked/>
+                <input type="hidden" name="ifRoleUser" value="false"/>
                     <%--                </form:label>--%>
                     <%--        </div>--%>
             </div>>

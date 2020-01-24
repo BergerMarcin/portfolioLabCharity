@@ -9,6 +9,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// Field active is just to inactive user but not to cancel it
+// Change of active of ROLE_USER is possible only if ROLE_ADMIN
+// Change of active of ROLE_ADMIN is possible only if ROLE_SUPERADMIN
 @Entity
 @Table(name = "users")
 @Getter @Setter @ToString(exclude = "password", callSuper = true) @EqualsAndHashCode(of = "id")

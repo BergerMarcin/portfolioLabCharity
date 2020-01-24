@@ -117,8 +117,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration/*").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout").authenticated()
-                .antMatchers("/user", "/user/**").hasRole("USER")
-                .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
+                .antMatchers("/user", "/user/**").hasAnyRole("USER", "SUPERADMIN")
+                .antMatchers("/admin", "/admin/add", "/admin/update").hasAnyRole("ADMIN", "SUPERADMIN")
+                .antMatchers("/admin/delete").hasRole("SUPERADMIN")
                 .anyRequest().authenticated()
                 .and()
                 // Redirect to login

@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //            attributePaths = {"roles", "userInfo"})
     List<User> findAllByRoles(Role role);
 
+    List<User> findAllByRolesAndActive(Role role, Boolean active);
+
     // EAGER load of UserInfo
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
             attributePaths = {"roles", "userInfo"})

@@ -37,6 +37,9 @@
 
                 <form:hidden path="id"/>
                 <form:hidden path="email"/>
+                <sec:authorize access="!hasRole('ROLE_SUPERADMIN')">
+                    <form:hidden path="active"/>
+                </sec:authorize>
                 <form:hidden path="termsAcceptance"/>
                 <form:hidden path="userInfoDTO.id"/>
 
@@ -61,19 +64,21 @@
                     </form:label>
                 </div>
 --%>
-                <p class="error"><form:errors path="active"></form:errors></p>
-                <div class="form-group form-group--inline">
-                </div>
-                <%--        <div class="form-group form-group--checkbox">--%>
-                <form:label path="active" for="active">
-                    <%--
-                    TODO: uncomment that checkbox style and add to app.js action on changing box color
-                                    <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
-                    --%>
-                    <span class="description">Aktywny status</span>
-                    <form:checkbox path="active" id="active"/>
-                </form:label>
-                <%--        </div>--%>
+                <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+                    <p class="error"><form:errors path="active"></form:errors></p>
+                    <div class="form-group form-group--inline">
+                    </div>
+                    <%--        <div class="form-group form-group--checkbox">--%>
+                    <form:label path="active" for="active">
+                        <%--
+                        TODO: uncomment that checkbox style and add to app.js action on changing box color
+                                        <span class="checkbox" data-checked="off" style="background-color: transparent;"></span>
+                        --%>
+                        <span class="description">Aktywny status</span>
+                        <form:checkbox path="active" id="active"/>
+                    </form:label>
+                    <%--        </div>--%>
+                </sec:authorize>
 
                 <h4>Wybierz poziom dostępu</h4>
                 <p>Dostęp:

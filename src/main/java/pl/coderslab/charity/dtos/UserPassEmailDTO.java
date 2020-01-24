@@ -4,43 +4,29 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.ScriptAssert;
 import pl.coderslab.charity.validation.constraints.EqualTwoFields;
 import pl.coderslab.charity.validation.constraints.UniqueEmail;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter @Setter @ToString
 //        (exclude = {"password", "rePassword"})
 @EqualsAndHashCode(of = "id")
+@ScriptAssert(lang = "javascript", script = "_this.email.equals(_this.reEmail)", reportOn = "reEmail")
 @EqualTwoFields(baseField = "password", matchField = "rePassword", reportOn = "rePassword")
-public class UserDTO {
+public class UserPassEmailDTO {
 
-    //    @NotNull @Positive @Digits(integer = 4, fraction = 0)
     private Long id;
-    @Size(min = 2, max = 30)
-    private String firstName;
-    @Size(min = 2, max = 40)
-    private String lastName;
     @NotBlank @Email @UniqueEmail
     private String email;
+    @NotBlank @Email @UniqueEmail
+    private String reEmail;
     @Size(min = 4, max = 12)
     private String password;
     @Size(min = 4, max = 12)
     private String rePassword;
-    @AssertTrue
-    private Boolean termsAcceptance = Boolean.FALSE;
-    @NotNull
-    private Boolean active = Boolean.FALSE;
-    @Valid
-    private UserInfoDTO userInfoDTO = new UserInfoDTO();
-    @Valid
-    private List<RoleDTO> roleDTOList = new ArrayList<>();
 
 }
-
-
-

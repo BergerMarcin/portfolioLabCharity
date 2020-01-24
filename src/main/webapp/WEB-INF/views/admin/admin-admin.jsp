@@ -75,11 +75,16 @@
                     <a href="${updateURL}"><button type="button" class="btn">Edytuj</button></a>
                 </td>
                 <td>
-                    <c:url value="/admin/admin/delete" var="deleteURL">
-                        <c:param name="id" value="${user.id}"/>
-                        <c:param name="em" value="${user.email}"/>
-                    </c:url>
-                    <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
+                    <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+                        <c:url value="/admin/admin/delete" var="deleteURL">
+                            <c:param name="id" value="${user.id}"/>
+                            <c:param name="em" value="${user.email}"/>
+                        </c:url>
+                        <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
+                    </sec:authorize>
+                    <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                        <u>Usuń</u>
+                    </sec:authorize>
                 </td>
             </tr>
         </c:forEach>

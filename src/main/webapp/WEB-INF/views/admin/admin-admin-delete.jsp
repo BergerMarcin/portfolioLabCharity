@@ -73,8 +73,18 @@
         <form:hidden path="email"/>
         <form:hidden path="active"/>
         <form:hidden path="termsAcceptance"/>
-        <form:hidden path="userInfoDTO"/>
-        <form:hidden path="roleDTOList"/>
+        <form:hidden path="userInfoDTO.id"/>
+        <form:hidden path="userInfoDTO.street"/>
+        <form:hidden path="userInfoDTO.city"/>
+        <form:hidden path="userInfoDTO.zipCode"/>
+        <form:hidden path="userInfoDTO.phone"/>
+        <form:hidden path="userInfoDTO.pickUpComment"/>
+<%--        <c:forEach items="${roleDTOList}" var="roleDTO" varStatus="stat">--%>
+<%--            <c:set var="index" value="${stat.count-1}"/>--%>
+<%--            <p>Index: ${index}</p>--%>
+<%--            <form:hidden path="roleDTOList[index].id"/>--%>
+<%--            <form:hidden path="roleDTOList[index].name"/>--%>
+<%--        </c:forEach>--%>
 
         <div class="form-section form-section--columns">
 

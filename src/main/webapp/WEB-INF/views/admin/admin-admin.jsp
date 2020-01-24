@@ -82,7 +82,7 @@
                         </c:url>
                         <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
                     </sec:authorize>
-                    <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                    <sec:authorize access="!hasRole('ROLE_SUPERADMIN')">
                         <u>Usuń</u>
                     </sec:authorize>
                 </td>

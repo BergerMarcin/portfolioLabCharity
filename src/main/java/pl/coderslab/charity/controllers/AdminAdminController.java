@@ -58,7 +58,12 @@ public class AdminAdminController {
     }
 
 
-    // ADMIN ADMINS LIST-START PAGE
+    /** ADMIN ADMINS LIST-START PAGE
+     * Only SUPERADMIN see all the admin: active and inactive (inactive means deleted)
+     * @param currentUser
+     * @param model
+     * @return
+     */
     @GetMapping
     public String getAdminAdminsPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
@@ -68,7 +73,12 @@ public class AdminAdminController {
     }
 
 
-    // ADMIN ADMINS ADD PAGE
+    /** ADMIN ADMINS ADD PAGE
+     * Might be done by any admin. Password is set for new admin
+     * @param currentUser
+     * @param model
+     * @return
+     */
     @GetMapping("/add")
     public String getAdminAdminAddPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! getAdminAdminAddPage START !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -117,7 +127,14 @@ public class AdminAdminController {
     }
 
 
-    // ADMIN ADMINS UPDATE PAGE
+    /** ADMIN ADMINS UPDATE PAGE
+     * Demand authorisation of updated admin's password or log-in SUPERADMIN's password
+     * @param id
+     * @param em
+     * @param currentUser
+     * @param model
+     * @return
+     */
     @GetMapping("/update")
     public String getAdminAdminUpdatePage(Long id, String em,
                                            @AuthenticationPrincipal CurrentUser currentUser, Model model) {
@@ -179,8 +196,15 @@ public class AdminAdminController {
     // TODO:    - change email and password - probably new views
 
 
-
-    // ADMIN ADMINS DELETE PAGE
+    /** ADMIN ADMINS DELETE PAGE
+     * Only SUPERADMIN may delete ADMIN (ROLE_SUPERADMIN is added only from database console)
+     * Demand authorisation of SUPERADMIN password
+     * @param id
+     * @param em
+     * @param currentUser
+     * @param model
+     * @return
+     */
     @GetMapping("/delete")
     public String getAdminAdminDeletePage(Long id, String em,
                                           @AuthenticationPrincipal CurrentUser currentUser, Model model) {

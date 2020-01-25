@@ -138,7 +138,8 @@
                 </div>
             </div>
 
-            <h4>Potwierdź powyższe zmiany hasłem danego administratora</h4>
+            <h4>Potwierdź powyższe zmiany hasłem danego administratora
+                <br>lub hasłem zalogowanego superadministratora</h4>
             <p class="error"><form:errors path="password"></form:errors></p>
             <div class="form-group form-group--inline">
                 <form:label path="password">

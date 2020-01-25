@@ -26,10 +26,10 @@
 </header>
 
 <section class="login-page">
-<h2>Lista instytucji i organizacji <h3>(zarówno zaufanych jak i nieaktywnych)</h3></h2>
+<h2>Lista instytucji i organizacji <br>(zarówno zaufanych jak i nieaktywnych)</h2>
     <c:url value="/admin/institution/add" var="addURL"></c:url>
     <a href="${addURL}"><button type="button" class="btn">Dodaj nową instytucję</button></a>
-    <br><br>
+    <p/>
 
     <table border="2">
         <tr>

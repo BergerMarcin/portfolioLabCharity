@@ -131,8 +131,24 @@ public class UserServiceImpl implements UserService {
         //TODO: send an email informing about add as roles.name
     }
 
+    /**
+     * Adding/saving new ADMIN might be done only by SUPERADMIN. Password is set for new admin
+     * @param userDTO
+     * @param ifRoleUser
+     * @throws EntityToDataBaseException
+     */
     @Override
     public void saveNewAdmin(UserDTO userDTO, Boolean ifRoleUser) throws EntityToDataBaseException {
+        // Authorised ROLE_SUPERADMIN (checking password of SUPERADMIN with given-to-form)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            throw new EntityToDataBaseException("Wymagana poprawna autoryzacja");
+        }
+        CurrentUser currentUser = (CurrentUser)auth.getPrincipal();
+        if (!currentUser.getAuthorities().toString().contains("SUPERADMIN")) {
+            throw new EntityToDataBaseException("Wymagana poprawna autoryzacja");
+        }
+
         // Set roleList (ROLE_ADMIN + ROLE_USER if roleUser) and then mapping it to roleDTOList.
         // Then roleDTOList is put into userDTO (with all new admin data) to be finally saved with saveUser method
         List<Role> roleList = new ArrayList<>();
@@ -153,11 +169,17 @@ public class UserServiceImpl implements UserService {
         saveNewUser(userDTO);
     }
 
+    /**
+     * Updating ADMIN demands admin's password or log-in SUPERADMIN and SUPERADMIN's password (password passed in userDTO.password)
+     * @param idProtected
+     * @param userDTO
+     * @throws EntityToDataBaseException
+     */
     @Override
     public void updateAdmin(Long idProtected, UserDTO userDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! updateAdmin !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin userDTO to be mapped to User: {}", userDTO.toString());
-        User oldUser = userRepository.findAllById(idProtected);
+        User userExistData = userRepository.findAllById(idProtected);
 
         User user =  mapObjUserDTOToUser(userDTO);
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin user (from userDTO) after simple mapping: {}", user.toString());
@@ -167,18 +189,29 @@ public class UserServiceImpl implements UserService {
             throw new EntityToDataBaseException("Wystąpił błąd przy walidacji lub zapisie danych. Powtórz całą operację");
         }
 
-        // PASSWORD VALIDATION (checking password old with new-given-to-form)
-        if (!passwordEncoder.matches(user.getPassword(), oldUser.getPassword())) {
+        // Validation of right to admin update:
+        //  - UPDATED ADMIN's PASSWORD given to the form (and pass with userDTO) and check with existing in DB (with userExistData)
+        //  OR
+        //  - SUPERADMIN log-in & SUPERADMIN PASSWORD given to the form (and pass with userDTO)
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            throw new EntityToDataBaseException("Wymagana poprawna autoryzacja");
+        }
+        CurrentUser currentUser = (CurrentUser)auth.getPrincipal();
+        if (!(passwordEncoder.matches(user.getPassword(), userExistData.getPassword()) ||
+                (currentUser.getAuthorities().toString().contains("SUPERADMIN") &&
+                        (passwordEncoder.matches(userDTO.getPassword(),
+                                currentUserDTOService.getPasswordFromDB(currentUser.getUsername())))))) {
             throw new EntityToDataBaseException("Niepoprawne hasło. Powtórz całą operację");
         }
 
-        // Final preparing data to be saved
-        // Encoding password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Final preparing data to be saved (set not-updated existing data from DB)
+        // at userDTO.password might be SUPERADMIN password
+        user.setPassword(userExistData.getPassword());
         // set old email from DB (because there was set x@x.xxx email to cheat @UniqueEmail validator)
-        user.setEmail(oldUser.getEmail());
+        user.setEmail(userExistData.getEmail());
         // set old creation date
-        user.setCreatedOn(oldUser.getCreatedOn());
+        user.setCreatedOn(userExistData.getCreatedOn());
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.updateAdmin user to be saved: {}", user.toString());
 
         // Final update Admin
@@ -200,7 +233,13 @@ public class UserServiceImpl implements UserService {
     // email to both (both as unauthorised change might be done, so both emails should be informed): {oldUser.getEmail(), user.getEmail()}
 
 
-    // userDTO has and passes password with field password
+    /**
+     * Only SUPERADMIN may delete ADMIN (BTW: ROLE_SUPERADMIN is added only from database console)
+     * DELETE demands authorisation of SUPERADMIN password (password passed in userDTO.password)
+     * @param idProtected
+     * @param userDTO
+     * @throws EntityToDataBaseException
+     */
     @Override
     public void deleteAdmin(Long idProtected, UserDTO userDTO) throws EntityToDataBaseException {
         log.debug("!!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! UserServiceImpl.deleteUser START !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! !!!!!!!!!!! ");

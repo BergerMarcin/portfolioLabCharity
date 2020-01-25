@@ -45,6 +45,7 @@ public class SpringDataUserDetailsService implements UserDetailsService {
         CurrentUserDTO currentUserDTO = currentUserDTOService.readFromDB(email);
         // if user does not exists, have not roles nor is not active return exception informing username (in this case email)
         if (currentUserDTO == null || currentUserDTO.getRoles() == null || !currentUserDTO.getActive()) {
+            // also helps: session.invalidate() acc. https://stackoverflow.com/questions/44359792/log-out-user-by-admin-spring-security
             throw new UsernameNotFoundException(email);
         }
 

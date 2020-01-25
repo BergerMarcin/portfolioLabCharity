@@ -62,6 +62,7 @@
                         Email <form:input type="email" path="email" id="email"/>
                     </form:label>
                 </div>
+
                 <p class="error"><form:errors path="termsAcceptance"></form:errors></p>
                 <div class="form-group form-group--inline">
                 </div>
@@ -75,19 +76,7 @@
                     <form:checkbox path="termsAcceptance" value="false" id="termsAcceptance"/>
                 </form:label>
                 <%--        </div>--%>
-                <br>
-                <p class="error"><form:errors path="password"></form:errors></p>
-                <div class="form-group form-group--inline">
-                    <form:label path="password">
-                        Hasło <form:input path="password" type="password"/>
-                    </form:label>
-                </div>
-                <p class="error"><form:errors path="rePassword"></form:errors></p>
-                <div class="form-group form-group--inline">
-                    <form:label path="rePassword">
-                        Powtórz hasło <form:input path="rePassword" type="password"/>
-                    </form:label>
-                </div>
+
                 <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
                     <p class="error"><form:errors path="active"></form:errors></p>
                     <div class="form-group form-group--inline">
@@ -103,6 +92,9 @@
                     </form:label>
                     <%--        </div>--%>
                 </sec:authorize>
+
+                <div class="form-group form-group--inline">
+                </div>
                     <%--        <div class="form-group form-group--checkbox">--%>
                     <%--                <form:label path="ifRoleUser" for="ifRoleUser">--%>
                     <%--
@@ -115,6 +107,22 @@
                 <input type="hidden" name="ifRoleUser" value="false"/>
                     <%--                </form:label>--%>
                     <%--        </div>--%>
+            </div>>
+
+            <div class="form-section--column">
+                <h4>Hasło nowego administratora</h4>
+                <p class="error"><form:errors path="password"></form:errors></p>
+                <div class="form-group form-group--inline">
+                    <form:label path="password">
+                        Hasło <form:input path="password" type="password"/>
+                    </form:label>
+                </div>
+                <p class="error"><form:errors path="rePassword"></form:errors></p>
+                <div class="form-group form-group--inline">
+                    <form:label path="rePassword">
+                        Powtórz hasło <form:input path="rePassword" type="password"/>
+                    </form:label>
+                </div>
             </div>>
 
             <div class="form-section--column">

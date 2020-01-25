@@ -74,7 +74,7 @@ public class AdminAdminController {
 
 
     /** ADMIN ADMINS ADD PAGE
-     * Might be done by any admin. Password is set for new admin
+     * Might be done only by SUPERADMIN. Password is set for new admin
      * @param currentUser
      * @param model
      * @return
@@ -106,7 +106,7 @@ public class AdminAdminController {
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
-            // TODO: reset password & rePassword probably via FieldError of BindingResult
+            // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
             return "admin/admin-admin-add";
         }
 
@@ -118,7 +118,7 @@ public class AdminAdminController {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
-                // TODO: reset password & rePassword probably via FieldError of BindingResult
+                // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
                 return "admin/admin-admin-add";
             }
         }
@@ -171,7 +171,7 @@ public class AdminAdminController {
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
-            // TODO: reset password & rePassword probably via FieldError of BindingResult
+            // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
             return "admin/admin-admin-update";
         }
 
@@ -183,7 +183,7 @@ public class AdminAdminController {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
-                // TODO: reset password & rePassword probably via FieldError of BindingResult
+                // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
                 return "admin/admin-admin-update";
             }
         }
@@ -197,8 +197,8 @@ public class AdminAdminController {
 
 
     /** ADMIN ADMINS DELETE PAGE
-     * Only SUPERADMIN may delete ADMIN (ROLE_SUPERADMIN is added only from database console)
-     * Demand authorisation of SUPERADMIN password
+     * Only SUPERADMIN may delete ADMIN (BTW: ROLE_SUPERADMIN is added only from database console)
+     * DELETE demands authorisation of SUPERADMIN password
      * @param id
      * @param em
      * @param currentUser
@@ -249,17 +249,17 @@ public class AdminAdminController {
         log.debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! postAdminAdminDeletePage formButtonChoice: {}", formButtonChoice);
         // Additional checking access - deleting possible only by SUPERADMIN
         if (!currentUser.getAuthorities().toString().contains("SUPERADMIN")) {
-            // TODO: reset password & rePassword probably via FieldError of BindingResult
+            // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
             return "redirect:/admin/admin";
         }
         if (formButtonChoice == 0 || formButtonChoice == null) {
-            // TODO: reset password & rePassword probably via FieldError of BindingResult
+            // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
             return "redirect:/admin/admin";
         }
 
         if (result.hasErrors()) {
             model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
-            // TODO: reset password & rePassword probably via FieldError of BindingResult
+            // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
             return "admin/admin-admin-delete";
         }
 
@@ -271,7 +271,7 @@ public class AdminAdminController {
                 Map<String, String> errorsMessageMap = new LinkedHashMap<>();
                 errorsMessageMap.put("Błąd ogólny", e.getMessage());
                 model.addAttribute("errorsMessageMap", errorsMessageMap);
-                // TODO: reset password & rePassword probably via FieldError of BindingResult
+                // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
                 return "admin/admin-admin-delete";
             }
         }

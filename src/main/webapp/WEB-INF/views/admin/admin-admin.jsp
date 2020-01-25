@@ -27,9 +27,14 @@
 
 <section class="login-page">
 <h2>Lista administratorów</h2>
-    <c:url value="/admin/admin/add" var="addURL"></c:url>
-    <a href="${addURL}"><button type="button" class="btn">Dodaj nowego administratora</button></a>
-    <br><br>
+    <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+        <c:url value="/admin/admin/add" var="addURL"></c:url>
+        <a href="${addURL}"><button type="button" class="btn">Dodaj nowego administratora</button></a>
+    </sec:authorize>
+    <sec:authorize access="!hasRole('ROLE_SUPERADMIN')">
+        <em style="font-size: 18px; color: gray" >Dodaj nowego administratora</em>
+    </sec:authorize>
+    <p/>
 
     <table border="2">
         <tr>
@@ -83,7 +88,7 @@
                         <a href="${deleteURL}"><button type="button" class="btn">Usuń</button></a>
                     </sec:authorize>
                     <sec:authorize access="!hasRole('ROLE_SUPERADMIN')">
-                        <u>Usuń</u>
+                        <em style="font-size: 15px; color: gray" >Usuń</em>
                     </sec:authorize>
                 </td>
             </tr>

@@ -33,6 +33,7 @@ Start at target jsp (not here) due to starting classes & due to closing slogans
 <%--                <li><a href="/admin/users" class="btn btn--without-border active">Użytkownicy</a></li>--%>
 <%--                <li><a href="/admin/roles" class="btn btn--without-border active">Role</a></li>--%>
                 <li><a href="/admin/admin" class="btn btn--without-border active">Administratorzy</a></li>
+                <li><a href="/admin/bootstrap" class="btn btn--without-border active">Administratorzy<br>bootstrap</a></li>
             </ul>
         </nav>
     </sec:authorize>

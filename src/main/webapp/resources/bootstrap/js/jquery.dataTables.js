@@ -11289,7 +11289,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sSortAscending": ": activate to sort column ascending",
+				"sSortAscending": ": aktywuj ROSNĄCE sortowanie w kolumnie",
+					// ": activate to sort column ascending",
 	
 				/**
 				 * ARIA label that is added to the table headers when the column may be
@@ -11312,7 +11313,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sSortDescending": ": activate to sort column descending"
+				"sSortDescending": "aktywuj MALEJĄCE sortowanie w kolumnie"
+					// ": activate to sort column descending"
 			},
 	
 			/**
@@ -11342,8 +11344,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sFirst": "First",
-	
+				"sFirst": "Pierwsza",
+				// "First",
 	
 				/**
 				 * Text to use when using the 'full_numbers' type of pagination for the
@@ -11365,7 +11367,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sLast": "Last",
+				"sLast": "Ostatnia",
+				// "Last",
 	
 	
 				/**
@@ -11388,7 +11391,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Next",
+				"sNext": "Następna",
+				// "Next",
 	
 	
 				/**
@@ -11411,7 +11415,8 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Previous"
+				"sPrevious": "Poprzednia"
+				// "Previous",
 			},
 	
 			/**
@@ -11434,7 +11439,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "Brak dostępnych danych",
+			// "No data available in table",
 	
 	
 			/**
@@ -11466,7 +11472,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "Wyświetlono _START_ do _END_ z _TOTAL_ wierszy",
+				// "Showing _START_ to _END_ of _TOTAL_ entries",
 	
 	
 			/**
@@ -11487,7 +11494,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "Wyświetlono 0 do 0 z 0 wierszy",
+			// "Showing 0 to 0 of 0 entries",
 	
 	
 			/**
@@ -11509,7 +11517,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(filtered from _MAX_ total entries)",
+			"sInfoFiltered": "(wybrane z _MAX_ total wierszy)",
+			// "(filtered from _MAX_ total entries)",
 	
 	
 			/**
@@ -11563,7 +11572,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sDecimal": "",
+			"sDecimal": ",",
+			// "",
 	
 	
 			/**
@@ -11586,7 +11596,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sThousands": ",",
+			"sThousands": " ",
+			// ",",
 	
 	
 			/**
@@ -11627,7 +11638,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "Wyświetl _MENU_ wierszy na stronie",
+			// "Show _MENU_ entries per page",
 	
 	
 			/**
@@ -11651,7 +11663,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLoadingRecords": "Loading...",
+			"sLoadingRecords": "Ładuję...",
+			// "Loading...",
 	
 	
 			/**
@@ -11672,7 +11685,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sProcessing": "Processing...",
+			"sProcessing": "Przetwarzam...",
+				// "Processing...",
 	
 	
 			/**
@@ -11707,7 +11721,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Szukaj:",
+			// "Search",
 	
 	
 			/**
@@ -11765,7 +11780,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No matching records found"
+			"sZeroRecords": "Nie znaleziono pasujących wierszy"
+				// "No matching records found"
 		},
 	
 	

@@ -289,16 +289,20 @@ readers do not read off random characters that represent icons */
   content: "\f102"; }
 
 .fa-angle-down:before {
-  content: "\f107"; }
+  /*content: "\f107"; }*/
+  content: url(/resources/bootstrap/images/angle-down.svg); }
 
 .fa-angle-left:before {
-  content: "\f104"; }
+  /*content: "\f104"; }*/
+  content: url(/resources/bootstrap/images/angle-left.svg); }
 
 .fa-angle-right:before {
-  content: "\f105"; }
+  /*content: "\f105"; }*/
+  content: url(/resources/bootstrap/images/angle-right.svg); }
 
 .fa-angle-up:before {
-  content: "\f106"; }
+  /*content: "\f106"; }*/
+  content: url(/resources/bootstrap/images/angle-up.svg); }
 
 .fa-angry:before {
   content: "\f556"; }
@@ -463,7 +467,8 @@ readers do not read off random characters that represent icons */
   content: "\f02a"; }
 
 .fa-bars:before {
-  content: "\f0c9"; }
+  /*content: "\f0c9"; }*/
+  content: url(/resources/bootstrap/images/bars.svg); }
 
 .fa-baseball-ball:before {
   content: "\f433"; }
@@ -3242,7 +3247,8 @@ readers do not read off random characters that represent icons */
   content: "\f7c2"; }
 
 .fa-search:before {
-  content: "\f002"; }
+  /*content: "\f002"; }*/
+  content: url(/resources/bootstrap/images/search.svg); }
 
 .fa-search-dollar:before {
   content: "\f688"; }

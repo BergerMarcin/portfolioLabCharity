@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.dtos.ChoiceDTO;
 import pl.coderslab.charity.dtos.RoleDTO;
 import pl.coderslab.charity.dtos.UserDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
@@ -64,12 +65,36 @@ public class AdminAdminController {
      * @return
      */
     @GetMapping
-    public String getAdminAdminsPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    public String getAdminAdminPage(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("errorsMessageMap", null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userDTOList", userService.findAllByRoleNameAccAuthorisedRole("ROLE_ADMIN"));
+        model.addAttribute("choiceDTO", new ChoiceDTO());
         return "admin/admin-admin";
 //        return "admin/admin-table";
+    }
+
+    @PostMapping
+    public String postGetAdminAdminPage(@ModelAttribute ChoiceDTO choiceDTO, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("errorsMessageMap", commonForControllers.errorsMessageToMap(result));
+            // TODO: reset password & rePassword probably via FieldError of BindingResult. The same currentUser
+            return "admin/admin-admin";
+        }
+        // validation
+        if (choiceDTO.getChoice() == null || choiceDTO.getChoice() < 0) { return "admin/admin-admin"; }
+
+        if (choiceDTO.getChoice() == 1) {
+            AdminAdminController.setIdProtected(id);
+            AdminAdminController.setEmailProtected(email);
+            return "redirect: admin/update";
+        }
+        if (choiceDTO.getChoice() == 2) {
+            AdminAdminController.setIdProtected(id);
+            AdminAdminController.setEmailProtected(email);
+            return "redirect: admin/delete";
+        }
+        return "admin/admin-admin";
     }
 
 

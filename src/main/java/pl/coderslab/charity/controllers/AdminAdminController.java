@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.dtos.RoleDTO;
 import pl.coderslab.charity.dtos.UserDTO;
-import pl.coderslab.charity.dtos.UserPassDTO;
 import pl.coderslab.charity.exceptions.EntityToDataBaseException;
 import pl.coderslab.charity.services.*;
 
@@ -70,6 +69,7 @@ public class AdminAdminController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("userDTOList", userService.findAllByRoleNameAccAuthorisedRole("ROLE_ADMIN"));
         return "admin/admin-admin";
+//        return "admin/admin-table";
     }
 
 
